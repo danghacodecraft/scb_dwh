@@ -1,0 +1,17 @@
+# ENGINE giữ nguyên nếu xài oracle
+# NAME: <host>:<port>/<service name>
+# USER: tên đăng nhập
+# PASSWORD: mật khẩu
+DATABASE = {
+    'ENGINE': 'django.db.backends.oracle',
+    'NAME': '',
+    'USER': '',
+    'PASSWORD': '',
+}
+
+# ENGINE giữ nguyên nếu xài SQLite
+# NAME trỏ đường dẫn tới file db.sqlite3
+#DATABASE = {
+#    'ENGINE': 'django.db.backends.sqlite3',
+#    'NAME': 'db.sqlite3',
+#}

@@ -1,0 +1,28 @@
+# secret key for dev
+LOCAL_SECRET_KEY = 'yw%wkw%$^5i0&_)m(dq#25yt@qhcr0dtf6rn_hm%=etver(n%0'
+
+LOCAL_MEDIA_ROOT = 'media/'
+LOCAL_STATIC_ROOT = 'webs/static/'
+
+LOCAL_DEBUG = True
+
+LOGGER_PRINT = False
+
+LOCAL_ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+LOCAL_EMAIL_USE_TLS = True
+LOCAL_EMAIL_HOST = ''
+LOCAL_EMAIL_HOST_USER = ''
+LOCAL_EMAIL_HOST_PASSWORD = ''
+LOCAL_EMAIL_PORT = 0
+LOCAL_EMAIL_HOST_STRING = 'Minerva <' + LOCAL_EMAIL_HOST_USER + '>'
+
+SERVICE_FILE_URL = 'http://192.168.73.135:9004'
+
+# CDN link tải file đi theo từng dự án
+SERVICE_FILE_CDN = 'http://192.168.73.135:9002/cdn'
+
+# API documentation
+# -----------------------------------------------------------------------------
+SWAGGER_SUB_ENDPOINT = 'docs/'
+REDOC_SUB_ENDPOINT = 'redoc/'
