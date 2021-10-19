@@ -8,7 +8,7 @@
 </div>
 
 
-DWH for SCB platform. Base from Django
+DWH for SCB platform. Base from Django + Oracle
 
 ## I. Requirements:
     - python >= 3.8.10
