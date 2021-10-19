@@ -18,7 +18,7 @@ from api.v1.user.serializers import (
     UserLoginSuccessResponseSerializer, UserUpdateRequestSerializer
 )
 from core.user.models import User
-from library.constant.error_codes import ERROR_USERNAME_IS_EXISTED
+from library.constant.error_codes import ERROR_USERNAME_IS_EXIST
 
 
 class UserView(BaseAPIView):
@@ -43,7 +43,7 @@ class UserView(BaseAPIView):
         password = serializer.validated_data['password']
 
         if User.objects.filter(username=username).exists():
-            return self.http_exception(error_code=ERROR_USERNAME_IS_EXISTED)
+            return self.http_exception(error_code=ERROR_USERNAME_IS_EXIST)
 
         user = User.objects.create(
             name=name,
@@ -99,10 +99,7 @@ class UserView(BaseAPIView):
 
         name = serializer.validated_data['name']
 
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist as ex:
-            return self.http_exception(description=str(ex))
+        user = self.get_model_object_by_id(user_id, User)
 
         user.name = name
         user.save()
@@ -126,11 +123,7 @@ class UserView(BaseAPIView):
         }
     )
     def delete(self, request, user_id):
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist as ex:
-            return self.http_exception(description=str(ex))
-
+        user = self.get_model_object_by_id(user_id, User)
         user.delete()
 
         return self.response_success(None, status_code=status.HTTP_204_NO_CONTENT)
