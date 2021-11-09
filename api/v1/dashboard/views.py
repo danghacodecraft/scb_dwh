@@ -77,7 +77,7 @@ class DashboardView(BaseAPIView):
         operation_id='Chart',
         summary='List',
         tags=["Dashboard"],
-        description="Module = [tang_truong_huy_dong]",
+        description="Module = [tong_so_but_toan, tang_truong_huy_dong, thu_phi_dich_vu ]",
         request=ChartRequestSerializer,
         responses={
             status.HTTP_201_CREATED: ChartResponseSerializer(many=True),
