@@ -7,9 +7,7 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.dashboard.serializers import DataResponseSerializer, \
-    ChartRequestSerializer, ChartResponseSerializer
-
+from api.v1.gis.serializers import BranchRequestSerializer, BranchResponseSerializer, RegionResponseSerializer
 
 def connect():
     # create a connection to the Oracle Database
@@ -19,28 +17,30 @@ def connect():
 
     return con, cur
 
-class DashboardView(BaseAPIView):
+def myRegion(e):
+    return e['region_id']
+
+def myBranch(e):
+    return e['branch_id']
+
+class GisView(BaseAPIView):
     @extend_schema(
-        operation_id='Data',
+        operation_id='Region',
         summary='List',
-        tags=["Dashboard"],
-        description='Get Data',
+        tags=["GIS"],
+        description="Region",
         responses={
-            status.HTTP_201_CREATED: DataResponseSerializer(many=True),
+            status.HTTP_201_CREATED: RegionResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
             status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
         }
     )
-    def data(self, request):
+    def region(self, request):
         try:
             con, cur = connect()
 
-            # print(cx_Oracle.version)
-            # print("Database version:", con.version)
-            # print("Client version:", cx_Oracle.clientversion())
+            sql = 'select obi.CRM_DWH_PKG.FUN_GET_REGION FROM DUAL'
 
-            # call the function
-            sql = "select obi.CRM_DWH_PKG.FUN_GET_DATA('TRANG_CHU') FROM DUAL"
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -55,70 +55,12 @@ class DashboardView(BaseAPIView):
                 for data in data_cursor:
                     print(data)
                     val = {
-                        'id': data[0].strip(),
-                        "title": data[6].strip(),
-                        'day': data[2],
-                        'week': data[3],
-                        'month': data[4],
-                        'accumulated': data[5]
+                        'region_id': data[0].strip(),
+                        'region_name': data[1].strip()
                     }
                     datas.append(val)
 
-            cur.close()
-            con.close()
-            return self.response_success( datas, status_code=status.HTTP_200_OK)
-        except cx_Oracle.Error as error:
-            cur.close()
-            con.close()
-            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @extend_schema(
-        operation_id='Chart',
-        summary='List',
-        tags=["Dashboard"],
-        description="Module = [tong_so_but_toan, tang_truong_huy_dong, thu_phi_dich_vu ]",
-        request=ChartRequestSerializer,
-        responses={
-            status.HTTP_201_CREATED: ChartResponseSerializer(many=True),
-            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
-            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
-        }
-    )
-    def chart(self, request):
-        try:
-            serializer = ChartRequestSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-
-            module = serializer.validated_data['module']
-            # module = 'BUT_TOAN'
-
-            con, cur = connect()
-
-            # call the function
-            sql = "select obi.CRM_DWH_PKG.FUN_GET_CHART(P_MAN_HINH=>'{P_MAN_HINH}',P_MODULE=>'{P_MODULE}') FROM DUAL".format(P_MAN_HINH="TRANG_CHU,", P_MODULE=module)
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            datas = []
-            if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
-                for data in data_cursor:
-                    print(data)
-                    val = {
-                        'id': data[0].strip(),
-                        'title': data[6].strip(),
-                        'val': data[2],
-                        'unit': data[7].strip()
-                        # 'week': data[3],
-                        # 'month': data[4],
-                        # 'accumulated': data[5]
-                    }
-                    datas.append(val)
+                datas.sort(key=myRegion)
 
             cur.close()
             con.close()
@@ -128,3 +70,63 @@ class DashboardView(BaseAPIView):
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @extend_schema(
+        operation_id='Branch',
+        summary='List',
+        tags=["GIS"],
+        description="Branch",
+        request=BranchRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: BranchResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def branch(self, request):
+        try:
+            serializer = BranchRequestSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+
+            region = serializer.validated_data['region']
+
+            con, cur = connect()
+            if region == "":
+                sql = "select obi.CRM_DWH_PKG.FUN_GET_LOCATION FROM DUAL"
+            else:
+                sql = "select obi.CRM_DWH_PKG.FUN_GET_LOCATION(P_VUNG=>'{P_VUNG}') FROM DUAL".format(P_VUNG=region)
+
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                filter = {}
+                for data in data_cursor:
+                    print(data)
+
+                    branch_id = data[4].strip()
+                    if branch_id not in filter.keys() and data[8] != None and data[9] != None:
+                        filter[branch_id] = data
+                        val = {
+                            'branch_id': branch_id,
+                            'branch_name': data[5].strip(),
+                            'latitude': data[8],
+                            'longitude': data[9],
+                        }
+                        datas.append(val)
+
+                datas.sort(key=myBranch)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)

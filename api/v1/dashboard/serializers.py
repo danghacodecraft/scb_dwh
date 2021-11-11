@@ -3,24 +3,8 @@ from rest_framework import serializers
 from api.base.serializers import InheritedSerializer
 from config.settings import DATETIME_INPUT_OUTPUT_FORMAT
 
-
 class ChartRequestSerializer(InheritedSerializer):
     module = serializers.CharField(help_text="`module` of chart")
-
-
-class BranchRequestSerializer(InheritedSerializer):
-    region = serializers.CharField(help_text="`region` of scb")
-
-
-class RegionResponseSerializer(InheritedSerializer):
-    id = serializers.CharField(help_text="`id` of region")
-    title = serializers.CharField(help_text="`title` of region")
-
-
-class BranchResponseSerializer(InheritedSerializer):
-    id = serializers.CharField(help_text="`id` of branch")
-    title = serializers.CharField(help_text="`title` of branch")
-
 
 class ChartResponseSerializer(InheritedSerializer):
     id = serializers.CharField(help_text="`id` of data")
