@@ -1,0 +1,9 @@
+from django.urls import path
+
+from api.v1.gis.views import GisView
+
+urlpatterns = [
+    path('region/', GisView.as_view({'post': 'region'})),
+    path('branch/', GisView.as_view({'post': 'branch'}))
+
+]
