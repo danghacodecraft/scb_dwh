@@ -1,6 +1,6 @@
 import cx_Oracle
-import config.database as db
-import json
+import api.v1.function as lib
+
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 
@@ -8,14 +8,6 @@ from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
 from api.v1.report.business_unit.serializers import ChartFRequestSerializer, ChartFResponseSerializer, DataResponseSerializer
-
-def connect():
-    # create a connection to the Oracle Database
-    con = cx_Oracle.connect(db.DATABASE['USER'], db.DATABASE['PASSWORD'], db.DATABASE['NAME'])
-    # create a new cursor
-    cur = con.cursor()
-
-    return con, cur
 
 class BusinessUnitView(BaseAPIView):
     @extend_schema(
@@ -31,7 +23,7 @@ class BusinessUnitView(BaseAPIView):
     )
     def data(self, request):
         try:
-            con, cur = connect()
+            con, cur = lib.connect()
 
             sql = "select obi.CRM_DWH_PKG.FUN_GET_DATA('C_02_01') FROM DUAL"
             print(sql)
@@ -49,7 +41,7 @@ class BusinessUnitView(BaseAPIView):
                 for data in data_cursor:
                     print(data)
                     val = {
-                        'id': data[0].strip(),
+                        'id': lib.create_key(data[6].strip()),
                         "title": data[6].strip(),
                         'day': data[2],
                         'week': data[3],
@@ -70,7 +62,7 @@ class BusinessUnitView(BaseAPIView):
         operation_id='Chart',
         summary='List',
         tags=["BUSINESS_UNIT"],
-        description="name = ['tong_thu_nhap_thuan', 'tong_chi_phi_hoat_dong', 'tong_so_don_vi', 'quan_ly_khach_hang' ]",
+        description="name = ['tong_thu_nhap_thuan', 'tong_chi_phi_hoat_dong', 'tong_so_don_vi', 'quan_ly_khach_hang' ], unit='all' filter only region",
         request=ChartFRequestSerializer,
         responses={
             status.HTTP_201_CREATED: ChartFResponseSerializer(many=True),
@@ -87,7 +79,7 @@ class BusinessUnitView(BaseAPIView):
             region = serializer.validated_data['region']
             unit = serializer.validated_data['unit']
 
-            con, cur = connect()
+            con, cur = lib.connect()
             if unit == "all":
                 sql = "select obi.CRM_DWH_PKG.FUN_GET_CHART(P_MAN_HINH=>'C_02_01',P_MODULE=>'{P_MODULE}',P_VUNG=>'{P_VUNG}') FROM DUAL".format(P_MODULE=name, P_VUNG=region)
             else:
@@ -110,7 +102,7 @@ class BusinessUnitView(BaseAPIView):
                     print(data)
 
                     val = {
-                        'key': data[0].strip(),
+                        'key': lib.create_key(data[1].strip()),
                         'label': data[1].strip(),
                         'val': data[2],
                         'unit': data[3].strip()
