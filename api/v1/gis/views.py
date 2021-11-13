@@ -1,6 +1,6 @@
 import cx_Oracle
-import config.database as db
-import json
+import api.v1.function as lib
+
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 
@@ -8,14 +8,6 @@ from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
 from api.v1.gis.serializers import BranchRequestSerializer, BranchResponseSerializer, RegionResponseSerializer
-
-def connect():
-    # create a connection to the Oracle Database
-    con = cx_Oracle.connect(db.DATABASE['USER'], db.DATABASE['PASSWORD'], db.DATABASE['NAME'])
-    # create a new cursor
-    cur = con.cursor()
-
-    return con, cur
 
 def myRegion(e):
     return e['region_id']
@@ -37,7 +29,7 @@ class GisView(BaseAPIView):
     )
     def region(self, request):
         try:
-            con, cur = connect()
+            con, cur = lib.connect()
 
             sql = 'select obi.CRM_DWH_PKG.FUN_GET_REGION FROM DUAL'
 
@@ -89,7 +81,7 @@ class GisView(BaseAPIView):
 
             region = serializer.validated_data['region']
 
-            con, cur = connect()
+            con, cur = lib.connect()
             if region == "":
                 sql = "select obi.CRM_DWH_PKG.FUN_GET_LOCATION FROM DUAL"
             else:

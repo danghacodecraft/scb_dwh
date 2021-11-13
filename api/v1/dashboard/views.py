@@ -1,5 +1,6 @@
 import cx_Oracle
-import config.database as db
+import api.v1.function as lib
+
 import json
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
@@ -10,14 +11,6 @@ from api.base.serializers import ExceptionResponseSerializer
 from api.v1.dashboard.serializers import DataResponseSerializer, \
     ChartRequestSerializer, ChartResponseSerializer
 
-
-def connect():
-    # create a connection to the Oracle Database
-    con = cx_Oracle.connect(db.DATABASE['USER'], db.DATABASE['PASSWORD'], db.DATABASE['NAME'])
-    # create a new cursor
-    cur = con.cursor()
-
-    return con, cur
 
 class DashboardView(BaseAPIView):
     @extend_schema(
@@ -33,7 +26,7 @@ class DashboardView(BaseAPIView):
     )
     def data(self, request):
         try:
-            con, cur = connect()
+            con, cur = lib.connect()
 
             # print(cx_Oracle.version)
             # print("Database version:", con.version)
@@ -55,7 +48,7 @@ class DashboardView(BaseAPIView):
                 for data in data_cursor:
                     print(data)
                     val = {
-                        'id': data[0].strip(),
+                        'id': lib.create_key(data[6].strip()),
                         "title": data[6].strip(),
                         'day': data[2],
                         'week': data[3],
@@ -92,7 +85,7 @@ class DashboardView(BaseAPIView):
             module = serializer.validated_data['module']
             # module = 'BUT_TOAN'
 
-            con, cur = connect()
+            con, cur = lib.connect()
 
             # call the function
             sql = "select obi.CRM_DWH_PKG.FUN_GET_CHART(P_MAN_HINH=>'{P_MAN_HINH}',P_MODULE=>'{P_MODULE}') FROM DUAL".format(P_MAN_HINH="TRANG_CHU,", P_MODULE=module)
@@ -110,7 +103,7 @@ class DashboardView(BaseAPIView):
                 for data in data_cursor:
                     print(data)
                     val = {
-                        'id': data[0].strip(),
+                        'id': lib.create_key(data[6].strip()),
                         'title': data[6].strip(),
                         'val': data[2],
                         'unit': data[7].strip()
