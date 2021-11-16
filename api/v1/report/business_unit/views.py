@@ -1,13 +1,15 @@
 import cx_Oracle
+from drf_spectacular.types import OpenApiTypes
+
 import api.v1.function as lib
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import status
 
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.report.business_unit.serializers import ChartFRequestSerializer, ChartFResponseSerializer, DataResponseSerializer
+from api.v1.report.business_unit.serializers import ChartFResponseSerializer, DataResponseSerializer
 
 class BusinessUnitView(BaseAPIView):
     @extend_schema(
@@ -63,13 +65,25 @@ class BusinessUnitView(BaseAPIView):
         operation_id='Chart',
         summary='List',
         tags=["BUSINESS_UNIT"],
-        description=(
-            """
-            `name` has values: `tong_thu_nhap_thuan`, `tong_chi_phi_hoat_dong`, `tong_so_don_vi`, `quan_ly_khach_hang`. 
-            `unit`=`all` filter only region
-            """
-        ),
-        request=ChartFRequestSerializer,
+        description="""
+The `name` has values: 
+- **tong_thu_nhap_thuan**.
+- **tong_chi_phi_hoat_dong**.
+- **tong_so_don_vi**.
+- **quan_ly_khach_hang**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="name", type=OpenApiTypes.STR, description="Tìm kiếm name"
+            ),
+            OpenApiParameter(
+                name="region", type=OpenApiTypes.STR, description="Tìm kiếm region"
+            ),
+            OpenApiParameter(
+                name="unit", type=OpenApiTypes.STR, description="Tìm kiếm unit"
+            )
+        ],
+        # request=ChartFRequestSerializer,
         responses={
             status.HTTP_201_CREATED: ChartFResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
@@ -78,17 +92,21 @@ class BusinessUnitView(BaseAPIView):
     )
     def chart(self, request):
         try:
-            serializer = ChartFRequestSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-
-            name = serializer.validated_data['name']
-            region = serializer.validated_data['region']
-            unit = serializer.validated_data['unit']
+            # serializer = ChartFRequestSerializer(data=request.data)
+            # serializer.is_valid(raise_exception=True)
+            #
+            # name = serializer.validated_data['name']
+            # region = serializer.validated_data['region']
+            # unit = serializer.validated_data['unit']
+            params = request.query_params.dict()
+            name = params['name']
+            region = params['region']
 
             con, cur = lib.connect()
-            if unit == "all":
+            if 'unit' not in params.keys():
                 sql = "select obi.CRM_DWH_PKG.FUN_GET_CHART(P_MAN_HINH=>'C_02_01',P_MODULE=>'{P_MODULE}',P_VUNG=>'{P_VUNG}') FROM DUAL".format(P_MODULE=name, P_VUNG=region)
             else:
+                unit = params['unit']
                 sql = "select obi.CRM_DWH_PKG.FUN_GET_CHART(P_MAN_HINH=>'C_02_01',P_MODULE=>'{P_MODULE}',P_DV=>'{P_DV}') FROM DUAL".format(
                     P_MODULE=name, P_DV=unit)
 

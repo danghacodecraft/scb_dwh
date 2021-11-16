@@ -1,13 +1,15 @@
 import cx_Oracle
+from drf_spectacular.types import OpenApiTypes
+
 import api.v1.function as lib
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import status
 
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.gis.serializers import BranchRequestSerializer, BranchResponseSerializer, RegionResponseSerializer
+from api.v1.gis.serializers import BranchResponseSerializer, RegionResponseSerializer
 
 def myRegion(e):
     return e['region_id']
@@ -67,7 +69,12 @@ class GisView(BaseAPIView):
         summary='List',
         tags=["GIS"],
         description="Branch",
-        request=BranchRequestSerializer,
+        parameters=[
+            OpenApiParameter(
+                name="region", type=OpenApiTypes.STR, description="Tìm kiếm theo region"
+            )
+        ],
+        # request=BranchRequestSerializer,
         responses={
             status.HTTP_201_CREATED: BranchResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
@@ -76,16 +83,14 @@ class GisView(BaseAPIView):
     )
     def branch(self, request):
         try:
-            serializer = BranchRequestSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-
-            region = serializer.validated_data['region']
+            # serializer = BranchRequestSerializer(data=request.data)
+            # serializer.is_valid(raise_exception=True)
+            #
+            # region = serializer.validated_data['region']
+            region = request.query_params['region']
 
             con, cur = lib.connect()
-            if region == "":
-                sql = "select obi.CRM_DWH_PKG.FUN_GET_LOCATION FROM DUAL"
-            else:
-                sql = "select obi.CRM_DWH_PKG.FUN_GET_LOCATION(P_VUNG=>'{P_VUNG}') FROM DUAL".format(P_VUNG=region)
+            sql = "select obi.CRM_DWH_PKG.FUN_GET_LOCATION(P_VUNG=>'{P_VUNG}') FROM DUAL".format(P_VUNG=region)
 
             cur.execute(sql)
             res = cur.fetchone()

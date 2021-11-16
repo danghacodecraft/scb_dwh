@@ -3,8 +3,8 @@ from rest_framework import serializers
 from api.base.serializers import InheritedSerializer
 from config.settings import DATETIME_INPUT_OUTPUT_FORMAT
 
-class ChartRequestSerializer(InheritedSerializer):
-    module = serializers.CharField(help_text="`module` of chart")
+# class ChartRequestSerializer(InheritedSerializer):
+#     module = serializers.CharField(help_text="`module` of chart")
 
 class ChartResponseSerializer(InheritedSerializer):
     id = serializers.CharField(help_text="`id` of data")

@@ -4,6 +4,6 @@ from api.v1.gis.views import GisView
 
 urlpatterns = [
     path('region/', GisView.as_view({'get': 'region'})),
-    path('branch/', GisView.as_view({'post': 'branch'}))
+    path('branch/', GisView.as_view({'get': 'branch'}))
 
 ]
