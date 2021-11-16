@@ -3,8 +3,8 @@ from rest_framework import serializers
 from api.base.serializers import InheritedSerializer
 from config.settings import DATETIME_INPUT_OUTPUT_FORMAT
 
-class BranchRequestSerializer(InheritedSerializer):
-    region = serializers.CharField(help_text="`region` of branch")
+# class BranchRequestSerializer(InheritedSerializer):
+#     region = serializers.CharField(help_text="`region` of branch")
 
 class BranchResponseSerializer(InheritedSerializer):
     branch_id = serializers.IntegerField(help_text="`id` of branch")

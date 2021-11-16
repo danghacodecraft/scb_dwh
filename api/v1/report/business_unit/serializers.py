@@ -3,11 +3,6 @@ from rest_framework import serializers
 from api.base.serializers import InheritedSerializer
 from config.settings import DATETIME_INPUT_OUTPUT_FORMAT
 
-class ChartFRequestSerializer(InheritedSerializer):
-    name = serializers.CharField(help_text="`name` of chart")
-    region = serializers.CharField(help_text="`region` of chart")
-    unit = serializers.CharField(help_text="`unit` of chart")
-
 class ChartFResponseSerializer(InheritedSerializer):
     key = serializers.CharField(help_text="`key` of data")
     label = serializers.CharField(help_text="`label` of data")

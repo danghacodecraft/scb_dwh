@@ -1,15 +1,16 @@
 import cx_Oracle
+from drf_spectacular.types import OpenApiTypes
+
 import api.v1.function as lib
 
 import json
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import status
 
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.dashboard.serializers import DataResponseSerializer, \
-    ChartRequestSerializer, ChartResponseSerializer
+from api.v1.dashboard.serializers import DataResponseSerializer, ChartResponseSerializer
 
 
 class DashboardView(BaseAPIView):
@@ -70,8 +71,18 @@ class DashboardView(BaseAPIView):
         operation_id='Chart',
         summary='List',
         tags=["Dashboard"],
-        description="Module = [tong_so_but_toan, tang_truong_huy_dong, thu_phi_dich_vu ]",
-        request=ChartRequestSerializer,
+        description="""
+The `module` has values: 
+- **tong_so_but_toan**.
+- **tang_truong_huy_dong**.
+- **thu_phi_dich_vu**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="module", type=OpenApiTypes.STR, description="Tìm kiếm theo Nhãn, Mã"
+            )
+        ],
+        # request=ChartRequestSerializer,
         responses={
             status.HTTP_201_CREATED: ChartResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
@@ -80,11 +91,7 @@ class DashboardView(BaseAPIView):
     )
     def chart(self, request):
         try:
-            serializer = ChartRequestSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-
-            module = serializer.validated_data['module']
-            # module = 'BUT_TOAN'
+            module = request.query_params['module']
 
             con, cur = lib.connect()
 

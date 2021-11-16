@@ -1,13 +1,15 @@
 import cx_Oracle
+from drf_spectacular.types import OpenApiTypes
+
 import api.v1.function as lib
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import status
 
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.report.business_unit.detail.serializers import ChartDetailRequestSerializer, ChartFResponseSerializer, DataResponseSerializer
+from api.v1.report.business_unit.detail.serializers import ChartFResponseSerializer, DataResponseSerializer
 
 class BusinessDetailUnitView(BaseAPIView):
     @extend_schema(
@@ -63,49 +65,51 @@ class BusinessDetailUnitView(BaseAPIView):
         operation_id='Chart',
         summary='List',
         tags=["BUSINESS_UNIT"],
-        description=(
-            """
-            The `name` has values: 
-                `quan_ly_khach_hang_bde`, 
-                `thu_nhap_thuan_tu_dich_vu_the_gn_visa`, 
-                `bao_cao_cif_mo_moi`, 
-                `thu_nhap_thuan_tu_dich_vu_the_pos`, 
-                `tong_chi_phi_hoat_dong_hoat_dong`, 
-                `tong_chi_phi_hoat_dong_nhan_vien`, 
-                `tong_chi_phi_hoat_dong_dau_tu`, 
-                `cho_vay_khach_hang`, 
-                `thu_nhap_thuan_tu_dich_vu_the_tdqt`, 
-                `quan_ly_khach_hang_g`, 
-                `quan_ly_khach_hang_m`, 
-                `thu_nhap_thuan_tu_dvkh`, 
-                `tong_thu_nhap_thuan`, 
-                `thu_nhap_thuan_tu_dich_vu_the_td_mc`, 
-                `tong_chi_phi_hoat_dong_thue`, 
-                `quan_ly_khach_hang_pp+`, 
-                `quan_ly_khach_hang_r`, 
-                `quan_ly_khach_hang_sli`, 
-                `quan_ly_khach_hang`, 
-                `quan_ly_khach_hang_bd`, 
-                `quan_ly_khach_hang_bdi`, 
-                `quan_ly_khach_hang_n`, 
-                `thu_nhap_thuan_tu_dich_vu_the_atm`, 
-                `quan_ly_khach_hang_sap`, 
-                `quan_ly_khach_hang_di`, 
-                `quan_ly_khach_hang_pp`, 
-                `quan_ly_khach_hang_ti`, 
-                `huy_dong_von`, 
-                `thu_nhap_thuan_tu_dich_vu_the_may_atm`, 
-                `quan_ly_khach_hang_d`, 
-                `thu_nhap_thuan_tu_dich_vu_the`, 
-                `tong_chi_phi_hoat_dong`, 
-                `tong_so_don_vi`, 
-                `thu_nhap_thuan_tu_dich_vu_the_gn_mc`, 
-                `tong_chi_phi_hoat_dong_tai_san`, 
-                `quan_ly_khach_hang_de`, 
-                `quan_ly_khach_hang_p`
-            """
-        ),
-        request=ChartDetailRequestSerializer,
+        description="""
+The `name` has values: 
+- **quan_ly_khach_hang_bde**.
+- **thu_nhap_thuan_tu_dich_vu_the_gn_visa**.
+- **bao_cao_cif_mo_moi**.
+- **thu_nhap_thuan_tu_dich_vu_the_pos**.
+- **tong_chi_phi_hoat_dong_hoat_dong**.
+- **tong_chi_phi_hoat_dong_nhan_vien**.
+- **tong_chi_phi_hoat_dong_dau_tu`**.
+- **cho_vay_khach_hang**.
+- **thu_nhap_thuan_tu_dich_vu_the_tdqt**.
+- **quan_ly_khach_hang_g**.
+- **quan_ly_khach_hang_m**.
+- **thu_nhap_thuan_tu_dvkh**.
+- **tong_thu_nhap_thuan**.
+- **thu_nhap_thuan_tu_dich_vu_the_td_mc**.
+- **tong_chi_phi_hoat_dong_thue**.
+- **quan_ly_khach_hang_pp+**.
+- **quan_ly_khach_hang_r**.
+- **quan_ly_khach_hang_sli**.
+- **quan_ly_khach_hang**.
+- **quan_ly_khach_hang_bd**.
+- **quan_ly_khach_hang_bdi**.
+- **quan_ly_khach_hang_n**.
+- **thu_nhap_thuan_tu_dich_vu_the_atm**.
+- **quan_ly_khach_hang_sap**.
+- **quan_ly_khach_hang_di**.
+- **quan_ly_khach_hang_pp**. 
+- **quan_ly_khach_hang_ti**.
+- **huy_dong_von**.
+- **thu_nhap_thuan_tu_dich_vu_the_may_atm**.
+- **quan_ly_khach_hang_d**.
+- **thu_nhap_thuan_tu_dich_vu_the**.
+- **tong_chi_phi_hoat_dong**.
+- **tong_so_don_vi**.
+- **thu_nhap_thuan_tu_dich_vu_the_gn_mc**.
+- **tong_chi_phi_hoat_dong_tai_san**.
+- **quan_ly_khach_hang_de**.
+- **quan_ly_khach_hang_p**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="name", type=OpenApiTypes.STR, description="Tìm kiếm name"
+            )
+        ],
         responses={
             status.HTTP_201_CREATED: ChartFResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
@@ -114,10 +118,11 @@ class BusinessDetailUnitView(BaseAPIView):
     )
     def chart(self, request):
         try:
-            serializer = ChartDetailRequestSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-
-            name = serializer.validated_data['name']
+            # serializer = ChartDetailRequestSerializer(data=request.data)
+            # serializer.is_valid(raise_exception=True)
+            #
+            # name = serializer.validated_data['name']
+            name = request.query_params['name']
 
             con, cur = lib.connect()
             sql = "select obi.CRM_DWH_PKG.FUN_GET_CHART(P_MAN_HINH=>'C_02_02',P_MODULE=>'{P_MODULE}') FROM DUAL".format(
