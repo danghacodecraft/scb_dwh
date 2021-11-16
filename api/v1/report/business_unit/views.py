@@ -46,7 +46,8 @@ class BusinessUnitView(BaseAPIView):
                         'day': data[2],
                         'week': data[3],
                         'month': data[4],
-                        'accumulated': data[5]
+                        'accumulated': data[5],
+                        'unit': data[7]
                     }
                     datas.append(val)
 
@@ -62,7 +63,12 @@ class BusinessUnitView(BaseAPIView):
         operation_id='Chart',
         summary='List',
         tags=["BUSINESS_UNIT"],
-        description="name = ['tong_thu_nhap_thuan', 'tong_chi_phi_hoat_dong', 'tong_so_don_vi', 'quan_ly_khach_hang' ], unit='all' filter only region",
+        description=(
+            """
+            `name` has values: `tong_thu_nhap_thuan`, `tong_chi_phi_hoat_dong`, `tong_so_don_vi`, `quan_ly_khach_hang`. 
+            `unit`=`all` filter only region
+            """
+        ),
         request=ChartFRequestSerializer,
         responses={
             status.HTTP_201_CREATED: ChartFResponseSerializer(many=True),
