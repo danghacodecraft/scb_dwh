@@ -7,9 +7,9 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.report.business_unit.serializers import ChartFRequestSerializer, ChartFResponseSerializer, DataResponseSerializer
+from api.v1.report.business_unit.detail.serializers import ChartDetailRequestSerializer, ChartFResponseSerializer, DataResponseSerializer
 
-class BusinessUnitView(BaseAPIView):
+class BusinessDetailUnitView(BaseAPIView):
     @extend_schema(
         operation_id='Data',
         summary='List',
@@ -25,7 +25,7 @@ class BusinessUnitView(BaseAPIView):
         try:
             con, cur = lib.connect()
 
-            sql = "select obi.CRM_DWH_PKG.FUN_GET_DATA('C_02_01') FROM DUAL"
+            sql = "select obi.CRM_DWH_PKG.FUN_GET_DATA('C_02_02') FROM DUAL"
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -65,11 +65,47 @@ class BusinessUnitView(BaseAPIView):
         tags=["BUSINESS_UNIT"],
         description=(
             """
-            `name` has values: `tong_thu_nhap_thuan`, `tong_chi_phi_hoat_dong`, `tong_so_don_vi`, `quan_ly_khach_hang`. 
-            `unit`=`all` filter only region
+            The `name` has values: 
+                `quan_ly_khach_hang_bde`, 
+                `thu_nhap_thuan_tu_dich_vu_the_gn_visa`, 
+                `bao_cao_cif_mo_moi`, 
+                `thu_nhap_thuan_tu_dich_vu_the_pos`, 
+                `tong_chi_phi_hoat_dong_hoat_dong`, 
+                `tong_chi_phi_hoat_dong_nhan_vien`, 
+                `tong_chi_phi_hoat_dong_dau_tu`, 
+                `cho_vay_khach_hang`, 
+                `thu_nhap_thuan_tu_dich_vu_the_tdqt`, 
+                `quan_ly_khach_hang_g`, 
+                `quan_ly_khach_hang_m`, 
+                `thu_nhap_thuan_tu_dvkh`, 
+                `tong_thu_nhap_thuan`, 
+                `thu_nhap_thuan_tu_dich_vu_the_td_mc`, 
+                `tong_chi_phi_hoat_dong_thue`, 
+                `quan_ly_khach_hang_pp+`, 
+                `quan_ly_khach_hang_r`, 
+                `quan_ly_khach_hang_sli`, 
+                `quan_ly_khach_hang`, 
+                `quan_ly_khach_hang_bd`, 
+                `quan_ly_khach_hang_bdi`, 
+                `quan_ly_khach_hang_n`, 
+                `thu_nhap_thuan_tu_dich_vu_the_atm`, 
+                `quan_ly_khach_hang_sap`, 
+                `quan_ly_khach_hang_di`, 
+                `quan_ly_khach_hang_pp`, 
+                `quan_ly_khach_hang_ti`, 
+                `huy_dong_von`, 
+                `thu_nhap_thuan_tu_dich_vu_the_may_atm`, 
+                `quan_ly_khach_hang_d`, 
+                `thu_nhap_thuan_tu_dich_vu_the`, 
+                `tong_chi_phi_hoat_dong`, 
+                `tong_so_don_vi`, 
+                `thu_nhap_thuan_tu_dich_vu_the_gn_mc`, 
+                `tong_chi_phi_hoat_dong_tai_san`, 
+                `quan_ly_khach_hang_de`, 
+                `quan_ly_khach_hang_p`
             """
         ),
-        request=ChartFRequestSerializer,
+        request=ChartDetailRequestSerializer,
         responses={
             status.HTTP_201_CREATED: ChartFResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
@@ -78,19 +114,14 @@ class BusinessUnitView(BaseAPIView):
     )
     def chart(self, request):
         try:
-            serializer = ChartFRequestSerializer(data=request.data)
+            serializer = ChartDetailRequestSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
 
             name = serializer.validated_data['name']
-            region = serializer.validated_data['region']
-            unit = serializer.validated_data['unit']
 
             con, cur = lib.connect()
-            if unit == "all":
-                sql = "select obi.CRM_DWH_PKG.FUN_GET_CHART(P_MAN_HINH=>'C_02_01',P_MODULE=>'{P_MODULE}',P_VUNG=>'{P_VUNG}') FROM DUAL".format(P_MODULE=name, P_VUNG=region)
-            else:
-                sql = "select obi.CRM_DWH_PKG.FUN_GET_CHART(P_MAN_HINH=>'C_02_01',P_MODULE=>'{P_MODULE}',P_DV=>'{P_DV}') FROM DUAL".format(
-                    P_MODULE=name, P_DV=unit)
+            sql = "select obi.CRM_DWH_PKG.FUN_GET_CHART(P_MAN_HINH=>'C_02_02',P_MODULE=>'{P_MODULE}') FROM DUAL".format(
+                    P_MODULE=name)
 
             print(sql)
             cur.execute(sql)
@@ -114,8 +145,6 @@ class BusinessUnitView(BaseAPIView):
                         'unit': data[3].strip()
                     }
                     datas.append(val)
-
-                # datas.sort(key=myBranch)
 
             cur.close()
             con.close()

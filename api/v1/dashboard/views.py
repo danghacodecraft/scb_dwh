@@ -53,7 +53,8 @@ class DashboardView(BaseAPIView):
                         'day': data[2],
                         'week': data[3],
                         'month': data[4],
-                        'accumulated': data[5]
+                        'accumulated': data[5],
+                        'unit': data[7]
                     }
                     datas.append(val)
 
