@@ -74,8 +74,8 @@ class DashboardView(BaseAPIView):
         description="""
 The `module` has values: 
 - **tong_so_but_toan**.
-- **tang_truong_huy_dong**.
 - **thu_phi_dich_vu**.
+- **tang_truong_huy_dong**.
 """,
         parameters=[
             OpenApiParameter(
