@@ -8,6 +8,7 @@ class ChartFResponseSerializer(InheritedSerializer):
     label = serializers.CharField(help_text="`label` of data")
     val = serializers.IntegerField(help_text="`val` of data")
     unit = serializers.CharField(help_text="`unit` of data")
+    description = serializers.CharField(help_text="`description` of data")
 
 class DataResponseSerializer(InheritedSerializer):
     id = serializers.CharField(help_text="`id` of data")
