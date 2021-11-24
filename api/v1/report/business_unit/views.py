@@ -285,6 +285,7 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                         'val': data[2],
                         'unit': data[4],
                         'description': data[5],
+                        'type': data[6]
                     }
                     datas.append(val)
 
