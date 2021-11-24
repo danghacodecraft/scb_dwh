@@ -283,7 +283,8 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                         'key': lib.create_key(data[1].strip()),
                         'label': data[1].strip(),
                         'val': data[2],
-                        'unit': data[4]
+                        'unit': data[4],
+                        'description': data[5],
                     }
                     datas.append(val)
 
