@@ -298,3 +298,107 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Chart Loan',
+        summary='List',
+        tags=["BUSINESS"],
+        description="""
+Screen `C_03`         
+- **du_no_nhom_sp**.
+- **du_no_td_khcn**.
+- **so_luong_khoan_vay**.
+
+Screen `C_03_01`
+- **du_no_sp_theo_vung**.
+- **don_vi_no_qua_han**.
+
+Screen `C_03_02`
+- **vay_san_xuat_kinh_doanh_kh**.
+- **vay_san_xuat_kinh_doanh_theo_vung**.
+- **vay_bo_sung_vld**.
+- **vay_dau_tu_may_moc**.
+- **vay_dau_tu_nha_xuong**.
+- **vay_san_xuat_kinh_doanh**.
+
+Screen `C_03_03`
+- **vay_tieu_dung**.
+- **vay_tieu_dung_theo_vung**.
+- **vay_tieu_dung_co_tsdb**.
+- **vay_tieu_dung_co_tsdb_theo_vung**.
+- **vay_thau_chi**.
+- **vay_thau_chi_theo_vung**.
+- **vay_o_to**.
+- **vay_o_to_sl_vay**.
+- **vay_o_to_sl_vay_don_vi**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="screen", type=OpenApiTypes.STR, description="screen"
+            ),
+            OpenApiParameter(
+                name="key", type=OpenApiTypes.STR, description="key"
+            )
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: ChartFResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def chart_loan(self, request):
+        try:
+            # serializer = ChartFRequestSerializer(data=request.data)
+            # serializer.is_valid(raise_exception=True)
+            #
+            # name = serializer.validated_data['name']
+            # region = serializer.validated_data['region']
+            # unit = serializer.validated_data['unit']
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            screen = params['screen']
+            key = params['key']
+
+            sql = """
+                select obi.CRM_DWH_PKG.FUN_GET_CHART_loan(
+                    P_MAN_HINH=>'{}',P_MODULE=>'{}'
+                ) FROM DUAL
+                """.format(screen, key)
+
+            # print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                for data in data_cursor:
+                    print(data)
+
+                    val = {
+                        'key': lib.create_key(data[1].strip()),
+                        'label': data[1].strip(),
+                        'val': data[2],
+                        'unit': data[4],
+                        'description': data[5],
+                        'type': data[6],
+                        'branch': data[3]
+                    }
+                    datas.append(val)
+
+                # datas.sort(key=myBranch)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
