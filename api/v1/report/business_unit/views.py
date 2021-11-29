@@ -9,7 +9,7 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.report.business_unit.serializers import ChartFResponseSerializer, DataResponseSerializer
+from api.v1.report.business_unit.serializers import ChartFResponseSerializer, DataResponseSerializer, CustomerResponseSerializer
 
 class BusinessUnitView(BaseAPIView):
     @extend_schema(
@@ -390,6 +390,123 @@ Screen `C_03_03`
                         'description': data[5],
                         'type': data[6],
                         'branch': data[3]
+                    }
+                    datas.append(val)
+
+                # datas.sort(key=myBranch)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Customer Vip',
+        summary='List',
+        tags=["BUSINESS"],
+        description="""
+Screen `screen`         
+- **C_02_02**.
+
+Screen `key`         
+- **danh_sach_kh_vip**.
+
+Screen `level`         
+- **SILVER**.
+- **GOLD**.
+- **TITANIUM**.
+- **PLATINUM**.
+- **PLATINUM PLUS**.
+- **SAPPHIRE**.
+- **SAPPHIRE EXPERIENCE**.
+- **DIAMOND**.
+- **DIAMOND FAMILY**.
+- **DIAMOND INFLUENCE**.
+- **DIAMOND EXPERIENCE**.
+- **BLUE DIAMOND**.
+- **BLUE DIAMOND FAMILY**.
+- **BLUE DIAMOND INFLUENCE**.
+- **BLUE DIAMOND INFLUENCE**.
+- **RUBY**.
+- **RUBY FAMILY**.
+- **RUBY EXPERIENCE**.
+
+""",
+        parameters=[
+            OpenApiParameter(
+                name="screen", type=OpenApiTypes.STR, description="screen"
+            ),
+            OpenApiParameter(
+                name="key", type=OpenApiTypes.STR, description="key"
+            ),
+            OpenApiParameter(
+                name="level", type=OpenApiTypes.STR, description="level"
+            )
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: CustomerResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def customer(self, request):
+        try:
+            # serializer = ChartFRequestSerializer(data=request.data)
+            # serializer.is_valid(raise_exception=True)
+            #
+            # name = serializer.validated_data['name']
+            # region = serializer.validated_data['region']
+            # unit = serializer.validated_data['unit']
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            screen = params['screen']
+            key = params['key']
+            level = params['level']
+
+            sql = """
+                select obi.CRM_DWH_PKG.FUN_GET_DATA_CUST_VIP(
+                    P_MAN_HINH=>'{}',p_module =>'{}',P_HANG_VIP =>'{}') 
+                FROM DUAL
+            """.format(screen, key, level)
+
+            # print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                for data in data_cursor:
+                    print(data)
+
+                    val = {
+                        'MA_KH': data[0],
+                        'TEN_KH': data[1],
+                        'GIAY_TO_DINH_DANH': data[2],
+                        'DIA_CHI': data[3],
+                        'DIEN_THOAI': data[4],
+                        'EMAIL': data[5],
+                        'HANG_KHACH_HANG': data[6],
+                        'TONG_TAI_SAN': data[7],
+                        'TGCKH': data[8],
+                        'TGTT': data[9],
+                        'TGKKH': data[10],
+                        'THE_TIN_DUNG': data[11],
+                        'DU_NO_VAY': data[12],
+                        'NV_QL_MA': data[13],
+                        'NV_QL_TEN': data[14],
+                        'NV_QL_EMAIL': data[15],
+                        'NV_QL_SO_DT': data[16],
                     }
                     datas.append(val)
 

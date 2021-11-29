@@ -1,9 +1,8 @@
 from django.urls import path
 
-from api.v1.dashboard.views import DashboardView
+from api.v1.organization.views import OrganizationView
 
 urlpatterns = [
-    path('data/', DashboardView.as_view({'get': 'data'})),
-    path('chart/', DashboardView.as_view({'get': 'chart'})),
+    path('data/', OrganizationView.as_view({'get': 'data'}))
 
 ]

@@ -20,3 +20,24 @@ class DataResponseSerializer(InheritedSerializer):
     accumulated = serializers.IntegerField(help_text="`accumulated` of data")
     unit = serializers.CharField(help_text="`unit` of data")
     branch = serializers.CharField(help_text="`branch` of data")
+
+
+class CustomerResponseSerializer(InheritedSerializer):
+    MA_KH = serializers.CharField(help_text="`MA_KH` of data")
+    TEN_KH = serializers.CharField(help_text="`TEN_KH` of data")
+    GIAY_TO_DINH_DANH = serializers.CharField(help_text="`GIAY_TO_DINH_DANH` of data")
+    DIA_CHI = serializers.CharField(help_text="`DIA_CHI` of data")
+    DIEN_THOAI = serializers.CharField(help_text="`DIEN_THOAI` of data")
+    EMAIL = serializers.CharField(help_text="`EMAIL` of data")
+    HANG_KHACH_HANG = serializers.CharField(help_text="`HANG_KHACH_HANG` of data")
+    TONG_TAI_SAN = serializers.IntegerField(help_text="`TONG_TAI_SAN` of data")
+    TGCKH = serializers.IntegerField(help_text="`TGCKH` of data")
+    TGTT = serializers.IntegerField(help_text="`TGTT` of data")
+    TGKKH = serializers.IntegerField(help_text="`TGKKH` of data")
+    THE_TIN_DUNG = serializers.IntegerField(help_text="`THE_TIN_DUNG` of data")
+    DU_NO_VAY = serializers.IntegerField(help_text="`DU_NO_VAY` of data")
+    NV_QL_MA = serializers.CharField(help_text="`NV_QL_MA` of data")
+    NV_QL_TEN = serializers.CharField(help_text="`NV_QL_TEN` of data")
+    NV_QL_EMAIL = serializers.CharField(help_text="`NV_QL_EMAIL` of data")
+    NV_QL_SO_DT = serializers.CharField(help_text="`NV_QL_SO_DT` of data")
+
