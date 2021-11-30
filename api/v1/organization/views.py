@@ -40,32 +40,95 @@ class OrganizationView(BaseAPIView):
             """
             print(sql)
             cur.execute(sql)
-            res = cur.fetchone()
+            datas = cur.fetchall()
 
-            datas = []
-            if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
+            ret = {}
+            for data in datas:
+                key1 = data[0]
+                name1 = data[1]
+                if key1 not in ret:
+                    ret[key1] = {
+                        'id': key1,
+                        'fullname': name1,
+                        'level': 1,
+                        'child': {}
+                    }
 
-                for data in data_cursor:
-                    print(data)
-                    # val = {
-                    #     'id': lib.create_key(data[6].strip()),
-                    #     "title": data[6].strip(),
-                    #     'day': data[2],
-                    #     'week': data[3],
-                    #     'month': data[4],
-                    #     'accumulated': data[5],
-                    #     'unit': data[7]
-                    # }
-                    # datas.append(val)
+                ret1 = ret[key1]
+                key2 = data[2]
+                name2 = data[3]
+                if key2 is not None:
+                    if key2 not in ret1['child']:
+                        ret1['child'][key2] = {
+                            'id': key2,
+                            'fullname': name2,
+                            'level': 2,
+                            'child': {}
+                        }
+
+                    ret2 = ret1['child'][key2]
+                    key3 = data[4]
+                    name3 = data[5]
+                    if key3 is not None:
+                        if key3 not in ret2['child']:
+                            ret2['child'][key3] = {
+                                'id': key3,
+                                'fullname': name3,
+                                'level': 3,
+                                'child': {}
+                            }
+
+                        ret3 = ret2['child'][key3]
+                        key4 = data[6]
+                        name4 = data[7]
+                        if key4 is not None:
+                            if key4 not in ret3['child']:
+                                ret3['child'][key4] = {
+                                    'id': key4,
+                                    'fullname': name4,
+                                    'level': 4,
+                                    'child': {}
+                                }
+
+                            ret4 = ret3['child'][key4]
+                            key5 = data[8]
+                            name5 = data[9]
+                            if key5 is not None:
+                                if key5 not in ret4['child']:
+                                    ret4['child'][key5] = {
+                                        'id': key5,
+                                        'fullname': name5,
+                                        'level': 5,
+                                        'child': {}
+                                    }
+
+                                ret5 = ret4['child'][key5]
+                                key6 = data[10]
+                                name6 = data[11]
+                                if key6 is not None:
+                                    if key6 not in ret5['child']:
+                                        ret5['child'][key6] = {
+                                            'id': key6,
+                                            'fullname': name6,
+                                            'level': 6,
+                                            'child': {}
+                                        }
+
+                                    ret6 = ret5['child'][key6]
+                                    key7 = data[10]
+                                    name7 = data[11]
+                                    if key7 is not None:
+                                        if key7 not in ret6['child']:
+                                            ret6['child'][key7] = {
+                                                'id': key7,
+                                                'fullname': name7,
+                                                'level': 7,
+                                                'child': {}
+                                            }
 
             cur.close()
             con.close()
-            return self.response_success( datas, status_code=status.HTTP_200_OK)
+            return self.response_success(ret, status_code=status.HTTP_200_OK)
         except cx_Oracle.Error as error:
             cur.close()
             con.close()
