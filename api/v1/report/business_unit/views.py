@@ -408,13 +408,13 @@ Screen `C_03_03`
         summary='List',
         tags=["BUSINESS"],
         description="""
-Screen `screen`         
+Param `screen`         
 - **C_02_02**.
 
-Screen `key`         
+Param `key`         
 - **danh_sach_kh_vip**.
 
-Screen `level`         
+Param `level`         
 - **SILVER**.
 - **GOLD**.
 - **TITANIUM**.
@@ -434,6 +434,8 @@ Screen `level`
 - **RUBY FAMILY**.
 - **RUBY EXPERIENCE**.
 
+Param `page_number` default = 0
+Param `page_size` default = 20
 """,
         parameters=[
             OpenApiParameter(
@@ -444,6 +446,12 @@ Screen `level`
             ),
             OpenApiParameter(
                 name="level", type=OpenApiTypes.STR, description="level"
+            ),
+            OpenApiParameter(
+                name="page_number", type=OpenApiTypes.STR, description="page_number"
+            ),
+            OpenApiParameter(
+                name="page_size", type=OpenApiTypes.STR, description="page_size"
             )
         ],
         # request=ChartFRequestSerializer,
@@ -468,11 +476,27 @@ Screen `level`
             key = params['key']
             level = params['level']
 
+            page_number = 1
+            if 'page_number' in params.keys():
+                page_number = int(params['page_number'])
+
+            page_size = 20
+            if 'page_size' in params.keys():
+                page_size = int(params['page_size'])
+
             sql = """
                 select obi.CRM_DWH_PKG.FUN_GET_DATA_CUST_VIP(
-                    P_MAN_HINH=>'{}',p_module =>'{}',P_HANG_VIP =>'{}') 
-                FROM DUAL
-            """.format(screen, key, level)
+                    P_MAN_HINH  => '{}',
+                    P_VUNG      => 'ALL',
+                    P_DV        => 'ALL',
+                    P_CCY       => 'VND',
+                    P_MODULE    => '{}',
+                    P_HANG_VIP  => '{}',
+                    P_PAGE_NUM  => {},
+                    P_PAGE_SIZE => {}
+                ) FROM DUAL
+            """.format(screen, key, level, page_number, page_size)
+            print(sql)
 
             # print(sql)
             cur.execute(sql)
