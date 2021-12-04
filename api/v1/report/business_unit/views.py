@@ -9,7 +9,7 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.report.business_unit.serializers import ChartFResponseSerializer, DataResponseSerializer, CustomerResponseSerializer
+from api.v1.report.business_unit.serializers import ChartFResponseSerializer, DataResponseSerializer, CustomerResponseSerializer, RegionInfoResponseSerializer
 
 class BusinessUnitView(BaseAPIView):
     @extend_schema(
@@ -471,6 +471,7 @@ Param `page_size` default = 20
             # unit = serializer.validated_data['unit']
             con, cur = lib.connect()
 
+
             params = request.query_params.dict()
             screen = params['screen']
             key = params['key']
@@ -535,6 +536,81 @@ Param `page_size` default = 20
                     datas.append(val)
 
                 # datas.sort(key=myBranch)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Region Info',
+        summary='List',
+        tags=["BUSINESS"],
+        description="""
+Param `screen`         
+- **C_02_02**.
+
+Param `region`         
+- **VÙNG 02**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="screen", type=OpenApiTypes.STR, description="screen"
+            ),
+            OpenApiParameter(
+                name="region", type=OpenApiTypes.STR, description="region"
+            )
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: RegionInfoResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def region(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            screen = params['screen']
+            region = params['region']
+
+            sql = """
+                select obi.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO(
+                    P_MAN_HINH=>'{}',p_vung =>'{}'
+                ) FROM DUAL
+            """.format(screen, region)
+            print(sql)
+
+            # print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                for data in data_cursor:
+                    print(data)
+
+                    val = {
+                        'address': data[0],
+                        'fullname': data[1],
+                        'email': data[2],
+                        'mobile': data[3],
+                        'fullname_op': data[4],
+                        'email_op': data[5],
+                        'mobile_op': data[6]
+                    }
+                    datas.append(val)
 
             cur.close()
             con.close()

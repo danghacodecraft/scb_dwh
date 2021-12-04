@@ -7,5 +7,6 @@ urlpatterns = [
     path('chart/', BusinessUnitView.as_view({'get': 'chart'})),
     path('chart_loan/', BusinessUnitView.as_view({'get': 'chart_loan'})),
     path('customer/', BusinessUnitView.as_view({'get': 'customer'})),
+    path('region/', BusinessUnitView.as_view({'get': 'region'})),
 
 ]
