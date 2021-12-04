@@ -11,3 +11,5 @@ class DataResponseSerializer(InheritedSerializer):
     parent_id = serializers.CharField(help_text="`parent_id` of data")
     fullname = serializers.CharField(help_text="`fullname` of data")
     level = serializers.IntegerField(help_text="`level` of data")
+
+
