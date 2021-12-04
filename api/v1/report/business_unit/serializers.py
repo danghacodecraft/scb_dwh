@@ -41,3 +41,11 @@ class CustomerResponseSerializer(InheritedSerializer):
     NV_QL_EMAIL = serializers.CharField(help_text="`NV_QL_EMAIL` of data")
     NV_QL_SO_DT = serializers.CharField(help_text="`NV_QL_SO_DT` of data")
 
+class RegionInfoResponseSerializer(InheritedSerializer):
+    address = serializers.CharField(help_text="`address` of data")
+    fullname = serializers.CharField(help_text="`fullname` of data")
+    email = serializers.CharField(help_text="`email` of data")
+    mobile = serializers.CharField(help_text="`mobile` of data")
+    fullname_op = serializers.CharField(help_text="`fullname_op` of data")
+    email_op = serializers.CharField(help_text="`email_op` of data")
+    mobile_op = serializers.CharField(help_text="`mobile_op` of data")
