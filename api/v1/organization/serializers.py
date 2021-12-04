@@ -12,4 +12,9 @@ class DataResponseSerializer(InheritedSerializer):
     fullname = serializers.CharField(help_text="`fullname` of data")
     level = serializers.IntegerField(help_text="`level` of data")
 
+class BranchResponseSerializer(InheritedSerializer):
+    id = serializers.CharField(help_text="`id` of data")
+    fullname = serializers.CharField(help_text="`fullname` of data")
+    level = serializers.CharField(help_text="`level` of data")
+
 

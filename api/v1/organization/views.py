@@ -10,7 +10,7 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.organization.serializers import DataResponseSerializer
+from api.v1.organization.serializers import DataResponseSerializer, BranchResponseSerializer
 
 class OrganizationView(BaseAPIView):
     @extend_schema(
@@ -125,6 +125,69 @@ class OrganizationView(BaseAPIView):
                                                 'level': 7,
                                                 'child': {}
                                             }
+
+            cur.close()
+            con.close()
+            return self.response_success(ret, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='List',
+        summary='List',
+        tags=["ORGANIZATION"],
+        responses={
+            status.HTTP_201_CREATED: BranchResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        },
+        description="""
+Param `type` example       
+- **CAP_DVKD**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="type", type=OpenApiTypes.STR, description="type"
+            ),
+        ]
+    )
+    def list(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            type = params['type']
+
+            # call the function
+            sql = """
+                select obi.crm_dwh_pkg.FUN_GET_BRANCH(P_VUNG => 'ALL',P_TYPE => '{}') FROM DUAL
+            """.format(type)
+
+            cur.execute(sql)
+            res = cur.fetchone()
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                ret = {}
+                for data in data_cursor:
+                    id = data[0]
+                    fullname = data[1]
+                    level = data[2]
+
+                    if level not in ret:
+                        ret[level] = []
+
+                    branchs = ret[level]
+                    branchs.append({
+                        'id': id,
+                        'fullname': fullname
+                    })
 
             cur.close()
             con.close()
