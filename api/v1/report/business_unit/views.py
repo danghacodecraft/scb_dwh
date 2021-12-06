@@ -181,6 +181,7 @@ Screen `C_02_05_04_01` DVKD - IV. Tong thu nhap thuan - 4. Thu nhap tu von huy d
 - **thu_nhap_thuan_tu_dich_vu_the_td_mc**.
 - **thu_nhap_thuan_tu_dich_vu_the_pos**.
 - **thu_nhap_thuan_tu_dich_vu_the_tdqt**.
+- **thu_nhap_thuan_tu_dich_vu_the_td_visa**.
 - **thu_nhap_thuan_dich_vu_the**.
 - **thu_nhap_thuan_dich_vu_atm**.
 - **thu_nhap_thuan_dich_vu_thanh_toan**.
