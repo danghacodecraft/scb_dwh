@@ -309,6 +309,7 @@ Screen `C_03`
 - **du_no_nhom_sp**.
 - **du_no_td_khcn**.
 - **so_luong_khoan_vay**.
+- **so_luong_khoan_vay_theo_nam**.
 
 Screen `C_03_01`
 - **du_no_sp_theo_vung**.
