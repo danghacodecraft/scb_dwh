@@ -384,6 +384,7 @@ Screen `C_03_03`
                     print(data)
 
                     val = {
+                        'periol': data[0],
                         'key': lib.create_key(data[1].strip()),
                         'label': data[1].strip(),
                         'val': data[2],

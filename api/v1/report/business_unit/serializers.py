@@ -4,6 +4,7 @@ from api.base.serializers import InheritedSerializer
 from config.settings import DATETIME_INPUT_OUTPUT_FORMAT
 
 class ChartFResponseSerializer(InheritedSerializer):
+    periol = serializers.CharField(help_text="`periol` of data")
     key = serializers.CharField(help_text="`key` of data")
     label = serializers.CharField(help_text="`label` of data")
     val = serializers.IntegerField(help_text="`val` of data")
