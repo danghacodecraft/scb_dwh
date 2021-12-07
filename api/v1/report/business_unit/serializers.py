@@ -4,13 +4,20 @@ from api.base.serializers import InheritedSerializer
 from config.settings import DATETIME_INPUT_OUTPUT_FORMAT
 
 class ChartFResponseSerializer(InheritedSerializer):
-    periol = serializers.CharField(help_text="`periol` of data")
-    key = serializers.CharField(help_text="`key` of data")
-    label = serializers.CharField(help_text="`label` of data")
-    val = serializers.IntegerField(help_text="`val` of data")
-    unit = serializers.CharField(help_text="`unit` of data")
-    description = serializers.CharField(help_text="`description` of data")
-    type = serializers.CharField(help_text="`type` of data")
+    TIEU_DE = serializers.CharField(help_text="`TIEU_DE` of data")
+    CO_TSDB = serializers.CharField(help_text="`CO_TSDB` of data")
+    UNIT = serializers.CharField(help_text="`UNIT` of data")
+    BR = serializers.CharField(help_text="`BR` of data")
+    KH = serializers.CharField(help_text="`KH` of data")
+    DU_NO = serializers.CharField(help_text="`DU_NO` of data")
+    DU_NO_XAU = serializers.CharField(help_text="`DU_NO_XAU` of data")
+    DU_NO_QUA_HAN = serializers.CharField(help_text="`DU_NO_QUA_HAN` of data")
+    TY_LE_DU_NO_XAU = serializers.CharField(help_text="`TY_LE_DU_NO_XAU` of data")
+    TY_LE_DU_NO_QUA_HAN = serializers.CharField(help_text="`TY_LE_DU_NO_QUA_HAN` of data")
+    TY_LE_DU_NO = serializers.CharField(help_text="`TY_LE_DU_NO` of data")
+    PROGRAM_ID = serializers.CharField(help_text="`PROGRAM_ID` of data")
+    USING_DETAIL = serializers.CharField(help_text="`USING_DETAIL` of data")
+
 
 class DataResponseSerializer(InheritedSerializer):
     id = serializers.CharField(help_text="`id` of data")
