@@ -380,20 +380,19 @@ Screen `C_03_03`
                     print("Loi data ")
                     data_cursor = None
 
-                for data in data_cursor:
-                    print(data)
-
-                    val = {
-                        'periol': data[0],
-                        'key': lib.create_key(data[1].strip()),
-                        'label': data[1].strip(),
-                        'val': data[2],
-                        'unit': data[4],
-                        'description': data[5],
-                        'type': data[6],
-                        'branch': data[3]
-                    }
-                    datas.append(val)
+                for row in data_cursor:
+                    # for data in row:
+                    # val = {
+                    #     'periol': data[0],
+                    #     'key': lib.create_key(data[1].strip()),
+                    #     'label': data[1].strip(),
+                    #     'val': data[2],
+                    #     'unit': data[4],
+                    #     'description': data[5],
+                    #     'type': data[6],
+                    #     'branch': data[3]
+                    # }
+                    datas.append(row)
 
                 # datas.sort(key=myBranch)
 
