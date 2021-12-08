@@ -32,6 +32,7 @@ The `Screen` has values:
 - **C_02_05_06**. DVKD - IV. Tong thu nhap thuan - 6. Thu nhap thuan tu kdnh
 - **C_02_05_07**. DVKD - IV. Tong thu nhap thuan - 7. Thu nhap thuan tu hoat dong
 - **C_02_05_08**. DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat dong
+- **C_03**.
 """,
         parameters=[
             OpenApiParameter(
@@ -100,32 +101,33 @@ Screen `C_02_01` DVKD - Tong quan
 - **tong_chi_phi_hoat_dong**.
 
 Screen `C_02_02` DVKD - Chi tiet
-- **quan_ly_khach_hang_bdi**.
-- **quan_ly_khach_hang_di**.
-- **quan_ly_khach_hang_pp**.
+- **quan_ly_khach_hang**.
 - **quan_ly_khach_hang_r**.
 - **quan_ly_khach_hang_sli**.
-- **quan_ly_khach_hang_p**.
-- **quan_ly_khach_hang_n**.
 - **quan_ly_khach_hang_sap**.
-- **quan_ly_khach_hang_bde**.
 - **quan_ly_khach_hang**.
 - **quan_ly_khach_hang_d**.
+- **quan_ly_khach_hang_di**.
+- **quan_ly_khach_hang_de**.
 - **quan_ly_khach_hang_g**.
+- **quan_ly_khach_hang_p**.
+- **quan_ly_khach_hang_pp**.
 - **quan_ly_khach_hang_pp+**.
 - **quan_ly_khach_hang_bd**.
-- **quan_ly_khach_hang_de**.
+- **quan_ly_khach_hang_bdi**.
+- **quan_ly_khach_hang_bde**.
 - **quan_ly_khach_hang_ti**.
+- **quan_ly_khach_hang_n**.
 - **quan_ly_khach_hang_m**.
 - **thu_nhap_thuan_tu_dvkh**.
-- **thu_nhap_thuan_tu_dich_vu_the_tdqt**.
-- **thu_nhap_thuan_tu_dich_vu_the_gn_visa**.
-- **thu_nhap_thuan_tu_dich_vu_the_atm**.
-- **thu_nhap_thuan_tu_dich_vu_the_may_atm**.
-- **thu_nhap_thuan_tu_dich_vu_the_gn_mc**.
-- **thu_nhap_thuan_tu_dich_vu_the_pos**.
 - **thu_nhap_thuan_tu_dich_vu_the**.
+- **thu_nhap_thuan_tu_dich_vu_the_atm**.
+- **thu_nhap_thuan_tu_dich_vu_the_tdqt**.
 - **thu_nhap_thuan_tu_dich_vu_the_td_mc**.
+- **thu_nhap_thuan_tu_dich_vu_the_gn_visa**.
+- **thu_nhap_thuan_tu_dich_vu_the_gn_mc**.
+- **thu_nhap_thuan_tu_dich_vu_the_may_atm**.
+- **thu_nhap_thuan_tu_dich_vu_the_pos**.
 - **tong_chi_phi_hoat_dong_tai_san**.
 - **tong_chi_phi_hoat_dong_nhan_vien**.
 - **tong_chi_phi_hoat_dong_thue**.
@@ -138,13 +140,14 @@ Screen `C_02_02` DVKD - Chi tiet
 - **bao_cao_cif_mo_moi**.
 - **huy_dong_von**.
 - **cho_vay_khach_hang**.
+- **cho_vay_khach_hang_chi_tiet**.
 
 Screen `C_02_03` DVKD - I. Tong hop theo nghiep vu ngan hang
 - **tk_thanh_toan_mo_moi**.
-- **ebanking_mo_moi**.
 - **the_ghi_no_mo_moi**.
-- **bao_cao_cif_mo_moi**.
 - **the_tin_dung_mo_moi**.
+- **ebanking_mo_moi**.
+- **bao_cao_cif_mo_moi**.
 
 Screen `C_02_04` DVKD - II. Tin dung
 - **no_xau**.
@@ -152,9 +155,9 @@ Screen `C_02_04` DVKD - II. Tin dung
 - **no_qua_han**.
 
 Screen `C_02_05` DVKD - III. Huy dong von
+- **huy_dong_von_vay_nhnn**.
 - **huy_dong_von_thi_truong_1**.
 - **huy_dong_von_thi_truong_2**.
-- **huy_dong_von_vay_nhnn**.
 
 Screen `C_02_05_01` DVKD - IV. Tong thu nhap thuan - 1. Thu nhap tu tin dung
 - **thu_nhap_thuan_cho_vay**.
@@ -198,6 +201,8 @@ Screen `C_02_05_04_02` DVKD - IV. Tong thu nhap thuan - 4. Thu nhap tu von huy d
 - **thu_nhap_thuan_dich_vu_bao_lanh**.
 - **thu_nhap_thuan_dich_vu_tin_dung**.
 - **thu_nhap_thuan_dich_vu_tu_van**.
+- **thu_nhap_thuan_dich_vu_quy_mo**.
+- **thu_nhap_thuan_dich_vu_khac**.
 
 Screen `C_02_05_05` DVKD - IV. Tong thu nhap thuan - 5. Thu nhap thuan tu kinh doanh
 - **tong_thu_nhap_thuan**.
@@ -215,6 +220,7 @@ Screen `C_02_05_07` DVKD - IV. Tong thu nhap thuan - 7. Thu nhap thuan tu hoat d
 Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat dong
 - **tong_thu_nhap_thuan**.
 - **hoat_dong_khac**.
+
 """,
         parameters=[
             OpenApiParameter(
@@ -305,34 +311,65 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
         summary='List',
         tags=["BUSINESS"],
         description="""
-Screen `C_03`         
-- **du_no_nhom_sp**.
-- **du_no_td_khcn**.
+Screen `C_03` 
 - **so_luong_khoan_vay**.
 - **so_luong_khoan_vay_theo_nam**.
+- **du_no_td_khcn**.
+- **du_no_nhom_sp**.
 
-Screen `C_03_01`
-- **du_no_sp_theo_vung**.
+Screen `C_03_01` 
 - **don_vi_no_qua_han**.
+- **du_no_sp_theo_vung**.
 
-Screen `C_03_02`
-- **vay_san_xuat_kinh_doanh_kh**.
-- **vay_san_xuat_kinh_doanh_theo_vung**.
-- **vay_bo_sung_vld**.
-- **vay_dau_tu_may_moc**.
-- **vay_dau_tu_nha_xuong**.
+Screen `C_03_02` 
 - **vay_san_xuat_kinh_doanh**.
+- **vay_san_xuat_kinh_doanh_theo_vung**.
+- **vay_dau_tu_may_moc**.
+- **vay_bo_sung_vld**.
+- **vay_san_xuat_kinh_doanh_kh**.
+- **vay_dau_tu_nha_xuong**.
 
-Screen `C_03_03`
+Screen `C_03_03` 
+- **vay_o_to**.
+- **vay_o_to_sl_vay**.
+- **vay_o_to_sl_vay_don_vi**.
 - **vay_tieu_dung**.
 - **vay_tieu_dung_theo_vung**.
 - **vay_tieu_dung_co_tsdb**.
 - **vay_tieu_dung_co_tsdb_theo_vung**.
 - **vay_thau_chi**.
 - **vay_thau_chi_theo_vung**.
+
+Screen `C_03_04` 
 - **vay_o_to**.
-- **vay_o_to_sl_vay**.
-- **vay_o_to_sl_vay_don_vi**.
+- **vay_thau_chi**.
+- **vay_tieu_dung_co_tsdb**.
+- **vay_tieu_dung_khong_tsdb**.
+- **so_luong_tai_khoan_vay_thau_chi**.
+- **so_luong_tai_khoan_vay_tieu_dung**.
+
+Screen `C_03_05` 
+- **vay_theo_chuong_trinh**.
+- **so_luong_tk_vay_theo_chuong_trinh**.
+
+Screen `C_03_06` 
+- **vay_theo_chuong_trinh**.
+- **so_luong_tk_vay_theo_chuong_trinh**.
+
+Screen `C_03_07` 
+- **vay_theo_chuong_trinh**.
+- **so_luong_tk_vay_theo_chuong_trinh**.
+
+Screen `C_03_08` 
+- **vay_theo_chuong_trinh**.
+- **so_luong_tk_vay_theo_chuong_trinh**.
+
+Program
+- **TOPUP**.
+- **SLH**.
+- **DQV**.
+- **VUD**.
+
 """,
         parameters=[
             OpenApiParameter(
@@ -340,6 +377,9 @@ Screen `C_03_03`
             ),
             OpenApiParameter(
                 name="key", type=OpenApiTypes.STR, description="key"
+            ),
+            OpenApiParameter(
+                name="program", type=OpenApiTypes.STR, description="program"
             )
         ],
         # request=ChartFRequestSerializer,
@@ -351,23 +391,20 @@ Screen `C_03_03`
     )
     def chart_loan(self, request):
         try:
-            # serializer = ChartFRequestSerializer(data=request.data)
-            # serializer.is_valid(raise_exception=True)
-            #
-            # name = serializer.validated_data['name']
-            # region = serializer.validated_data['region']
-            # unit = serializer.validated_data['unit']
             con, cur = lib.connect()
 
             params = request.query_params.dict()
             screen = params['screen']
             key = params['key']
+            program = ""
+            if 'program' in params.keys():
+                program = ",p_program=>'{program}'".format(params['program'])
 
             sql = """
                 select obi.CRM_DWH_PKG.FUN_GET_CHART_loan(
-                    P_MAN_HINH=>'{}',P_MODULE=>'{}'
+                    P_MAN_HINH=>'{}',P_MODULE=>'{}', {}
                 ) FROM DUAL
-                """.format(screen, key)
+                """.format(screen, key, program)
 
             # print(sql)
             cur.execute(sql)
