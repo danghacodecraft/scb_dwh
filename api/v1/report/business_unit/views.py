@@ -398,15 +398,15 @@ Program
             key = params['key']
             program = ""
             if 'program' in params.keys():
-                program = ",p_program=>'{program}'".format(params['program'])
+                program = ", p_program=>'{program}'".format(params['program'])
 
             sql = """
                 select obi.CRM_DWH_PKG.FUN_GET_CHART_loan(
-                    P_MAN_HINH=>'{}',P_MODULE=>'{}', {}
+                    P_MAN_HINH=>'{}',P_MODULE=>'{}'{}
                 ) FROM DUAL
                 """.format(screen, key, program)
 
-            # print(sql)
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
