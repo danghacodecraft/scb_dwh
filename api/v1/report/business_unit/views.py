@@ -348,27 +348,22 @@ Screen `C_03_04`
 - **so_luong_tai_khoan_vay_thau_chi**.
 - **so_luong_tai_khoan_vay_tieu_dung**.
 
-Screen `C_03_05` 
+Screen `C_03_05` program `TOPUP` 
 - **vay_theo_chuong_trinh**.
 - **so_luong_tk_vay_theo_chuong_trinh**.
 
-Screen `C_03_06` 
+Screen `C_03_06` program `SLH` 
 - **vay_theo_chuong_trinh**.
 - **so_luong_tk_vay_theo_chuong_trinh**.
 
-Screen `C_03_07` 
+Screen `C_03_07` program `DQV` 
 - **vay_theo_chuong_trinh**.
 - **so_luong_tk_vay_theo_chuong_trinh**.
 
-Screen `C_03_08` 
+Screen `C_03_08` program `VUD` 
 - **vay_theo_chuong_trinh**.
 - **so_luong_tk_vay_theo_chuong_trinh**.
 
-Program
-- **TOPUP**.
-- **SLH**.
-- **DQV**.
-- **VUD**.
 
 """,
         parameters=[
@@ -398,13 +393,13 @@ Program
             key = params['key']
             program = ""
             if 'program' in params.keys():
-                program = ", p_program=>'{program}'".format(params['program'])
+                program = ", p_program=>'{}'".format(params['program'])
 
             sql = """
                 select obi.CRM_DWH_PKG.FUN_GET_CHART_loan(
                     P_MAN_HINH=>'{}',P_MODULE=>'{}'{}
                 ) FROM DUAL
-                """.format(screen, key, program)
+            """.format(screen, key, program)
 
             print(sql)
             cur.execute(sql)
