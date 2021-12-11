@@ -312,33 +312,36 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
         tags=["BUSINESS"],
         description="""
 Screen `C_03` 
-- **so_luong_khoan_vay**.
-- **so_luong_khoan_vay_theo_nam**.
 - **du_no_td_khcn**.
 - **du_no_nhom_sp**.
+- **so_luong_khoan_vay**.
+- **so_luong_khoan_vay_theo_nam**.
 
 Screen `C_03_01` 
 - **don_vi_no_qua_han**.
 - **du_no_sp_theo_vung**.
 
 Screen `C_03_02` 
-- **vay_san_xuat_kinh_doanh**.
-- **vay_san_xuat_kinh_doanh_theo_vung**.
-- **vay_dau_tu_may_moc**.
 - **vay_bo_sung_vld**.
-- **vay_san_xuat_kinh_doanh_kh**.
+- **vay_dau_tu_may_moc**.
 - **vay_dau_tu_nha_xuong**.
+- **vay_san_xuat_kinh_doanh**.
+- **vay_san_xuat_kinh_doanh_kh**.
+- **vay_san_xuat_kinh_doanh_theo_vung**.
 
 Screen `C_03_03` 
 - **vay_o_to**.
 - **vay_o_to_sl_vay**.
 - **vay_o_to_sl_vay_don_vi**.
+- **vay_thau_chi**.
+- **vay_thau_chi_theo_vung**.
 - **vay_tieu_dung**.
 - **vay_tieu_dung_theo_vung**.
 - **vay_tieu_dung_co_tsdb**.
 - **vay_tieu_dung_co_tsdb_theo_vung**.
-- **vay_thau_chi**.
-- **vay_thau_chi_theo_vung**.
+- **vay_nong_nghiep**.
+- **vay_nong_nghiep_theo_vung**.
+- **sl_vay_nong_nghiep**.
 
 Screen `C_03_04` 
 - **vay_o_to**.
@@ -396,9 +399,9 @@ Screen `C_03_08` program `VUD`
                 program = ", p_program=>'{}'".format(params['program'])
 
             sql = """
-                select obi.CRM_DWH_PKG.FUN_GET_CHART_loan(
-                    P_MAN_HINH=>'{}',P_MODULE=>'{}'{}
-                ) FROM DUAL
+            select obi.CRM_DWH_PKG.FUN_GET_CHART_loan(
+                P_MAN_HINH=>'{}',P_MODULE=>'{}'{}
+            ) FROM DUAL
             """.format(screen, key, program)
 
             print(sql)
@@ -571,7 +574,6 @@ Param `page_size` default = 20
                         'NV_QL_SO_DT': data[16],
                     }
                     datas.append(val)
-
                 # datas.sort(key=myBranch)
 
             cur.close()
@@ -617,9 +619,9 @@ Param `region`
             region = params['region']
 
             sql = """
-                select obi.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO(
-                    P_MAN_HINH=>'{}',p_vung =>'{}'
-                ) FROM DUAL
+            select obi.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO(
+                P_MAN_HINH=>'{}',p_vung =>'{}'
+            ) FROM DUAL
             """.format(screen, region)
             print(sql)
 
