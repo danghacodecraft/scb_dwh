@@ -323,14 +323,22 @@ Screen `C_03_01`
 
 Screen `C_03_02` 
 - **vay_bo_sung_vld**.
+- **vay_bo_sung_vld_theo_vung**.
 - **vay_dau_tu_may_moc**.
+- **vay_dau_tu_may_moc_theo_vung**.
 - **vay_dau_tu_nha_xuong**.
+- **vay_dau_tu_nha_xuong_theo_vung**.
 - **vay_san_xuat_kinh_doanh**.
 - **vay_san_xuat_kinh_doanh_kh**.
 - **vay_san_xuat_kinh_doanh_theo_vung**.
+- **sl_vay_bo_sung_vld**.
+- **sl_vay_dau_tu_nha_xuong**.
+- **sl_vay_dau_tu_may_moc**.
+- **sl_vay_san_xuat_kinh_doanh**.
 
 Screen `C_03_03` 
 - **vay_o_to**.
+- **vay_o_to_theo_vung**.
 - **vay_o_to_sl_vay**.
 - **vay_o_to_sl_vay_don_vi**.
 - **vay_thau_chi**.
@@ -342,14 +350,18 @@ Screen `C_03_03`
 - **vay_nong_nghiep**.
 - **vay_nong_nghiep_theo_vung**.
 - **sl_vay_nong_nghiep**.
+- **sl_vay_tieu_dung_co_tsdb**.
 
 Screen `C_03_04` 
 - **vay_o_to**.
 - **vay_thau_chi**.
 - **vay_tieu_dung_co_tsdb**.
 - **vay_tieu_dung_khong_tsdb**.
+- **vay_tieu_dung_khong_tsdb_theo_vung**.
 - **so_luong_tai_khoan_vay_thau_chi**.
 - **so_luong_tai_khoan_vay_tieu_dung**.
+- **sl_vay_thau_chi**.
+- **sl_vay_tieu_dung_khong_tsdb**.
 
 Screen `C_03_05` program `TOPUP` 
 - **vay_theo_chuong_trinh**.
