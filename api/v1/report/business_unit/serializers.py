@@ -71,3 +71,9 @@ class KPIResponseSerializer(InheritedSerializer):
     SLNS_HOAN_THANH = serializers.CharField(help_text="`SLNS_HOAN_THANH` of data")
     TY_LE_HOAN_THANH = serializers.CharField(help_text="`TY_LE_HOAN_THANH` of data")
 
+class IncomeResponseSerializer(InheritedSerializer):
+    BR = serializers.CharField(help_text="`BR` of data")
+    TIEU_DE = serializers.CharField(help_text="`TIEU_DE` of data")
+    AMT = serializers.CharField(help_text="`AMT` of data")
+    UNIT = serializers.CharField(help_text="`UNIT` of data")
+
