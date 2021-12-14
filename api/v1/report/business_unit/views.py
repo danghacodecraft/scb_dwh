@@ -9,7 +9,9 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.report.business_unit.serializers import ChartFResponseSerializer, DataResponseSerializer, CustomerResponseSerializer, RegionInfoResponseSerializer
+from api.v1.report.business_unit.serializers import ChartFResponseSerializer, DataResponseSerializer, \
+    CustomerResponseSerializer, RegionInfoResponseSerializer, \
+    HRResponseSerializer, KPIResponseSerializer
 
 class BusinessUnitView(BaseAPIView):
     @extend_schema(
@@ -443,6 +445,129 @@ Screen `C_03_08` program `VUD`
                         'TY_LE_DU_NO': data[10],
                         'PROGRAM_ID': data[11],
                         'USING_DETAIL': data[12]
+                    }
+                    datas.append(val)
+                # datas.sort(key=myBranch)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Chart HR',
+        summary='List',
+        tags=["BUSINESS"],
+        description="""
+Screen `C_04`
+""",
+        parameters=[
+            OpenApiParameter(
+                name="screen", type=OpenApiTypes.STR, description="screen"
+            )
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: HRResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def chart_hr(self, request):
+        try:
+            con, cur = lib.connect()
+            params = request.query_params.dict()
+            screen = params['screen']
+
+            sql = """
+                select obi.CRM_DWH_PKG.FUN_C04_CHART(
+                    P_MAN_HINH=>'{}',P_MODULE=>'dinh_bien_nhan_su'
+                ) FROM DUAL
+            """.format(screen)
+
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                for data in data_cursor:
+                    val = {
+                        'AREA_NAME': data[0],
+                        'SLNS_DINH_BIEN': data[1],
+                        'SLNS_KY_NAY': data[2],
+                        'SLNS_KY_TRUOC': data[3]
+                    }
+                    datas.append(val)
+                # datas.sort(key=myBranch)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Chart HR',
+        summary='List',
+        tags=["BUSINESS"],
+        description="""
+Screen `C_04`
+""",
+        parameters=[
+            OpenApiParameter(
+                name="screen", type=OpenApiTypes.STR, description="screen"
+            )
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: KPIResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def chart_kpi(self, request):
+        try:
+            con, cur = lib.connect()
+            params = request.query_params.dict()
+            screen = params['screen']
+
+            sql = """
+                select obi.CRM_DWH_PKG.FUN_C04_CHART(
+                    P_MAN_HINH=>'{}',P_MODULE=>'kpi_cac_don_vi_kinh_doanh'
+                ) FROM DUAL
+            """.format(screen)
+
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                for data in data_cursor:
+                    val = {
+                        'branch_name': data[0],
+                        'REGION_NAME': data[1],
+                        'SLNS_DANH_GIA': data[2],
+                        'SLNS_HOAN_THANH': data[3],
+                        'TY_LE_HOAN_THANH': data[3]
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
