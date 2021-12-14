@@ -57,3 +57,17 @@ class RegionInfoResponseSerializer(InheritedSerializer):
     fullname_op = serializers.CharField(help_text="`fullname_op` of data")
     email_op = serializers.CharField(help_text="`email_op` of data")
     mobile_op = serializers.CharField(help_text="`mobile_op` of data")
+
+class HRResponseSerializer(InheritedSerializer):
+    AREA_NAME = serializers.CharField(help_text="`AREA_NAME` of data")
+    SLNS_DINH_BIEN = serializers.CharField(help_text="`SLNS_DINH_BIEN` of data")
+    SLNS_KY_NAY = serializers.CharField(help_text="`SLNS_KY_NAY` of data")
+    SLNS_KY_TRUOC = serializers.CharField(help_text="`SLNS_KY_TRUOC` of data")
+
+class KPIResponseSerializer(InheritedSerializer):
+    branch_name = serializers.CharField(help_text="`branch_name` of data")
+    REGION_NAME = serializers.CharField(help_text="`REGION_NAME` of data")
+    SLNS_DANH_GIA = serializers.CharField(help_text="`SLNS_DANH_GIA` of data")
+    SLNS_HOAN_THANH = serializers.CharField(help_text="`SLNS_HOAN_THANH` of data")
+    TY_LE_HOAN_THANH = serializers.CharField(help_text="`TY_LE_HOAN_THANH` of data")
+
