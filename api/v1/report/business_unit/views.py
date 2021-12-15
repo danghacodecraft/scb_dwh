@@ -11,7 +11,7 @@ from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
 from api.v1.report.business_unit.serializers import ChartFResponseSerializer, DataResponseSerializer, \
     CustomerResponseSerializer, RegionInfoResponseSerializer, \
-    HRResponseSerializer, KPIResponseSerializer, IncomeResponseSerializer
+    HRResponseSerializer, KPIResponseSerializer, IncomeResponseSerializer, BusinessResponseSerializer
 
 class BusinessUnitView(BaseAPIView):
     @extend_schema(
@@ -640,6 +640,68 @@ Screen `C_04`
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Chart Business',
+        summary='List',
+        tags=["BUSINESS"],
+        description="""
+Screen `C_04`
+""",
+        parameters=[
+            OpenApiParameter(
+                name="screen", type=OpenApiTypes.STR, description="screen"
+            )
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: BusinessResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def chart_business(self, request):
+        try:
+            con, cur = lib.connect()
+            params = request.query_params.dict()
+            screen = params['screen']
+
+            sql = """
+                select obi.CRM_DWH_PKG.FUN_C04_CHART(
+                    P_MAN_HINH=>'{}',P_MODULE=>'chi_tieu_kinh_doanh'
+                ) FROM DUAL
+            """.format(screen)
+
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                for data in data_cursor:
+                    val = {
+                        'NAME': data[0],
+                        'THANG': data[1],
+                        'LUY_KE': data[2],
+                        'NAM': data[3]
+                    }
+                    datas.append(val)
+                # datas.sort(key=myBranch)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     @extend_schema(
         operation_id='Customer Vip',

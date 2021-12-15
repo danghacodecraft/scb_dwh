@@ -77,3 +77,9 @@ class IncomeResponseSerializer(InheritedSerializer):
     AMT = serializers.CharField(help_text="`AMT` of data")
     UNIT = serializers.CharField(help_text="`UNIT` of data")
 
+class BusinessResponseSerializer(InheritedSerializer):
+    NAME = serializers.CharField(help_text="`NAME` of data")
+    THANG = serializers.CharField(help_text="`THANG` of data")
+    LUY_KE = serializers.CharField(help_text="`LUY_KE` of data")
+    NAM = serializers.CharField(help_text="`NAM` of data")
+
