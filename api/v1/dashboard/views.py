@@ -76,10 +76,23 @@ The `module` has values:
 - **tong_so_but_toan**.
 - **thu_phi_dich_vu**.
 - **tang_truong_huy_dong**.
+
+The `vung` example: 
+- **V02**.
+
+The `dv` example: 
+- **001**.
+
 """,
         parameters=[
             OpenApiParameter(
-                name="module", type=OpenApiTypes.STR, description="Tìm kiếm theo Nhãn, Mã"
+                name="module", type=OpenApiTypes.STR, description="module"
+            ),
+            OpenApiParameter(
+                name="vung", type=OpenApiTypes.STR, description="vung"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
             )
         ],
         # request=ChartRequestSerializer,
@@ -91,12 +104,27 @@ The `module` has values:
     )
     def chart(self, request):
         try:
-            module = request.query_params['module']
-
             con, cur = lib.connect()
 
+            params = request.query_params.dict()
+            module = params['module']
+
+            vung = ""
+            if 'vung' in params.keys():
+                vung = ", p_vung=>'{}'".format(params['vung'])
+
+            dv = ""
+            if 'dv' in params.keys():
+                dv = ", p_dv=>'{}'".format(params['dv'])
+
+            # page_number = 1
+            # if 'page_number' in params.keys():
+            #     page_number = int(params['page_number'])
             # call the function
-            sql = "select obi.CRM_DWH_PKG.FUN_GET_CHART(P_MAN_HINH=>'{P_MAN_HINH}',P_MODULE=>'{P_MODULE}') FROM DUAL".format(P_MAN_HINH="TRANG_CHU,", P_MODULE=module)
+            sql = """
+                Select obi.CRM_DWH_PKG.FUN_GET_CHART(
+                    P_MAN_HINH=>'TRANG_CHU',P_MODULE=>'{}'{}{}
+                ) FROM DUAL""".format(module, vung, dv)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -110,11 +138,12 @@ The `module` has values:
 
                 for data in data_cursor:
                     print(data)
+
                     val = {
-                        'id': lib.create_key(data[6].strip()),
-                        'title': data[6].strip(),
+                        'id': lib.create_key(data[1].strip()),
+                        'title': data[3].strip(),
                         'val': data[2],
-                        'unit': data[7].strip()
+                        'unit': data[4].strip()
                         # 'week': data[3],
                         # 'month': data[4],
                         # 'accumulated': data[5]
