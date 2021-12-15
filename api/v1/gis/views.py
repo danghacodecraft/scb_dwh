@@ -107,12 +107,12 @@ class GisView(BaseAPIView):
                 for data in data_cursor:
                     print(data)
 
-                    branch_id = data[4].strip()
+                    branch_id = data[6].strip()
                     if branch_id not in filter.keys() and data[8] != None and data[9] != None:
                         filter[branch_id] = data
                         val = {
                             'branch_id': branch_id,
-                            'branch_name': data[5].strip(),
+                            'branch_name': data[7].strip(),
                             'latitude': data[8],
                             'longitude': data[9],
                         }
