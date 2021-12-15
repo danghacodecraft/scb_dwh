@@ -18,7 +18,22 @@ class DashboardView(BaseAPIView):
         operation_id='Data',
         summary='List',
         tags=["Dashboard"],
-        description='Get Data',
+        description="""
+The `vung` example: 
+- **V02**.
+
+The `dv` example: 
+- **001**.
+
+""",
+        parameters=[
+            OpenApiParameter(
+                name="vung", type=OpenApiTypes.STR, description="vung"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            )
+        ],
         responses={
             status.HTTP_201_CREATED: DataResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
@@ -32,9 +47,17 @@ class DashboardView(BaseAPIView):
             # print(cx_Oracle.version)
             # print("Database version:", con.version)
             # print("Client version:", cx_Oracle.clientversion())
+            params = request.query_params.dict()
+            vung = ""
+            if 'vung' in params.keys():
+                vung = ", p_vung=>'{}'".format(params['vung'])
+
+            dv = ""
+            if 'dv' in params.keys():
+                dv = ", p_dv=>'{}'".format(params['dv'])
 
             # call the function
-            sql = "select obi.CRM_DWH_PKG.FUN_GET_DATA('TRANG_CHU') FROM DUAL"
+            sql = "Select obi.CRM_DWH_PKG.FUN_GET_DATA('TRANG_CHU'{}{}) FROM DUAL".format(vung, dv)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -122,9 +145,9 @@ The `dv` example:
             #     page_number = int(params['page_number'])
             # call the function
             sql = """
-                Select obi.CRM_DWH_PKG.FUN_GET_CHART(
-                    P_MAN_HINH=>'TRANG_CHU',P_MODULE=>'{}'{}{}
-                ) FROM DUAL""".format(module, vung, dv)
+            Select obi.CRM_DWH_PKG.FUN_GET_CHART(
+                P_MAN_HINH=>'TRANG_CHU',P_MODULE=>'{}'{}{}
+            ) FROM DUAL""".format(module, vung, dv)
             cur.execute(sql)
             res = cur.fetchone()
 
