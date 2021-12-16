@@ -492,7 +492,7 @@ Screen `C_03_08` program `VUD`
     @extend_schema(
         operation_id='Chart HR',
         summary='List',
-        tags=["BUSINESS"],
+        tags=["BUSINESS C04"],
         description="""
 Screen `C_04`
 """,
@@ -553,7 +553,7 @@ Screen `C_04`
     @extend_schema(
         operation_id='Chart KPI',
         summary='List',
-        tags=["BUSINESS"],
+        tags=["BUSINESS C04"],
         description="""
 Screen `C_04`
 - **kpi_chart_khu_vuc**.
@@ -620,13 +620,17 @@ Screen `C_04`
     @extend_schema(
         operation_id='Chart Income',
         summary='List',
-        tags=["BUSINESS"],
+        tags=["BUSINESS C04"],
         description="""
-Screen `C_04`
+Screen `C_04` 
+- **thu_nhap_vay_gui**.
 """,
         parameters=[
             OpenApiParameter(
                 name="screen", type=OpenApiTypes.STR, description="screen"
+            ),
+            OpenApiParameter(
+                name="key", type=OpenApiTypes.STR, description="key"
             )
         ],
         # request=ChartFRequestSerializer,
@@ -641,12 +645,9 @@ Screen `C_04`
             con, cur = lib.connect()
             params = request.query_params.dict()
             screen = params['screen']
+            key = params['key']
 
-            sql = """
-                select obi.CRM_DWH_PKG.FUN_C04_CHART(
-                    P_MAN_HINH=>'{}',P_MODULE=>'thu_nhap_vay_gui'
-                ) FROM DUAL
-            """.format(screen)
+            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}' ) FROM DUAL".format(screen, key)
 
             print(sql)
             cur.execute(sql)
@@ -661,11 +662,14 @@ Screen `C_04`
                     data_cursor = None
 
                 for data in data_cursor:
+                    print(data)
                     val = {
                         'BR': data[0],
                         'TIEU_DE': data[1],
                         'AMT': data[2],
-                        'UNIT': data[3]
+                        'UNIT': data[3],
+                        'NIM_HUY_DONG': 9999,#data[4],
+                        'NIM_CHO_VAY': 9999,#data[5]
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
@@ -681,7 +685,7 @@ Screen `C_04`
     @extend_schema(
         operation_id='Chart Business',
         summary='List',
-        tags=["BUSINESS"],
+        tags=["BUSINESS C04"],
         description="""
 Screen `C_04`
 """,
