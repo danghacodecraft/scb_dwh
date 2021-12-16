@@ -1,13 +1,15 @@
 import base64
 import binascii
 
+import api.v1.function as lib
+
 from drf_spectacular.extensions import OpenApiAuthenticationExtension
 from rest_framework import HTTP_HEADER_ENCODING, exceptions
 from rest_framework.authentication import (
     BaseAuthentication, get_authorization_header
 )
 
-from core.user.models import User
+from core.user.models import User, DWHUser
 from library.constant.error_codes import (
     BASIC_AUTH_NOT_FOUND, BASIC_AUTH_NOT_VALID, BEARER_TOKEN_NOT_FOUND,
     BEARER_TOKEN_NOT_VALID, ERROR_CODE_MESSAGE, INVALID_LOGIN,
@@ -45,14 +47,14 @@ class TokenAuthentication(BaseAuthentication):
 
         receive_token = auth[1]
 
-        user_id, token = self.parse_token(receive_token)
-        if not user_id or not token:
+        user_id = self.parse_token(receive_token)
+        if not user_id:
             raise exceptions.AuthenticationFailed({
                 'error_code': BEARER_TOKEN_NOT_VALID,
                 'description': ERROR_CODE_MESSAGE[BEARER_TOKEN_NOT_VALID]
             })
 
-        return self.check_user_and_token(user_id, token, request)
+        return self.check_user_and_token(user_id, request)
 
     @staticmethod
     def parse_token(key):
@@ -60,22 +62,22 @@ class TokenAuthentication(BaseAuthentication):
             receive_token = base64.b64decode(key)
             receive_token = receive_token.decode()
 
-            _info_list = receive_token.split(':')
-            if len(_info_list) != 2:
-                return None, None
+            # _info_list = receive_token.split(':')
+            # if len(_info_list) != 2:
+            #     return None, None
 
-            user_id = _info_list[0]
-            token = _info_list[1]
+            user_id = receive_token
+            # token = _info_list[1]
 
-            return user_id, token
+            return user_id
         except ValueError:
-            return None, None
+            return None
 
     def authenticate_header(self, request):
         return self.keyword
 
     @staticmethod
-    def check_user_and_token(user_id, token, request=None):
+    def check_user_and_token(user_id, request=None):
         # try:
         #     user = User.objects.get(id=user_id)
         # except User.DoesNotExist:
@@ -89,14 +91,36 @@ class TokenAuthentication(BaseAuthentication):
         #         'error_code': BEARER_TOKEN_NOT_VALID,
         #         'description': ERROR_CODE_MESSAGE[BEARER_TOKEN_NOT_VALID]
         #     })
-        user = User(
-            id=0,
-            name='test',
-            token='abc'
-        )
-        setattr(request, 'user', user)
 
-        return user, token
+        con, cur = lib.connect()
+
+        sql = """
+             SELECT a.bi_username USER_ID
+                    ,a.bi_displayname USER_NAME
+                    , a.default_password
+              FROM obi.EXT_TBL_USER A
+             WHERE A.BI_USERNAME IN('THANGHD','NAMNNN','HOANGTK','TUONGHD','PHUONGPTM')
+             and A.BI_USERNAME = '{}'
+                    """.format(user_id)
+        cur.execute(sql)
+        res = cur.fetchone()
+
+        if res:
+            user = DWHUser(
+                username=res[0],
+                password=res[2],
+                fullname=res[1]
+            )
+            cur.close()
+            con.close()
+
+            setattr(request, 'user', user)
+
+            return user, user.token
+        else:
+            cur.close()
+            con.close()
+            return None, None
 
 
 class TokenAuthenticationScheme(OpenApiAuthenticationExtension):
@@ -178,13 +202,3 @@ class BasicAuthentication(BaseAuthentication):
 
         return user, None  # authentication successful
 
-
-class BasicAuthenticationScheme(OpenApiAuthenticationExtension):
-    target_class = 'api.base.authentication.BasicAuthentication'
-    name = 'BasicAuthentication'
-
-    def get_security_definition(self, auto_schema):
-        return {
-            "type": "http",
-            "scheme": "basic"
-        }
