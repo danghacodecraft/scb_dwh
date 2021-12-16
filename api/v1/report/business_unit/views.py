@@ -39,6 +39,12 @@ The `Screen` has values:
         parameters=[
             OpenApiParameter(
                 name="screen", type=OpenApiTypes.STR, description="screen"
+            ),
+            OpenApiParameter(
+                name="fdate", type=OpenApiTypes.STR, description="fdate"
+            ),
+            OpenApiParameter(
+                name="tdate", type=OpenApiTypes.STR, description="tdate"
             )
         ],
         responses={
@@ -53,10 +59,16 @@ The `Screen` has values:
 
             params = request.query_params.dict()
             screen = params['screen']
-            sql = """
-            select obi.CRM_DWH_PKG.FUN_GET_DATA('{}') 
-            FROM DUAL
-            """.format(screen)
+
+            fdate = ""
+            if 'fdate' in params.keys():
+                fdate = ",P_FDATE=>'{fdate}'".format(params['fdate'])
+
+            tdate = ""
+            if 'tdate' in params.keys():
+                tdate = ",P_TDATE=>'{tdate}'".format(params['tdate'])
+
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}) FROM DUAL".format(screen, fdate, tdate)
 
             print(sql)
             cur.execute(sql)
@@ -236,6 +248,12 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             ),
             OpenApiParameter(
                 name="dv", type=OpenApiTypes.STR, description="dv"
+            ),
+            OpenApiParameter(
+                name="fdate", type=OpenApiTypes.STR, description="fdate"
+            ),
+            OpenApiParameter(
+                name="tdate", type=OpenApiTypes.STR, description="tdate"
             )
         ],
         # request=ChartFRequestSerializer,
@@ -258,20 +276,28 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             params = request.query_params.dict()
             screen = params['screen']
             key = params['key']
-            vung = ""
-            dv = ""
 
+            vung = ""
             if 'vung' in params.keys():
                 vung = ",P_VUNG=>'{vung}'".format(params['vung'])
 
+            dv = ""
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{dv}'".format(params['dv'])
 
+            fdate = ""
+            if 'fdate' in params.keys():
+                fdate = ",P_FDATE=>'{}'".format(params['fdate'])
+
+            tdate = ""
+            if 'tdate' in params.keys():
+                dv = ",P_TDATE=>'{}'".format(params['tdate'])
+
             sql = """
             select obi.CRM_DWH_PKG.FUN_GET_CHART(
-                P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}
+                P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}
             ) FROM DUAL
-            """.format(screen, key, vung, dv)
+            """.format(screen, key, vung, dv, fdate, tdate)
 
             #print(sql)
             cur.execute(sql)
