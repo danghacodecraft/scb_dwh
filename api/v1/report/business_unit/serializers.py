@@ -17,6 +17,8 @@ class ChartFResponseSerializer(InheritedSerializer):
     TY_LE_DU_NO = serializers.CharField(help_text="`TY_LE_DU_NO` of data")
     PROGRAM_ID = serializers.CharField(help_text="`PROGRAM_ID` of data")
     USING_DETAIL = serializers.CharField(help_text="`USING_DETAIL` of data")
+    AMT_KY_TRUOC = serializers.CharField(help_text="`AMT_KY_TRUOC` of data")
+    LK_NAM = serializers.CharField(help_text="`LK_NAM` of data")
 
 
 class DataResponseSerializer(InheritedSerializer):
@@ -28,6 +30,7 @@ class DataResponseSerializer(InheritedSerializer):
     accumulated = serializers.IntegerField(help_text="`accumulated` of data")
     unit = serializers.CharField(help_text="`unit` of data")
     branch = serializers.CharField(help_text="`branch` of data")
+    AMT_KY_TRUOC = serializers.CharField(help_text="`AMT_KY_TRUOC` of data")
 
 
 class CustomerResponseSerializer(InheritedSerializer):

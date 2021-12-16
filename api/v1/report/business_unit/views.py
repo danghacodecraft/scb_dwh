@@ -62,11 +62,11 @@ The `Screen` has values:
 
             fdate = ""
             if 'fdate' in params.keys():
-                fdate = ",P_FDATE=>'{fdate}'".format(params['fdate'])
+                fdate = ",P_FDATE=>'{}'".format(params['fdate'])
 
             tdate = ""
             if 'tdate' in params.keys():
-                tdate = ",P_TDATE=>'{tdate}'".format(params['tdate'])
+                tdate = ",P_TDATE=>'{}'".format(params['tdate'])
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}) FROM DUAL".format(screen, fdate, tdate)
 
@@ -84,6 +84,8 @@ The `Screen` has values:
 
                 for data in data_cursor:
                     print(data)
+                    #('C_02_01_DWH_0007', 'Khách hàng Prime Platinum', 0, 0, 0, 0, 'Khách hàng Prime Platinum', 'khách hàng', 0)
+
                     val = {
                         'id': lib.create_key(data[6].strip()),
                         "title": data[6].strip(),
@@ -91,7 +93,8 @@ The `Screen` has values:
                         'week': data[3],
                         'month': data[4],
                         'accumulated': data[5],
-                        'unit': data[7]
+                        'unit': data[7],
+                        'AMT_KY_TRUOC': data[8]
                     }
                     datas.append(val)
 
@@ -313,14 +316,16 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
 
                 for data in data_cursor:
                     print(data)
-
+                    #('0-0-B-10.10', 'Thu nhập từ hoạt động KDNH', 0, 'Thu nhập từ hoạt động KDNH', None, None, 'Toàn hàng', None, 0, 0)
                     val = {
                         'key': lib.create_key(data[1].strip()),
                         'label': data[1].strip(),
                         'val': data[2],
                         'unit': data[4],
                         'description': data[5],
-                        'type': data[6]
+                        'type': data[6],
+                        'AMT_KY_TRUOC': data[8],
+                        'LK_NAM': data[9]
                     }
                     datas.append(val)
 
@@ -857,7 +862,7 @@ Param `page_size` default = 20
                         'NV_QL_MA': data[13],
                         'NV_QL_TEN': data[14],
                         'NV_QL_EMAIL': data[15],
-                        'NV_QL_SO_DT': data[16],
+                        'NV_QL_SO_DT': data[16]
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
