@@ -282,11 +282,11 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
 
             vung = ""
             if 'vung' in params.keys():
-                vung = ",P_VUNG=>'{vung}'".format(params['vung'])
+                vung = ",P_VUNG=>'{}'".format(params['vung'])
 
             dv = ""
             if 'dv' in params.keys():
-                dv = ",P_DV=>'{dv}'".format(params['dv'])
+                dv = ",P_DV=>'{}'".format(params['dv'])
 
             fdate = ""
             if 'fdate' in params.keys():
