@@ -41,6 +41,12 @@ The `Screen` has values:
                 name="screen", type=OpenApiTypes.STR, description="screen"
             ),
             OpenApiParameter(
+                name="vung", type=OpenApiTypes.STR, description="vung"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            ),
+            OpenApiParameter(
                 name="fdate", type=OpenApiTypes.STR, description="fdate"
             ),
             OpenApiParameter(
@@ -60,6 +66,14 @@ The `Screen` has values:
             params = request.query_params.dict()
             screen = params['screen']
 
+            vung = ""
+            if 'vung' in params.keys():
+                vung = ",P_VUNG=>'{}'".format(params['vung'])
+
+            dv = ""
+            if 'dv' in params.keys():
+                dv = ",P_DV=>'{}'".format(params['dv'])
+
             fdate = ""
             if 'fdate' in params.keys():
                 fdate = ",P_FDATE=>'{}'".format(params['fdate'])
@@ -68,7 +82,7 @@ The `Screen` has values:
             if 'tdate' in params.keys():
                 tdate = ",P_TDATE=>'{}'".format(params['tdate'])
 
-            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}) FROM DUAL".format(screen, fdate, tdate)
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}{}{}) FROM DUAL".format(screen, vung, dv, fdate, tdate)
 
             print(sql)
             cur.execute(sql)
