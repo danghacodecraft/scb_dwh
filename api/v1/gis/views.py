@@ -86,7 +86,7 @@ class GisView(BaseAPIView):
             params = request.query_params.dict()
             region = ""
             if 'region' in params.keys():
-                region = "P_VUNG=>'{region}'".format(params['region'])
+                region = "P_VUNG=>'{}'".format(params['region'])
 
             con, cur = lib.connect()
             sql = "select obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(region)

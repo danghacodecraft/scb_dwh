@@ -181,6 +181,7 @@ Screen `C_02_05_01` DVKD - IV. Tong thu nhap thuan - 1. Thu nhap tu tin dung
 - **hoat_dong_tin_dung_khac**.
 - **tong_thu_nhap_thuan**.
 
+
 Screen `C_02_05_02` DVKD - IV. Tong thu nhap thuan - 2. Thu nhap tu von huy dong 
 - **huy_dong_tt1**.
 - **tong_thu_nhap_thuan**.
