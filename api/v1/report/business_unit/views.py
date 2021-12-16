@@ -556,10 +556,16 @@ Screen `C_04`
         tags=["BUSINESS"],
         description="""
 Screen `C_04`
+- **kpi_chart_khu_vuc**.
+- **kpi_cac_don_vi_kinh_doanh**.
+
 """,
         parameters=[
             OpenApiParameter(
                 name="screen", type=OpenApiTypes.STR, description="screen"
+            ),
+            OpenApiParameter(
+                name="key", type=OpenApiTypes.STR, description="key"
             )
         ],
         # request=ChartFRequestSerializer,
@@ -574,12 +580,11 @@ Screen `C_04`
             con, cur = lib.connect()
             params = request.query_params.dict()
             screen = params['screen']
+            key = ""
+            if 'key' in params.keys():
+                key = ", P_MODULE=>'{}'".format(params['key'])
 
-            sql = """
-                select obi.CRM_DWH_PKG.FUN_C04_CHART(
-                    P_MAN_HINH=>'{}',P_MODULE=>'kpi_cac_don_vi_kinh_doanh'
-                ) FROM DUAL
-            """.format(screen)
+            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}'{} ) FROM DUAL".format(screen, key)
 
             print(sql)
             cur.execute(sql)
