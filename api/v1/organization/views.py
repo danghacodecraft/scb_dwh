@@ -311,12 +311,8 @@ Param `name` example
             """.format(name)
             print(sql)
             cur.execute(sql)
-            datas = cur.fetchall()
-
-            print(sql)
-            cur.execute(sql)
             res = cur.fetchone()
-            datas = []
+            ret = {}
             if len(res) > 0:
                 try:
                     data_cursor = res[0]
@@ -324,7 +320,7 @@ Param `name` example
                     print("Loi data ")
                     data_cursor = None
 
-                ret = {}
+
                 for data in data_cursor:
                     print(data)
                     # (None, None, None, None, None, None, None, None, '001', 'SCB Cống Quỳnh', 'BAN GIAM DOC', '11838', 'Phòng Khách hàng Wholesale')
@@ -418,3 +414,148 @@ Param `type` example
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Home',
+        summary='Home',
+        tags=["ORGANIZATION"],
+        responses={
+            status.HTTP_201_CREATED: DataResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        },
+        description="""
+Param `name` example       
+- **001**.
+"""
+    )
+    def home(self, request):
+        try:
+            con, cur = lib.connect()
+            # call the function
+            sql = "select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_TYPE= > 'CAP_HOI_SO') FROM DUAL;"
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+            ret = {}
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                for data in data_cursor:
+                    print(data)
+                    # (None, None, None, None, None, None, None, None, '001', 'SCB Cống Quỳnh', 'BAN GIAM DOC', '11838', 'Phòng Khách hàng Wholesale')
+                    branch_id = data[8]
+                    branch_name = data[9]
+
+                    if branch_id not in ret:
+                        ret[branch_id] = {
+                            'branch_id': branch_id,
+                            'branch_name': branch_name,
+                            'director': data[10],
+                            'departments': {}
+                        }
+
+                    departments = ret[branch_id]['departments']
+                    department_id = data[11]
+                    department_name = data[12]
+                    if department_id not in departments:
+                        departments[department_id] = {
+                            'department_id': department_id,
+                            'department_name': department_name
+                        }
+
+            cur.close()
+            con.close()
+            return self.response_success(ret, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+    @extend_schema(
+        operation_id='EMP_INFO',
+        summary='EMP_INFO',
+        tags=["ORGANIZATION"],
+        responses={
+            status.HTTP_201_CREATED: BranchResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        },
+        description="""
+Param `depId` example       
+- **84**.
+
+Param `type` example       
+- **TONG_HOP**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="depId", type=OpenApiTypes.STR, description="depId"
+            ),
+            OpenApiParameter(
+                name="type", type=OpenApiTypes.STR, description="type"
+            ),
+        ]
+    )
+    def emp_info(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            depId = params['depId']
+            type = params['type']
+
+            # call the function
+            # sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP => 'THANGHD') FROM DUAL"
+            # sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_DEP_ID => '84',P_TYPE=>'TONG_HOP') FROM DUAL"
+            # sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP => 'THANGHD') FROM DUAL"
+            sql = "select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_TYPE= > 'CAP_HOI_SO') FROM DUAL"
+            # sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_DEP_ID=>'{}',P_TYPE=>'{}') FROM DUAL".format(depId, type)
+
+            cur.execute(sql)
+            rows = cur.fetchall()
+            for row in rows:
+                list_ = list(row[0])
+                print(list_)
+
+                # print(row)
+
+            datas = []
+            # if len(res) > 0:
+            #     try:
+            #         data_cursor = res[0]
+            #     except:
+            #         print("Loi data ")
+            #         data_cursor = None
+            #
+            #     print(data_cursor)
+            #     # for data in data_cursor:
+            #         # print(json.dumps(data))
+            #         # id = data[0]
+            #         # fullname = data[1]
+            #         # level = data[2]
+            #         #
+            #         # if level not in ret:
+            #         #     ret[level] = []
+            #         #
+            #         # branchs = ret[level]
+            #         # branchs.append({
+            #         #     'id': id,
+            #         #     'fullname': fullname
+            #         # })
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+

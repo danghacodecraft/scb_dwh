@@ -10,4 +10,9 @@ urlpatterns = [
 
     path('branch/', OrganizationView.as_view({'get': 'branch'})),
     path('branch_list/', OrganizationView.as_view({'get': 'branch_list'})),
+
+
+    path('home/', OrganizationView.as_view({'get': 'home'})),
+    path('emp_info/', OrganizationView.as_view({'get': 'emp_info'})),
+
 ]
