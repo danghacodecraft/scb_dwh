@@ -686,7 +686,7 @@ Screen `C_04`
                         'SLNS_DANH_GIA': data[2],
                         'SLNS_HOAN_THANH': data[3],
                         'TY_LE_HOAN_THANH': data[4],
-                        'TIME': data[5]
+                        'KY_DANH_GIA': data[5]
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
