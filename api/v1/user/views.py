@@ -236,7 +236,7 @@ class LoginView(BaseAPIView):
 
                     data_cursor = res[0]
 
-                    user = DWHUser()
+                    user = None
 
                     for data in data_cursor:
                         user = DWHUser(
@@ -249,15 +249,19 @@ class LoginView(BaseAPIView):
                     cur.close()
                     con.close()
 
-                    return self.response_success({
-                        'user_id': user.id,
-                        'full_name': user.name,
-                        'token': user.token,
-                        'avatar': user.avatar,
-                        'position': user.position,
-                        'department': user.department,
-                        'jobtitle': user.jobtitle
-                    }, status_code=status.HTTP_200_OK)
+                    if user:
+                        return self.response_success({
+                            'user_id': user.id,
+                            'full_name': user.name,
+                            'token': user.token,
+                            'avatar': user.avatar,
+                            'position': user.position,
+                            'department': user.department,
+                            'jobtitle': user.jobtitle
+                        }, status_code=status.HTTP_200_OK)
+                    else:
+                        return self.response_success({"error": "Sai thông tin"},
+                                                     status_code=status.HTTP_401_UNAUTHORIZED)
 
             except cx_Oracle.Error as error:
                 pass
