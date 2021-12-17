@@ -685,7 +685,8 @@ Screen `C_04`
                             'branch_name': data[0],
                             'SLNS_DANH_GIA': data[1],
                             'SLNS_HOAN_THANH': data[2],
-                            'TY_LE_HOAN_THANH': data[3]
+                            'TY_LE_HOAN_THANH': data[3],
+                            'TIME': data[4]
                         }
                     else:
                         val = {
