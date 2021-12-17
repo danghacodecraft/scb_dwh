@@ -228,11 +228,24 @@ class LoginView(BaseAPIView):
                 res = cur.fetchone()
 
                 if res:
-                    user = DWHUser(
-                        username=res[0],
-                        password=password,
-                        fullname=res[1]
-                    )
+                    sql = """
+                         select obi.CRM_DWH_PKG.FUN_GET_LOGIN(P_USER_NAME=>'{}') FROM DUAL
+                                """.format(username)
+                    cur.execute(sql)
+                    res = cur.fetchone()
+
+                    data_cursor = res[0]
+
+                    user = DWHUser()
+
+                    for data in data_cursor:
+                        user = DWHUser(
+                            username=data[0],
+                            password=data[2],
+                            fullname=data[1],
+                            jobtitle=data[3],
+                            avatar=data[4]
+                        )
                     cur.close()
                     con.close()
 
