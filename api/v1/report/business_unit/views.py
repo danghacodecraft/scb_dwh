@@ -52,6 +52,9 @@ The `Screen` has values:
             ),
             OpenApiParameter(
                 name="tdate", type=OpenApiTypes.STR, description="tdate"
+            ),
+            OpenApiParameter(
+                name="division", type=OpenApiTypes.STR, description="division"
             )
         ],
         responses={
@@ -83,7 +86,12 @@ The `Screen` has values:
             if 'tdate' in params.keys():
                 tdate = ",P_TDATE=>'{}'".format(params['tdate'])
 
-            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}{}{}) FROM DUAL".format(screen, vung, dv, fdate, tdate)
+            division = ""
+            if 'division' in params.keys():
+                division = ",P_DIVISION=>'{}'".format(params['division'])
+
+
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}{}{}{}) FROM DUAL".format(screen, vung, dv, fdate, tdate, division)
 
             print(sql)
             cur.execute(sql)
@@ -273,6 +281,9 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             ),
             OpenApiParameter(
                 name="tdate", type=OpenApiTypes.STR, description="tdate"
+            ),
+            OpenApiParameter(
+                name="division", type=OpenApiTypes.STR, description="division"
             )
         ],
         # request=ChartFRequestSerializer,
@@ -312,11 +323,15 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             if 'tdate' in params.keys():
                 dv = ",P_TDATE=>'{}'".format(params['tdate'])
 
+            division = ""
+            if 'division' in params.keys():
+                division = ",P_DIVISION=>'{}'".format(params['division'])
+
             sql = """
             select obi.CRM_DWH_PKG.FUN_GET_CHART(
-                P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}
+                P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{}
             ) FROM DUAL
-            """.format(screen, key, vung, dv, fdate, tdate)
+            """.format(screen, key, vung, dv, fdate, tdate, division)
 
             #print(sql)
             cur.execute(sql)
