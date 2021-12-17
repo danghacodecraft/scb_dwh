@@ -5,14 +5,14 @@ EXAMPLE_RESPONSE_LOGIN_SUCCESS1 = OpenApiExample(
     summary='1',
     description='''
     Tài khoản mặc định:
-        username: admin
-        password: 123
+        username: THANGHD
+        password: THANGHD@321
     Lưu ý: Gửi basic auth trên header, không phải gửi qua payload body
     ''',
     value={
-        'user_id': '123',
-        'name': 'Test 1',
-        'token': 'MTM0NDo0ZjIwN2M3Njg4ZWExNTdkNWIxNzU2NDRlOTQ5YTM3YTVlNjA2MTVm',
+        'user_id': 'THANGHD',
+        'name': 'Hồ Đức Thắng',
+        'token': 'VEhBTkdIRA==',
     },
     status_codes=["200"],
     # request_only=True,  # signal that example only applies to requests

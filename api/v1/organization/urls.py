@@ -12,7 +12,7 @@ urlpatterns = [
     path('branch_list/', OrganizationView.as_view({'get': 'branch_list'})),
 
 
-    path('home/', OrganizationView.as_view({'get': 'home'})),
+    # path('home/', OrganizationView.as_view({'get': 'home'})),
     path('emp_list/', OrganizationView.as_view({'get': 'emp_list'})),
     path('emp_detail/', OrganizationView.as_view({'get': 'emp_detail'})),
     path('dep_list/', OrganizationView.as_view({'get': 'dep_list'})),

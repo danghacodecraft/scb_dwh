@@ -1,5 +1,6 @@
 import binascii
 import os
+import base64
 
 from django.contrib.auth.hashers import check_password, make_password
 from django.db import models
@@ -80,3 +81,17 @@ class User(BaseModel):
     @staticmethod
     def generate_key():
         return binascii.hexlify(os.urandom(20)).decode()
+
+
+class DWHUser:
+    def __init__(self, username, password, fullname):
+        self.id = username
+        self.username = username
+        self.password = password
+        self.name = fullname
+        self.token = base64.b64encode(username.encode()).decode('utf-8')
+        self.avatar = None
+        self.position = 'Director'
+        self.department = 'SCB'
+
+
