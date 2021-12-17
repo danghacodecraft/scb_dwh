@@ -95,22 +95,22 @@ class TokenAuthentication(BaseAuthentication):
         con, cur = lib.connect()
 
         sql = """
-             SELECT a.bi_username USER_ID
-                    ,a.bi_displayname USER_NAME
-                    , a.default_password
-              FROM obi.EXT_TBL_USER A
-             WHERE A.BI_USERNAME IN('THANGHD','NAMNNN','HOANGTK','TUONGHD','PHUONGPTM')
-             and A.BI_USERNAME = '{}'
+             select obi.CRM_DWH_PKG.FUN_GET_LOGIN(P_USER_NAME=>'{}') FROM DUAL
                     """.format(user_id)
         cur.execute(sql)
         res = cur.fetchone()
 
         if res:
-            user = DWHUser(
-                username=res[0],
-                password=res[2],
-                fullname=res[1]
-            )
+            data_cursor = res[0]
+
+            for data in data_cursor:
+                user = DWHUser(
+                    username=data[0],
+                    password=data[2],
+                    fullname=data[1],
+                    jobtitle=data[3],
+                    avatar=data[4]
+                )
             cur.close()
             con.close()
 
