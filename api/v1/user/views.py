@@ -239,7 +239,11 @@ class LoginView(BaseAPIView):
                     return self.response_success({
                         'user_id': user.id,
                         'full_name': user.name,
-                        'token': user.token
+                        'token': user.token,
+                        'avatar': user.avatar,
+                        'position': user.position,
+                        'department': user.department,
+                        'jobtitle': user.jobtitle
                     }, status_code=status.HTTP_200_OK)
 
             except cx_Oracle.Error as error:
