@@ -680,7 +680,7 @@ Screen `C_04`
 
                 for data in data_cursor:
                     print(data)
-                    if key == 'kpi_chart_khu_vuc':
+                    if key == ", P_MODULE=>'kpi_chart_khu_vuc'":
                         val = {
                             'branch_name': data[0],
                             'SLNS_DANH_GIA': data[1],
