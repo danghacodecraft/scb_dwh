@@ -35,6 +35,7 @@ The `Screen` has values:
 - **C_02_05_07**. DVKD - IV. Tong thu nhap thuan - 7. Thu nhap thuan tu hoat dong
 - **C_02_05_08**. DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat dong
 - **C_03**.
+- **C_04**.
 """,
         parameters=[
             OpenApiParameter(
