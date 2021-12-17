@@ -680,16 +680,25 @@ Screen `C_04`
 
                 for data in data_cursor:
                     print(data)
-                    val = {
-                        'branch_name': data[0],
-                        'REGION_NAME': data[1],
-                        'SLNS_DANH_GIA': data[2],
-                        'SLNS_HOAN_THANH': data[3],
-                        'TY_LE_HOAN_THANH': data[4]
-                    }
-                    if len(data) > 5:
-                        val['KY_DANH_GIA'] = data[5]
-                        
+                    if key == 'kpi_chart_khu_vuc':
+                        val = {
+                            'branch_name': data[0],
+                            'SLNS_DANH_GIA': data[1],
+                            'SLNS_HOAN_THANH': data[2],
+                            'TY_LE_HOAN_THANH': data[3]
+                        }
+                    else:
+                        val = {
+                            'branch_name': data[0],
+                            'REGION_NAME': data[1],
+                            'SLNS_DANH_GIA': data[2],
+                            'SLNS_HOAN_THANH': data[3],
+                            'TY_LE_HOAN_THANH': data[4]
+                        }
+
+                        if len(data) > 5:
+                            val['KY_DANH_GIA'] = data[5]
+
                     datas.append(val)
                 # datas.sort(key=myBranch)
 
