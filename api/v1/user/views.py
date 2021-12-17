@@ -248,5 +248,5 @@ class LoginView(BaseAPIView):
             cur.close()
             con.close()
 
-        return self.response_success('Sai thông tin', status_code=status.HTTP_401_UNAUTHORIZED)
+        return self.response_success({"error": "Sai thông tin"}, status_code=status.HTTP_401_UNAUTHORIZED)
 
