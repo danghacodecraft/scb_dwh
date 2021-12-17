@@ -430,6 +430,7 @@ Screen `C_03_08` program `VUD`
 
 """,
         parameters=[
+
             OpenApiParameter(
                 name="screen", type=OpenApiTypes.STR, description="screen"
             ),
@@ -438,7 +439,16 @@ Screen `C_03_08` program `VUD`
             ),
             OpenApiParameter(
                 name="program", type=OpenApiTypes.STR, description="program"
-            )
+            ),
+            OpenApiParameter(
+                name="vung", type=OpenApiTypes.STR, description="vung"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            ),
+            OpenApiParameter(
+                name="year", type=OpenApiTypes.STR, description="year"
+            ),
         ],
         # request=ChartFRequestSerializer,
         responses={
@@ -455,6 +465,10 @@ Screen `C_03_08` program `VUD`
             screen = params['screen']
             key = params['key']
 
+            program = ""
+            if 'program' in params.keys():
+                program = ", p_program=>'{}'".format(params['program'])
+
             vung = ""
             if 'vung' in params.keys():
                 vung = ",P_VUNG=>'{}'".format(params['vung'])
@@ -463,15 +477,15 @@ Screen `C_03_08` program `VUD`
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
-            program = ""
-            if 'program' in params.keys():
-                program = ", p_program=>'{}'".format(params['program'])
+            year = ""
+            if 'year' in params.keys():
+                year = ",P_YEAR=>'{}'".format(params['year'])
 
             sql = """
             select obi.CRM_DWH_PKG.FUN_GET_CHART_loan(
-                P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}
+                P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}
             ) FROM DUAL
-            """.format(screen, key, program, vung, dv)
+            """.format(screen, key, program, vung, dv, year)
 
             print(sql)
             cur.execute(sql)
