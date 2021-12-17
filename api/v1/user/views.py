@@ -164,7 +164,8 @@ class UserView(BaseAPIView):
             'token': user.token,
             'avatar': user.avatar,
             'position': user.position,
-            'department': user.department
+            'department': user.department,
+            'jobtitle': user.jobtitle
         }, status_code=status.HTTP_200_OK)
 
 
