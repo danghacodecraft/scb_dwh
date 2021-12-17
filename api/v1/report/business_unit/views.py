@@ -608,9 +608,13 @@ Screen `C_04`
         summary='List',
         tags=["BUSINESS C04"],
         description="""
+Screen `ALL`, kv = `ALL`, dv = `001`, ccy = `VND`
+- **kpi_chi_tiet_nhanvien**
+
 Screen `C_04`
 - **kpi_chart_khu_vuc**.
 - **kpi_cac_don_vi_kinh_doanh**.
+- **kpi_chi_tiet_nhanvien**
 
 """,
         parameters=[
@@ -619,6 +623,15 @@ Screen `C_04`
             ),
             OpenApiParameter(
                 name="key", type=OpenApiTypes.STR, description="key"
+            ),
+            OpenApiParameter(
+                name="kv", type=OpenApiTypes.STR, description="kv"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            ),
+            OpenApiParameter(
+                name="ccy", type=OpenApiTypes.STR, description="ccy"
             )
         ],
         # request=ChartFRequestSerializer,
@@ -632,13 +645,27 @@ Screen `C_04`
         try:
             con, cur = lib.connect()
             params = request.query_params.dict()
+            print(params)
+
             screen = params['screen']
             key = ""
             if 'key' in params.keys():
                 key = ", P_MODULE=>'{}'".format(params['key'])
 
-            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}'{} ) FROM DUAL".format(screen, key)
+            kv = ""
+            if 'kv' in params.keys():
+                kv = ", P_KV=>'{}'".format(params['kv'])
 
+            dv = ""
+            if 'dv' in params.keys():
+                dv = ", P_DV=>'{}'".format(params['dv'])
+
+            ccy = ""
+            if 'ccy' in params.keys():
+                ccy = ", P_CCY=>'{}'".format(params['ccy'])
+
+            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}'{}{}{}{} ) FROM DUAL".format(screen, key, kv, dv, ccy)
+            # sql = "select obi.crm_dwh_pkg.FUN_C04_CHART(P_MAN_HINH =>'ALL' , P_KV =>'ALL' , P_DV => '001', P_CCY => 'VND', P_MODULE   => 'kpi_chi_tiet_nhanvien') FROM DUAL"
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -652,12 +679,14 @@ Screen `C_04`
                     data_cursor = None
 
                 for data in data_cursor:
+                    print(data)
                     val = {
                         'branch_name': data[0],
                         'REGION_NAME': data[1],
                         'SLNS_DANH_GIA': data[2],
                         'SLNS_HOAN_THANH': data[3],
-                        'TY_LE_HOAN_THANH': data[3]
+                        'TY_LE_HOAN_THANH': data[4],
+                        'TIME': data[5]
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
