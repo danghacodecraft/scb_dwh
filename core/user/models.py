@@ -95,7 +95,7 @@ class DWHUser:
         else:
             self.avatar = None
         self.position = 'Director'
-        self.department = 'SCB'
+        self.department = 'NGÂN HÀNG THƯƠNG MẠI CỔ PHẦN SÀI GÒN'
         self.jobtitle = jobtitle
 
 
