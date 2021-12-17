@@ -454,15 +454,24 @@ Screen `C_03_08` program `VUD`
             params = request.query_params.dict()
             screen = params['screen']
             key = params['key']
+
+            vung = ""
+            if 'vung' in params.keys():
+                vung = ",P_VUNG=>'{}'".format(params['vung'])
+
+            dv = ""
+            if 'dv' in params.keys():
+                dv = ",P_DV=>'{}'".format(params['dv'])
+
             program = ""
             if 'program' in params.keys():
                 program = ", p_program=>'{}'".format(params['program'])
 
             sql = """
             select obi.CRM_DWH_PKG.FUN_GET_CHART_loan(
-                P_MAN_HINH=>'{}',P_MODULE=>'{}'{}
+                P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}
             ) FROM DUAL
-            """.format(screen, key, program)
+            """.format(screen, key, program, vung, dv)
 
             print(sql)
             cur.execute(sql)
