@@ -228,19 +228,40 @@ class LoginView(BaseAPIView):
                 res = cur.fetchone()
 
                 if res:
-                    user = DWHUser(
-                        username=res[0],
-                        password=password,
-                        fullname=res[1]
-                    )
+                    sql = """
+                         select obi.CRM_DWH_PKG.FUN_GET_LOGIN(P_USER_NAME=>'{}') FROM DUAL
+                                """.format(username)
+                    cur.execute(sql)
+                    res = cur.fetchone()
+
+                    data_cursor = res[0]
+
+                    user = None
+
+                    for data in data_cursor:
+                        user = DWHUser(
+                            username=data[0],
+                            password=data[2],
+                            fullname=data[1],
+                            jobtitle=data[3],
+                            avatar=data[4]
+                        )
                     cur.close()
                     con.close()
 
-                    return self.response_success({
-                        'user_id': user.id,
-                        'full_name': user.name,
-                        'token': user.token
-                    }, status_code=status.HTTP_200_OK)
+                    if user:
+                        return self.response_success({
+                            'user_id': user.id,
+                            'full_name': user.name,
+                            'token': user.token,
+                            'avatar': user.avatar,
+                            'position': user.position,
+                            'department': user.department,
+                            'jobtitle': user.jobtitle
+                        }, status_code=status.HTTP_200_OK)
+                    else:
+                        return self.response_success({"error": "Sai thông tin"},
+                                                     status_code=status.HTTP_401_UNAUTHORIZED)
 
             except cx_Oracle.Error as error:
                 pass
