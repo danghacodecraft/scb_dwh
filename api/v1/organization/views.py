@@ -171,7 +171,7 @@ Param `name` example
                     P_REGION => '{}',P_TYPE=> 'CAP_VUNG'
                 ) FROM DUAL
             """.format(name)
-
+            print(sql)
             # SELECT
             # OBI.CRM_DWH_PKG.FUN_GET_ORGANIZATION(P_REGION= > '{}', P_TYPE = > 'CAP_VUNG') FROM
             # DUAL
@@ -191,7 +191,7 @@ Param `name` example
                 for data in data_cursor:
                     print(data)
                     # 'V01', 'Vùng 01', '161', 'SCB Nam Sài Gòn', 'BAN GIAM DOC', '11941', 'Phòng Dịch vụ Khách hàng')
-
+                    # 'V02', 'Vùng 02', '015', 'SCB Quận 10', 'BAN GIAM DOC', None, None, '11986', 'Phòng Dịch vụ Khách hàng', None, None, '03')
                     region_id = data[6]
                     region_name = data[7]
                     if region_id not in ret:
@@ -214,9 +214,9 @@ Param `name` example
                         }
 
                     departments = branchs[branch_id]['departments']
-                    department_id = data[11]
-                    department_name = data[12]
-                    if department_id not in departments:
+                    department_id = data[13]
+                    department_name = data[14]
+                    if department_id is not None and department_id not in departments:
                         departments[department_id] = {
                             'department_id': department_id,
                             'department_name': department_name
@@ -246,7 +246,7 @@ Param `name` example
             con, cur = lib.connect()
 
             sql = 'select obi.CRM_DWH_PKG.FUN_GET_REGION FROM DUAL'
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
