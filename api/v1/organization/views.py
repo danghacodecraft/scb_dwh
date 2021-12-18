@@ -369,6 +369,9 @@ Param `type` example
             OpenApiParameter(
                 name="type", type=OpenApiTypes.STR, description="type"
             ),
+            OpenApiParameter(
+                name="level", type=OpenApiTypes.STR, description="level"
+            ),
         ]
     )
     def branch_list(self, request):
@@ -377,6 +380,10 @@ Param `type` example
 
             params = request.query_params.dict()
             type = params['type']
+
+            flevel = ""
+            if 'level' in params.keys():
+                flevel = params['level']
 
             # call the function
             sql = """
@@ -397,6 +404,11 @@ Param `type` example
                     id = data[0]
                     fullname = data[1]
                     level = data[2]
+                    if level is None:
+                        continue
+
+                    if flevel != "" and flevel != level:
+                        continue
 
                     if level not in ret:
                         ret[level] = []
