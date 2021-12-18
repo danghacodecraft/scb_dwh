@@ -58,6 +58,7 @@ The `dv` example:
 
             # call the function
             sql = "Select obi.CRM_DWH_PKG.FUN_GET_DATA('TRANG_CHU'{}{}) FROM DUAL".format(vung, dv)
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -148,6 +149,7 @@ The `dv` example:
             Select obi.CRM_DWH_PKG.FUN_GET_CHART(
                 P_MAN_HINH=>'TRANG_CHU',P_MODULE=>'{}'{}{}
             ) FROM DUAL""".format(module, vung, dv)
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 

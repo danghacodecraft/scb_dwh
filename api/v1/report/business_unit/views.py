@@ -91,7 +91,9 @@ The `Screen` has values:
                 division = ",P_DIVISION=>'{}'".format(params['division'])
 
 
-            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}{}{}{}) FROM DUAL".format(screen, vung, dv, fdate, tdate, division)
+            sql = """SELECT obi.CRM_DWH_PKG.FUN_GET_DATA(
+                '{}'{}{}{}{}{}
+            ) FROM DUAL""".format(screen, vung, dv, fdate, tdate, division)
 
             print(sql)
             cur.execute(sql)
@@ -762,9 +764,14 @@ Screen `C_04`
                         'TIEU_DE': data[1],
                         'AMT': data[2],
                         'UNIT': data[3],
-                        'NIM_HUY_DONG': 9999,#data[4],
-                        'NIM_CHO_VAY': 9999,#data[5]
+                        'NIM_HUY_DONG': 0,#data[4],
+                        'NIM_CHO_VAY': 0,#data[5]
                     }
+                    if len(data) > 4:
+                        val['NIM_HUY_DONG'] = data[4]
+                    if len(data) > 5:
+                        val['NIM_CHO_VAY'] = data[5]
+
                     datas.append(val)
                 # datas.sort(key=myBranch)
 
