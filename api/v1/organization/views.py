@@ -336,9 +336,9 @@ Param `name` example
                         }
 
                     departments = ret[branch_id]['departments']
-                    department_id = data[11]
-                    department_name = data[12]
-                    if department_id not in departments:
+                    department_id = data[13]
+                    department_name = data[14]
+                    if department_id is not None and department_id not in departments:
                         departments[department_id] = {
                             'department_id': department_id,
                             'department_name': department_name
