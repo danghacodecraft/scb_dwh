@@ -59,6 +59,10 @@ class OrganizationView(BaseAPIView):
                 print(data)
                 key1 = data[0]
                 name1 = data[1]
+
+                code = data[16]
+                depid = str(data[17])
+
                 if key1 not in ret:
                     ret[key1] = {
                         'id': key1,
@@ -112,10 +116,15 @@ class OrganizationView(BaseAPIView):
                                         'id': key5,
                                         'fullname': name5,
                                         'level': 5,
-                                        'child': {}
+                                        'child': {},
+                                        # 'code': code,
+                                        # 'depid': depid
                                     }
 
                                 ret5 = ret4['child'][key5]
+                                if key5 == depid:
+                                    ret5['code'] = code
+
                                 key6 = data[10]
                                 name6 = data[11]
                                 if key6 is not None:
@@ -124,22 +133,25 @@ class OrganizationView(BaseAPIView):
                                             'id': key6,
                                             'fullname': name6,
                                             'level': 6,
-                                            'child': {}
+                                            'child': {},
+                                            # 'code': code,
+                                            # 'depid': depid
                                         }
 
                                     ret6 = ret5['child'][key6]
-                                    key7 = data[10]
-                                    name7 = data[11]
-                                    code7 = data[16]
-                                    if key7 is not None:
-                                        if key7 not in ret6['child']:
-                                            ret6['child'][key7] = {
-                                                'id': key7,
-                                                'fullname': name7,
-                                                'level': 7,
-                                                'code7': code7,
-                                                'child': {}
-                                            }
+                                    if key6 == depid:
+                                        ret6['code'] = code
+
+                                #     key7 = data[10]
+                                #     name7 = data[11]
+                                #     if key7 is not None:
+                                #         if key7 not in ret6['child']:
+                                #             ret6['child'][key7] = {
+                                #                 'id': key7,
+                                #                 'fullname': name7,
+                                #                 'level': 7,
+                                #                 'child': {}
+                                #             }
 
             cur.close()
             con.close()
@@ -162,10 +174,16 @@ class OrganizationView(BaseAPIView):
         description="""
 Param `name` example       
 - **V01**.
+
+Param `type` example       
+- **CAP_VUNG**.
 """,
         parameters=[
             OpenApiParameter(
                 name="name", type=OpenApiTypes.STR, description="name"
+            ),
+            OpenApiParameter(
+                name="type", type=OpenApiTypes.STR, description="type"
             ),
         ]
     )
@@ -174,23 +192,19 @@ Param `name` example
             con, cur = lib.connect()
 
             params = request.query_params.dict()
+
             name = params['name']
+            type = ", P_TYPE=>'CAP_VUNG'"
+            if 'type' in params.keys():
+                type = ", P_TYPE=>'{}'".format(params['type'])
 
             # call the function
-            sql = """
-                select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(
-                    P_REGION => '{}',P_TYPE=> 'CAP_VUNG'
-                ) FROM DUAL
-            """.format(name)
+            sql = "Select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION( P_REGION => '{}'{}) FROM DUAL".format(name, type)
             print(sql)
-            # SELECT
-            # OBI.CRM_DWH_PKG.FUN_GET_ORGANIZATION(P_REGION= > '{}', P_TYPE = > 'CAP_VUNG') FROM
-            # DUAL
             cur.execute(sql)
             res = cur.fetchone()
-            datas = []
 
-
+            ret = {}
             if len(res) > 0:
                 try:
                     data_cursor = res[0]
@@ -198,10 +212,9 @@ Param `name` example
                     print("Loi data ")
                     data_cursor = None
 
-                ret = {}
+
                 for data in data_cursor:
                     print(data)
-                    # 'V01', 'Vùng 01', '161', 'SCB Nam Sài Gòn', 'BAN GIAM DOC', '11941', 'Phòng Dịch vụ Khách hàng')
                     # 'V02', 'Vùng 02', '015', 'SCB Quận 10', 'BAN GIAM DOC', None, None, '11986', 'Phòng Dịch vụ Khách hàng', None, None, '03')
                     region_id = data[6]
                     region_name = data[7]
@@ -227,10 +240,12 @@ Param `name` example
                     departments = branchs[branch_id]['departments']
                     department_id = data[13]
                     department_name = data[14]
+                    code = data[17]
                     if department_id is not None and department_id not in departments:
                         departments[department_id] = {
                             'department_id': department_id,
-                            'department_name': department_name
+                            'department_name': department_name,
+                            'code': code
                         }
 
             cur.close()
@@ -300,10 +315,17 @@ Param `name` example
         description="""
 Param `name` example       
 - **001**.
+
+Param `type` example       
+- **CAP_DVKD**.
+
 """,
         parameters=[
             OpenApiParameter(
                 name="name", type=OpenApiTypes.STR, description="name"
+            ),
+            OpenApiParameter(
+                name="type", type=OpenApiTypes.STR, description="type"
             ),
         ]
     )
@@ -314,15 +336,16 @@ Param `name` example
             params = request.query_params.dict()
             name = params['name']
 
+            type = ", P_TYPE=>'CAP_DVKD'"
+            if 'type' in params.keys():
+                type = ", P_TYPE=>'{}'".format(params['type'])
+
             # call the function
-            sql = """
-                select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(
-                    P_BRANCH=>'{}', P_TYPE=>'CAP_DVKD'
-                ) FROM DUAL
-            """.format(name)
+            sql = "Select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_BRANCH=>'{}'{}) FROM DUAL".format(name, type)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
+
             ret = {}
             if len(res) > 0:
                 try:
@@ -349,10 +372,12 @@ Param `name` example
                     departments = ret[branch_id]['departments']
                     department_id = data[13]
                     department_name = data[14]
+                    code = data[17]
                     if department_id is not None and department_id not in departments:
                         departments[department_id] = {
                             'department_id': department_id,
-                            'department_name': department_name
+                            'department_name': department_name,
+                            'code': code
                         }
 
             cur.close()
@@ -390,17 +415,18 @@ Param `type` example
             con, cur = lib.connect()
 
             params = request.query_params.dict()
-            type = params['type']
+
+            type = ", P_TYPE=>'CAP_DVKD'"
+            if 'type' in params.keys():
+                type = ", P_TYPE=>'{}'".format(params['type'])
 
             flevel = ""
             if 'level' in params.keys():
                 flevel = params['level']
 
             # call the function
-            sql = """
-                    select obi.crm_dwh_pkg.FUN_GET_BRANCH(P_VUNG => 'ALL',P_TYPE => '{}') FROM DUAL
-                """.format(type)
-
+            sql = "Select obi.crm_dwh_pkg.FUN_GET_BRANCH(P_VUNG=>'ALL'{}) FROM DUAL".format(type)
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
             if len(res) > 0:
@@ -412,6 +438,7 @@ Param `type` example
 
                 ret = {}
                 for data in data_cursor:
+                    print(data)
                     id = data[0]
                     fullname = data[1]
                     level = data[2]
