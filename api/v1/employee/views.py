@@ -45,11 +45,13 @@ Param `type` example
 
             params = request.query_params.dict()
             depid = params['depid']
-            type = params['type']
+
+            type = ", P_TYPE=>'TONG_HOP'"
+            if 'type' in params.keys():
+                type = ", P_TYPE=>'{}'".format(params['type'])
 
             # call the function
-            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_DEP_ID=>'{}', P_TYPE=>'{}') FROM DUAL".format(depid, type)
-
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_DEP_ID=>'{}'{}) FROM DUAL".format(depid, type)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -183,6 +185,7 @@ Param `dep` example
 
             # call the function
             sql = "select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION('ALL','{}', 'ALL') FROM DUAL".format(dep)
+            print(sql)
 
             cur.execute(sql)
             res = cur.fetchone()
