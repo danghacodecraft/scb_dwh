@@ -7,6 +7,8 @@ urlpatterns = [
 
     path('chart/', BusinessUnitView.as_view({'get': 'chart'})),
     path('chart_loan/', BusinessUnitView.as_view({'get': 'chart_loan'})),
+
+    #SCREEN C4
     path('chart_hr/', BusinessUnitView.as_view({'get': 'chart_hr'})),
     path('chart_kpi/', BusinessUnitView.as_view({'get': 'chart_kpi'})),
     path('chart_income/', BusinessUnitView.as_view({'get': 'chart_income'})),
