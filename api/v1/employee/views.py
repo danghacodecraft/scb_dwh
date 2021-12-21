@@ -65,8 +65,22 @@ Param `type` example
 
                 print(data_cursor)
                 for data in data_cursor:
-                    #('06150', 'VÕ KHANG NINH', 'CHUYÊN VIÊN QUẢN LÝ DỮ LIỆU', '84', 'MẢNG QUẢN LÝ DỮ LIỆU', datetime.datetime(2015, 2, 26, 0, 0), 'NINHVK@SCB.COM.VN', '+84 969627333', '/var/www/EmployeeImage/06150.jpeg')
+                    working_processes = []
+                    sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_WORKING_PROCESS('{}') FROM DUAL".format(emp_id)
+                    print(sql)
+                    cur.execute(sql)
+                    res2 = cur.fetchone()
+                    for data2 in res2[0]:
+                        val2 = {
+                            'EMPLOYEE_CODE': data2[0],
+                            'TU_NGAY': data2[1],
+                            'DEN_NGAY': data2[2],
+                            'CONG_TY': data2[3],
+                            'CHUC_VU': data2[4]
+                        }
+                        working_processes.append(val2)
 
+                    #('06150', 'VÕ KHANG NINH', 'CHUYÊN VIÊN QUẢN LÝ DỮ LIỆU', '84', 'MẢNG QUẢN LÝ DỮ LIỆU', datetime.datetime(2015, 2, 26, 0, 0), 'NINHVK@SCB.COM.VN', '+84 969627333', '/var/www/EmployeeImage/06150.jpeg')
                     print(data)
                     val = {
                         'emp_id': data[0],
@@ -80,6 +94,7 @@ Param `type` example
                         'avatar': data[8],
                         'block_id': data[9],
                         'block_name': data[10],
+                        'working_processes': working_processes
                     }
                     datas.append(val)
 
@@ -129,7 +144,6 @@ Param `emp` example
                 data_cursor = res[0]
                 for data in res[0]:
                     working_processes = []
-
                     sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_WORKING_PROCESS('{}') FROM DUAL".format(emp_id)
                     print(sql)
                     cur.execute(sql)
