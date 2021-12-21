@@ -38,8 +38,8 @@ class OrganizationView(BaseAPIView):
 
             # call the function
             sql = """
-                SELECT * 
-                FROM OBI.dwhf_hr_organization 
+                SELECT *
+                FROM OBI.dwhf_hr_organization
                 ORDER BY NVL(PARENT_ID,ID), ORDER_BY
             """
             print(sql)
@@ -48,6 +48,15 @@ class OrganizationView(BaseAPIView):
 
             ret = {}
             for data in datas:
+                # ('1', 'Ngân hàng TMCP Sài Gòn',
+                # '4', 'Ban Điều hành',
+                # '11422', 'Khối Phê duyệt Tín dụng và Xử lý nợ',
+                # '13729', 'Trung tâm Thẩm định Tài sản',
+                # '13736', 'Mảng Thẩm định Tài sản Hồ Chí Minh 2', None, None, None, None,
+                # 'Mảng Thẩm định Tài sản Hồ Chí Minh 2', 'Mảng Thẩm định Tài sản Hồ Chí Minh 2', 'D8', 13736, 13729,
+                # '1;4;11422;13729;13736;', 'Ngân hàng TMCP Sài Gòn;Ban Điều hành;Khối Phê duyệt Tín dụng và Xử lý nợ;Trung tâm Thẩm định Tài sản;Mảng Thẩm định Tài sản Hồ Chí Minh 2;', 7, datetime.datetime(2021, 9, 1, 0, 0))
+
+                print(data)
                 key1 = data[0]
                 name1 = data[1]
                 if key1 not in ret:
@@ -121,12 +130,14 @@ class OrganizationView(BaseAPIView):
                                     ret6 = ret5['child'][key6]
                                     key7 = data[10]
                                     name7 = data[11]
+                                    code7 = data[16]
                                     if key7 is not None:
                                         if key7 not in ret6['child']:
                                             ret6['child'][key7] = {
                                                 'id': key7,
                                                 'fullname': name7,
                                                 'level': 7,
+                                                'code7': code7,
                                                 'child': {}
                                             }
 
