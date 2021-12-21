@@ -1017,14 +1017,16 @@ Param `region`
             con, cur = lib.connect()
 
             params = request.query_params.dict()
-            screen = params['screen']
-            region = params['region']
 
-            sql = """
-            select obi.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO(
-                P_MAN_HINH=>'{}',p_vung =>'{}'
-            ) FROM DUAL
-            """.format(screen, region)
+            screen = 'C_02_02'
+            if 'screen' in params.keys():
+                screen = params['screen']
+
+            region = ", p_vung=>'VÙNG 02'"
+            if 'region' in params.keys():
+                region = ", p_vung=>'{}'".format(params['region'])
+
+            sql = "Select obi.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO( P_MAN_HINH=>'{}'{} ) FROM DUAL".format(screen, region)
             print(sql)
 
             # print(sql)
@@ -1033,23 +1035,67 @@ Param `region`
 
             datas = []
             if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
+                data_cursor = res[0]
                 for data in data_cursor:
                     print(data)
+                    detail = None
+                    detail_op = None
+
+                    p_emp = data[2].replace("@SCB.COM.VN", "")
+                    sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL".format(p_emp)
+                    print(sql)
+                    cur.execute(sql)
+                    res2 = cur.fetchone()
+                    if res2 is not None:
+                        data_cursor2 = res2[0]
+                        for data2 in data_cursor2:
+                            # ('06150', 'VÕ KHANG NINH', 'CHUYÊN VIÊN QUẢN LÝ DỮ LIỆU', '84', 'MẢNG QUẢN LÝ DỮ LIỆU', datetime.datetime(2015, 2, 26, 0, 0), 'NINHVK@SCB.COM.VN', '+84 969627333', '/var/www/EmployeeImage/06150.jpeg')
+                            detail = {
+                                'emp_id': data2[0],
+                                'emp_name': data2[1],
+                                'title': data2[2],
+                                'dep_id': data2[3],
+                                'dep_name': data2[4],
+                                'time': str(data2[5]),
+                                'email': data2[6],
+                                'mobile': data2[7],
+                                'avatar': data2[8],
+                                'block_id': data2[9],
+                                'block_name': data2[10],
+                            }
+
+                    p_emp = data[5].replace("@SCB.COM.VN", "")
+                    sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL".format(p_emp)
+                    cur.execute(sql)
+                    res2 = cur.fetchone()
+                    if res2 is not None:
+                        data_cursor2 = res2[0]
+                        for data2 in data_cursor2:
+                            # ('06150', 'VÕ KHANG NINH', 'CHUYÊN VIÊN QUẢN LÝ DỮ LIỆU', '84', 'MẢNG QUẢN LÝ DỮ LIỆU', datetime.datetime(2015, 2, 26, 0, 0), 'NINHVK@SCB.COM.VN', '+84 969627333', '/var/www/EmployeeImage/06150.jpeg')
+                            detail_op = {
+                                'emp_id': data2[0],
+                                'emp_name': data2[1],
+                                'title': data2[2],
+                                'dep_id': data2[3],
+                                'dep_name': data2[4],
+                                'time': str(data2[5]),
+                                'email': data2[6],
+                                'mobile': data2[7],
+                                'avatar': data2[8],
+                                'block_id': data2[9],
+                                'block_name': data2[10],
+                            }
 
                     val = {
                         'address': data[0],
                         'fullname': data[1],
                         'email': data[2],
                         'mobile': data[3],
+                        'detail': detail,
                         'fullname_op': data[4],
                         'email_op': data[5],
-                        'mobile_op': data[6]
+                        'mobile_op': data[6],
+                        'detail_op': detail_op
                     }
                     datas.append(val)
 
