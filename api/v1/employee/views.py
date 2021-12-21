@@ -65,6 +65,8 @@ Param `type` example
 
                 print(data_cursor)
                 for data in data_cursor:
+                    emp_id = data[0]
+                    
                     working_processes = []
                     sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_WORKING_PROCESS('{}') FROM DUAL".format(emp_id)
                     print(sql)
