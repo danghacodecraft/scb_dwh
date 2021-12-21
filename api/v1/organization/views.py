@@ -220,31 +220,39 @@ Param `type` example
                     region_name = data[7]
                     if region_id not in ret:
                         ret[region_id] = {
-                            'region_id': region_id,
-                            'region_name': region_name,
-                            'branchs': {}
+                            'id': region_id,
+                            'fullname': region_name,
+                            'level': 1,
+                            'child': {}
                         }
 
-                    branchs = ret[region_id]['branchs']
+                    branch_childs = ret[region_id]['child']
                     branch_id = data[8]
                     branch_name = data[9]
 
-                    if branch_id not in branchs:
-                        branchs[branch_id] = {
-                            'branch_id': branch_id,
-                            'branch_name': branch_name,
-                            'director': data[10],
-                            'departments': {}
+                    if branch_id not in branch_childs:
+                        branch_childs[branch_id] = {
+                            'id': branch_id,
+                            'fullname': branch_name,
+                            'level': 2,
+                            'child': {
+                                'id': 0,
+                                'fullname': data[10],
+                                'level': 3,
+                                'child': {}
+                            }
                         }
 
-                    departments = branchs[branch_id]['departments']
+                    department_childs = branch_childs[branch_id]['child']['child']
                     department_id = data[13]
                     department_name = data[14]
                     code = data[17]
-                    if department_id is not None and department_id not in departments:
-                        departments[department_id] = {
-                            'department_id': department_id,
-                            'department_name': department_name,
+                    if department_id is not None and department_id not in department_childs:
+                        department_childs[department_id] = {
+                            'id': department_id,
+                            'fullname': department_name,
+                            'level': 4,
+                            'child': {},
                             'code': code
                         }
 
@@ -354,7 +362,6 @@ Param `type` example
                     print("Loi data ")
                     data_cursor = None
 
-
                 for data in data_cursor:
                     print(data)
                     # (None, None, None, None, None, None, None, None, '001', 'SCB Cống Quỳnh', 'BAN GIAM DOC', '11838', 'Phòng Khách hàng Wholesale')
@@ -363,20 +370,27 @@ Param `type` example
 
                     if branch_id not in ret:
                         ret[branch_id] = {
-                            'branch_id': branch_id,
-                            'branch_name': branch_name,
-                            'director': data[10],
-                            'departments': {}
+                            'id': branch_id,
+                            'fullname': branch_name,
+                            'level': 1,
+                            'child': {
+                                'id': 0,
+                                'fullname': data[10],
+                                'level': 2,
+                                'child': {}
+                            }
                         }
 
-                    departments = ret[branch_id]['departments']
+                    department_childs = ret[branch_id]['child']['child']
                     department_id = data[13]
                     department_name = data[14]
                     code = data[17]
-                    if department_id is not None and department_id not in departments:
-                        departments[department_id] = {
-                            'department_id': department_id,
-                            'department_name': department_name,
+                    if department_id is not None and department_id not in department_childs:
+                        department_childs[department_id] = {
+                            'id': department_id,
+                            'fullname': department_name,
+                            'level': 3,
+                            'child': {},
                             'code': code
                         }
 
