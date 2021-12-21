@@ -116,24 +116,34 @@ Param `emp` example
             con, cur = lib.connect()
 
             params = request.query_params.dict()
-            emp = params['emp']
+            emp_id = params['emp']
 
             # call the function
-            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP => '{}') FROM DUAL".format(emp)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL".format(emp_id)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
             datas = []
             if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
+                data_cursor = res[0]
+                for data in res[0]:
+                    working_processes = []
 
-                print(data_cursor)
-                for data in data_cursor:
+                    sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_WORKING_PROCESS('{}') FROM DUAL".format(emp_id)
+                    print(sql)
+                    cur.execute(sql)
+                    res2 = cur.fetchone()
+                    for data2 in res2[0]:
+                        val2 = {
+                            'EMPLOYEE_CODE': data2[0],
+                            'TU_NGAY': data2[1],
+                            'DEN_NGAY': data2[2],
+                            'CONG_TY': data2[3],
+                            'CHUC_VU': data2[4]
+                        }
+                        working_processes.append(val2)
+
                     print(data)
                     #[('03627', 'HỒ ĐỨC THẮNG', 'GIÁM ĐỐC PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
                     # '84', 'PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
@@ -150,6 +160,7 @@ Param `emp` example
                         'avatar': data[8],
                         'block_id': data[9],
                         'block_name': data[10],
+                        'working_processes': working_processes
                     }
                     datas.append(val)
 
