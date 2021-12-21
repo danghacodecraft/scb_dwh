@@ -77,7 +77,9 @@ Param `type` example
                         'time': str(data[5]),
                         'email': data[6],
                         'mobile': data[7],
-                        'avatar': data[8]
+                        'avatar': data[8],
+                        'block_id': data[9],
+                        'block_name': data[10],
                     }
                     datas.append(val)
 
@@ -100,7 +102,7 @@ Param `type` example
         },
         description="""
 Param `emp` example       
-- **THANGHD**.
+- **17889**.
 
 """,
         parameters=[
@@ -118,7 +120,7 @@ Param `emp` example
 
             # call the function
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP => '{}') FROM DUAL".format(emp)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -132,6 +134,7 @@ Param `emp` example
 
                 print(data_cursor)
                 for data in data_cursor:
+                    print(data)
                     #[('03627', 'HỒ ĐỨC THẮNG', 'GIÁM ĐỐC PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
                     # '84', 'PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
                     # datetime.datetime(2010, 9, 6, 0, 0), 'THANGHD@SCB.COM.VN', '+84 907138520', '/var/www/EmployeeImage/03627.jpeg')]
@@ -144,7 +147,9 @@ Param `emp` example
                         'time': str(data[5]),
                         'email': data[6],
                         'mobile': data[7],
-                        'avatar': data[8]
+                        'avatar': data[8],
+                        'block_id': data[9],
+                        'block_name': data[10],
                     }
                     datas.append(val)
 
