@@ -9,13 +9,16 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.gis.serializers import BranchResponseSerializer, RegionResponseSerializer
+from api.v1.gis.serializers import BranchResponseSerializer, RegionResponseSerializer, AreaResponseSerializer
 
 def myRegion(e):
     return e['region_id']
 
 def myBranch(e):
     return e['branch_id']
+
+def myArea(e):
+    return e['NAME']
 
 class GisView(BaseAPIView):
     @extend_schema(
@@ -199,6 +202,114 @@ class GisView(BaseAPIView):
                         datas.append(val)
                         break
 
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Area',
+        summary='List',
+        tags=["GIS"],
+        description="Area",
+        parameters=[
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: AreaResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def area(self, request):
+        try:
+            con, cur = lib.connect()
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_AREA() from dual"
+
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                for data in data_cursor:
+                    print(data)
+                    val = {
+                        'ID': data[0],
+                        'NAME': data[1]
+                    }
+                    datas.append(val)
+                datas.sort(key=myArea)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Area Branch',
+        summary='List',
+        tags=["GIS"],
+        description="""
+Param `screen`         
+- **K01**.
+- **K02**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="kv", type=OpenApiTypes.STR, description="kv"
+            ),
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: AreaResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def area_branch(self, request):
+        try:
+            con, cur = lib.connect()
+            params = request.query_params.dict()
+
+            kv = "P_KV=>'K01'"
+            if 'kv' in params.keys():
+                kv = "P_KV=>'{}'".format(params['kv'])
+
+            sql = "select obi.CRM_DWH_PKG.FUN_GET_BRANCH_AREA({}) from dual".format(kv)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                for data in data_cursor:
+                    print(data)
+                    val = {
+                        'ID': data[0],
+                        'NAME': data[1]
+                    }
+                    datas.append(val)
+                datas.sort(key=myArea)
 
             cur.close()
             con.close()

@@ -14,6 +14,7 @@ urlpatterns = [
     path('chart_income/', BusinessUnitView.as_view({'get': 'chart_income'})),
     path('chart_business/', BusinessUnitView.as_view({'get': 'chart_business'})),
 
+    #CUSTOMER
     path('customer/', BusinessUnitView.as_view({'get': 'customer'})),
     path('region/', BusinessUnitView.as_view({'get': 'region'})),
 

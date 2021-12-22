@@ -89,3 +89,4 @@ class BusinessResponseSerializer(InheritedSerializer):
     LUY_KE = serializers.CharField(help_text="`LUY_KE` of data")
     NAM = serializers.CharField(help_text="`NAM` of data")
 
+
