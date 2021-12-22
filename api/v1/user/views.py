@@ -1,8 +1,12 @@
+import base64
+import binascii
+
 import cx_Oracle
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
-from rest_framework import status
+from rest_framework import status, exceptions, HTTP_HEADER_ENCODING
 import ldap
+from rest_framework.authentication import get_authorization_header
 
 import api.v1.function as lib
 
@@ -176,21 +180,22 @@ class UserView(BaseAPIView):
 # nên sửa riêng authentication_classes
 class LoginView(BaseAPIView):
     # setting user/password authentication.
-    authentication_classes = ()
+    # Bypass authentication_classes
+    authentication_classes = (BasicAuthentication,)
 
     @extend_schema(
         operation_id='user-login',
         summary='Login',
         tags=["User"],
         description='Login to get Bearer token to use in others API',
-        parameters=[
-            OpenApiParameter(
-                name="username", type=OpenApiTypes.STR, description="1. Tài khoản"
-            ),
-            OpenApiParameter(
-                name="password", type=OpenApiTypes.STR, description="2. Mật khẩu"
-            )
-        ],
+        # parameters=[
+        #     OpenApiParameter(
+        #         name="username", type=OpenApiTypes.STR, description="1. Tài khoản"
+        #     ),
+        #     OpenApiParameter(
+        #         name="password", type=OpenApiTypes.STR, description="2. Mật khẩu"
+        #     )
+        # ],
         responses={
             status.HTTP_200_OK: UserLoginSuccessResponseSerializer,
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
@@ -204,92 +209,16 @@ class LoginView(BaseAPIView):
         ]
     )
     def login(self, request):
-        con, cur = lib.connect()
-
-        params = request.query_params.dict()
-
-        username = None
-        password = None
-        mess = None
-
-        if 'username' in params.keys():
-            username = params['username']
-
-        if 'password' in params.keys():
-            password = params['password']
-
-        if username and password:
-            try:
-                try:
-                    LDAP_USERNAME = '{}{}'.format(username, LDAP_DOMAIN)
-
-                    LDAP_PASSWORD = password
-
-                    ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
-
-                    ldap_client = ldap.initialize(LDAP_SERVER)
-
-                    ldap_client.protocol_version = ldap.VERSION3
-
-                    ldap_client.set_option(ldap.OPT_REFERRALS, 0)
-                    ldap_client.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
-                    ldap_client.simple_bind_s(LDAP_USERNAME, LDAP_PASSWORD)
-
-                    ldap_client.unbind()
-
-                    login_result = True
-
-                except ldap.INVALID_CREDENTIALS as e:
-                    print('Wrong ad info', e)
-                    mess = 'Sai thông tin'
-                    login_result = False
-
-                except ldap.SERVER_DOWN:
-                    print('AD server not awailable')
-                    mess = 'AD server not awailable'
-                    login_result = False
-
-                if login_result:
-                    sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(username)
-                    cur.execute(sql)
-                    res = cur.fetchone()
-
-                    data_cursor = res[0]
-
-                    user = None
-
-                    for data in data_cursor:
-
-                        user = DWHUser(
-                            username=username,
-                            fullname=data[1],
-                            jobtitle=data[2],
-                            avatar=data[8],
-                            department=data[4]
-                        )
-
-                    cur.close()
-                    con.close()
-
-                    if user:
-                        return self.response_success({
-                            'user_id': user.id,
-                            'full_name': user.name,
-                            'token': user.token,
-                            'avatar': user.avatar,
-                            'position': user.position,
-                            'department': user.department,
-                            'jobtitle': user.jobtitle
-                        }, status_code=status.HTTP_200_OK)
-                    else:
-                        return self.response_success({"error": "Sai thông tin"},
-                                                     status_code=status.HTTP_401_UNAUTHORIZED)
-
-            except cx_Oracle.Error as error:
-                pass
-
-            cur.close()
-            con.close()
-
-        return self.response_success({"error": mess}, status_code=status.HTTP_401_UNAUTHORIZED)
-
+        if request.user:
+            return self.response_success({
+                'user_id': request.user.id,
+                'full_name': request.user.name,
+                'token': request.user.token,
+                'avatar': request.user.avatar,
+                'position': request.user.position,
+                'department': request.user.department,
+                'jobtitle': request.user.jobtitle
+            }, status_code=status.HTTP_200_OK)
+        else:
+            return self.response_success({"error": "Sai thông tin"},
+                                         status_code=status.HTTP_401_UNAUTHORIZED)
