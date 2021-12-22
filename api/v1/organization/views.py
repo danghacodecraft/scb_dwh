@@ -98,60 +98,62 @@ class OrganizationView(BaseAPIView):
                         ret3 = ret2['child'][key3]
                         key4 = data[6]
                         name4 = data[7]
-                        if key4 is not None:
-                            if key4 not in ret3['child']:
-                                ret3['child'][key4] = {
-                                    'id': key4,
-                                    'fullname': name4,
-                                    'level': 4,
-                                    'child': {}
-                                }
 
-                            ret4 = ret3['child'][key4]
-                            key5 = data[8]
-                            name5 = data[9]
-                            if key5 is not None:
-                                if key5 not in ret4['child']:
-                                    ret4['child'][key5] = {
-                                        'id': key5,
-                                        'fullname': name5,
-                                        'level': 5,
-                                        'child': {},
-                                        # 'code': code,
-                                        # 'depid': depid
+                        if name4 is not None and "Vùng" not in name4 and "Kênh" not in name4:
+                            if key4 is not None:
+                                if key4 not in ret3['child']:
+                                    ret3['child'][key4] = {
+                                        'id': key4,
+                                        'fullname': name4,
+                                        'level': 4,
+                                        'child': {}
                                     }
 
-                                ret5 = ret4['child'][key5]
-                                if key5 == depid:
-                                    ret5['code'] = code
-
-                                key6 = data[10]
-                                name6 = data[11]
-                                if key6 is not None:
-                                    if key6 not in ret5['child']:
-                                        ret5['child'][key6] = {
-                                            'id': key6,
-                                            'fullname': name6,
-                                            'level': 6,
+                                ret4 = ret3['child'][key4]
+                                key5 = data[8]
+                                name5 = data[9]
+                                if key5 is not None:
+                                    if key5 not in ret4['child']:
+                                        ret4['child'][key5] = {
+                                            'id': key5,
+                                            'fullname': name5,
+                                            'level': 5,
                                             'child': {},
                                             # 'code': code,
                                             # 'depid': depid
                                         }
 
-                                    ret6 = ret5['child'][key6]
-                                    if key6 == depid:
-                                        ret6['code'] = code
+                                    ret5 = ret4['child'][key5]
+                                    if key5 == depid:
+                                        ret5['code'] = code
 
-                                #     key7 = data[10]
-                                #     name7 = data[11]
-                                #     if key7 is not None:
-                                #         if key7 not in ret6['child']:
-                                #             ret6['child'][key7] = {
-                                #                 'id': key7,
-                                #                 'fullname': name7,
-                                #                 'level': 7,
-                                #                 'child': {}
-                                #             }
+                                    key6 = data[10]
+                                    name6 = data[11]
+                                    if key6 is not None:
+                                        if key6 not in ret5['child']:
+                                            ret5['child'][key6] = {
+                                                'id': key6,
+                                                'fullname': name6,
+                                                'level': 6,
+                                                'child': {},
+                                                # 'code': code,
+                                                # 'depid': depid
+                                            }
+
+                                        ret6 = ret5['child'][key6]
+                                        if key6 == depid:
+                                            ret6['code'] = code
+
+                                    #     key7 = data[10]
+                                    #     name7 = data[11]
+                                    #     if key7 is not None:
+                                    #         if key7 not in ret6['child']:
+                                    #             ret6['child'][key7] = {
+                                    #                 'id': key7,
+                                    #                 'fullname': name7,
+                                    #                 'level': 7,
+                                    #                 'child': {}
+                                    #             }
 
             cur.close()
             con.close()
