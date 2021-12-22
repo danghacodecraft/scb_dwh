@@ -195,7 +195,7 @@ Param `type` example
 
             params = request.query_params.dict()
 
-            name = params['name']
+            # name = params['name']
             type = ", P_TYPE=>'CAP_VUNG'"
             if 'type' in params.keys():
                 type = ", P_TYPE=>'{}'".format(params['type'])

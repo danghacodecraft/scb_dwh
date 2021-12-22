@@ -26,6 +26,11 @@ class GisView(BaseAPIView):
         summary='List',
         tags=["GIS"],
         description="Region",
+        parameters=[
+            OpenApiParameter(
+                name="userid", type=OpenApiTypes.STR, description="userid"
+            )
+        ],
         responses={
             status.HTTP_201_CREATED: RegionResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
@@ -35,9 +40,14 @@ class GisView(BaseAPIView):
     def region(self, request):
         try:
             con, cur = lib.connect()
+            params = request.query_params.dict()
+            
+            userid = "P_USER_ID=>'THANGHD'"
+            if 'userid' in params.keys():
+                userid = "P_USER_ID=>'{}'".format(params['userid'])
 
-            sql = 'SELECT obi.CRM_DWH_PKG.FUN_GET_REGION FROM DUAL'
-
+            sql = 'SELECT obi.CRM_DWH_PKG.FUN_GET_REGION({}) FROM DUAL'.format(userid)
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
