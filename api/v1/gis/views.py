@@ -41,6 +41,7 @@ class GisView(BaseAPIView):
         try:
             con, cur = lib.connect()
             params = request.query_params.dict()
+            
             userid = "P_USER_ID=>'THANGHD'"
             if 'userid' in params.keys():
                 userid = "P_USER_ID=>'{}'".format(params['userid'])
