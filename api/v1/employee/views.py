@@ -66,7 +66,7 @@ Param `type` example
                 print(data_cursor)
                 for data in data_cursor:
                     emp_id = data[0]
-                    
+
                     working_processes = []
                     sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_WORKING_PROCESS('{}') FROM DUAL".format(emp_id)
                     print(sql)
@@ -96,6 +96,7 @@ Param `type` example
                         'avatar': data[8],
                         'block_id': data[9],
                         'block_name': data[10],
+                        'sex': data[11],
                         'working_processes': working_processes
                     }
                     datas.append(val)
@@ -176,6 +177,7 @@ Param `emp` example
                         'avatar': data[8],
                         'block_id': data[9],
                         'block_name': data[10],
+                        'sex': data[11],
                         'working_processes': working_processes
                     }
                     datas.append(val)
