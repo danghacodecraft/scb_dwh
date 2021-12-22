@@ -13,6 +13,7 @@ from api.v1.report.business_unit.serializers import ChartFResponseSerializer, Da
     CustomerResponseSerializer, RegionInfoResponseSerializer, \
     HRResponseSerializer, KPIResponseSerializer, IncomeResponseSerializer, BusinessResponseSerializer
 
+
 class BusinessUnitView(BaseAPIView):
     @extend_schema(
         operation_id='Data',
@@ -843,6 +844,7 @@ Screen `C_04`
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
     @extend_schema(

@@ -17,3 +17,7 @@ class BranchResponseSerializer(InheritedSerializer):
 class RegionResponseSerializer(InheritedSerializer):
     region_id = serializers.IntegerField(help_text="`id` of region")
     region_name = serializers.CharField(help_text="`name` of region")
+
+class AreaResponseSerializer(InheritedSerializer):
+    ID = serializers.CharField(help_text="`ID` of data")
+    NAME = serializers.CharField(help_text="`NAME` of data")
