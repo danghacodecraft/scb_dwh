@@ -2,6 +2,7 @@ import cx_Oracle
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
 from rest_framework import status
+import ldap
 
 import api.v1.function as lib
 
@@ -23,6 +24,8 @@ from api.v1.user.serializers import (
 )
 from core.user.models import User, DWHUser
 from library.constant.error_codes import ERROR_USERNAME_IS_EXIST
+
+from config.settings import LDAP_SERVER, LDAP_DOMAIN
 
 
 class UserView(BaseAPIView):
@@ -207,6 +210,7 @@ class LoginView(BaseAPIView):
 
         username = None
         password = None
+        mess = None
 
         if 'username' in params.keys():
             username = params['username']
@@ -216,21 +220,37 @@ class LoginView(BaseAPIView):
 
         if username and password:
             try:
-                sql = """
-                     SELECT a.bi_username USER_ID
-                            ,a.bi_displayname USER_NAME
-                      FROM obi.EXT_TBL_USER A
-                     WHERE A.BI_USERNAME IN('THANGHD','NAMNNN','HOANGTK','TUONGHD','PHUONGPTM')
-                     and A.BI_USERNAME = '{}'
-                     and A.DEFAULT_PASSWORD = '{}'
-                """.format(username, password)
-                cur.execute(sql)
-                res = cur.fetchone()
+                try:
+                    LDAP_USERNAME = '{}{}'.format(username, LDAP_DOMAIN)
 
-                if res:
-                    sql = """
-                         select obi.CRM_DWH_PKG.FUN_GET_LOGIN(P_USER_NAME=>'{}') FROM DUAL
-                                """.format(username)
+                    LDAP_PASSWORD = password
+
+                    ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
+
+                    ldap_client = ldap.initialize(LDAP_SERVER)
+
+                    ldap_client.protocol_version = ldap.VERSION3
+
+                    ldap_client.set_option(ldap.OPT_REFERRALS, 0)
+                    ldap_client.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
+                    ldap_client.simple_bind_s(LDAP_USERNAME, LDAP_PASSWORD)
+
+                    ldap_client.unbind()
+
+                    login_result = True
+
+                except ldap.INVALID_CREDENTIALS as e:
+                    print('Wrong ad info', e)
+                    mess = 'Sai thông tin'
+                    login_result = False
+
+                except ldap.SERVER_DOWN:
+                    print('AD server not awailable')
+                    mess = 'AD server not awailable'
+                    login_result = False
+
+                if login_result:
+                    sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(username)
                     cur.execute(sql)
                     res = cur.fetchone()
 
@@ -239,13 +259,15 @@ class LoginView(BaseAPIView):
                     user = None
 
                     for data in data_cursor:
+
                         user = DWHUser(
-                            username=data[0],
-                            password=data[2],
+                            username=username,
                             fullname=data[1],
-                            jobtitle=data[3],
-                            avatar=data[4]
+                            jobtitle=data[2],
+                            avatar=data[8],
+                            department=data[4]
                         )
+
                     cur.close()
                     con.close()
 
@@ -269,5 +291,5 @@ class LoginView(BaseAPIView):
             cur.close()
             con.close()
 
-        return self.response_success({"error": "Sai thông tin"}, status_code=status.HTTP_401_UNAUTHORIZED)
+        return self.response_success({"error": mess}, status_code=status.HTTP_401_UNAUTHORIZED)
 

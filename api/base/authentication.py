@@ -94,9 +94,7 @@ class TokenAuthentication(BaseAuthentication):
 
         con, cur = lib.connect()
 
-        sql = """
-             select obi.CRM_DWH_PKG.FUN_GET_LOGIN(P_USER_NAME=>'{}') FROM DUAL
-                    """.format(user_id)
+        sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(user_id)
         cur.execute(sql)
         res = cur.fetchone()
 
@@ -105,11 +103,11 @@ class TokenAuthentication(BaseAuthentication):
 
             for data in data_cursor:
                 user = DWHUser(
-                    username=data[0],
-                    password=data[2],
+                    username=user_id,
                     fullname=data[1],
-                    jobtitle=data[3],
-                    avatar=data[4]
+                    jobtitle=data[2],
+                    avatar=data[8],
+                    department=data[4]
                 )
             cur.close()
             con.close()
