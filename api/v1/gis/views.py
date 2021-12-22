@@ -33,7 +33,7 @@ class GisView(BaseAPIView):
         try:
             con, cur = lib.connect()
 
-            sql = 'select obi.CRM_DWH_PKG.FUN_GET_REGION FROM DUAL'
+            sql = 'SELECT obi.CRM_DWH_PKG.FUN_GET_REGION FROM DUAL'
 
             cur.execute(sql)
             res = cur.fetchone()
@@ -71,7 +71,10 @@ class GisView(BaseAPIView):
         description="Branch",
         parameters=[
             OpenApiParameter(
-                name="region", type=OpenApiTypes.STR, description="Tìm kiếm theo region"
+                name="userid", type=OpenApiTypes.STR, description="userid"
+            ),
+            OpenApiParameter(
+                name="region", type=OpenApiTypes.STR, description="region"
             )
         ],
         # request=BranchRequestSerializer,
@@ -84,12 +87,17 @@ class GisView(BaseAPIView):
     def branch(self, request):
         try:
             params = request.query_params.dict()
+
+            userid = "P_USER_ID=>'THANGHD'"
+            if 'userid' in params.keys():
+                userid = "P_USER_ID=>'{}'".format(params['userid'])
+
             region = ""
             if 'region' in params.keys():
-                region = "P_VUNG=>'{}'".format(params['region'])
+                region = ", P_VUNG=>'{}'".format(params['region'])
 
             con, cur = lib.connect()
-            sql = "select obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(region)
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}{}) FROM DUAL".format(userid, region)
             print(sql)
 
             cur.execute(sql)
@@ -137,6 +145,9 @@ class GisView(BaseAPIView):
         description="Branch",
         parameters=[
             OpenApiParameter(
+                name="userid", type=OpenApiTypes.STR, description="userid"
+            ),
+            OpenApiParameter(
                 name="code", type=OpenApiTypes.STR, description="code"
             )
         ],
@@ -150,10 +161,15 @@ class GisView(BaseAPIView):
     def search(self, request):
         try:
             params = request.query_params.dict()
+
+            userid = "P_USER_ID=>'THANGHD'"
+            if 'userid' in params.keys():
+                userid = "P_USER_ID=>'{}'".format(params['userid'])
+
             code = params['code']
 
             con, cur = lib.connect()
-            sql = "select obi.CRM_DWH_PKG.FUN_GET_LOCATION() FROM DUAL"
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
             print(sql)
 
             cur.execute(sql)
