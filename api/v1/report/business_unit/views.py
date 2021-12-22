@@ -92,10 +92,7 @@ The `Screen` has values:
                 division = ",P_DIVISION=>'{}'".format(params['division'])
 
 
-            sql = """SELECT obi.CRM_DWH_PKG.FUN_GET_DATA(
-                '{}'{}{}{}{}{}
-            ) FROM DUAL""".format(screen, vung, dv, fdate, tdate, division)
-
+            sql = """SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}{}{}{}) FROM DUAL""".format(screen, vung, dv, fdate, tdate, division)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -330,13 +327,8 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             if 'division' in params.keys():
                 division = ",P_DIVISION=>'{}'".format(params['division'])
 
-            sql = """
-            select obi.CRM_DWH_PKG.FUN_GET_CHART(
-                P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{}
-            ) FROM DUAL
-            """.format(screen, key, vung, dv, fdate, tdate, division)
-
-            #print(sql)
+            sql = "Select obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{} ) FROM DUAL".format(screen, key, vung, dv, fdate, tdate, division)
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -555,7 +547,13 @@ Screen `C_04`
         parameters=[
             OpenApiParameter(
                 name="screen", type=OpenApiTypes.STR, description="screen"
-            )
+            ),
+            OpenApiParameter(
+                name="vung", type=OpenApiTypes.STR, description="vung"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            ),
         ],
         # request=ChartFRequestSerializer,
         responses={
@@ -570,11 +568,15 @@ Screen `C_04`
             params = request.query_params.dict()
             screen = params['screen']
 
-            sql = """
-                select obi.CRM_DWH_PKG.FUN_C04_CHART(
-                    P_MAN_HINH=>'{}',P_MODULE=>'dinh_bien_nhan_su'
-                ) FROM DUAL
-            """.format(screen)
+            vung = ""
+            if 'vung' in params.keys():
+                vung = ",P_VUNG=>'{}'".format(params['vung'])
+
+            dv = ""
+            if 'dv' in params.keys():
+                dv = ",P_DV=>'{}'".format(params['dv'])
+
+            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'dinh_bien_nhan_su'{}{} ) FROM DUAL".format(screen, vung, dv)
 
             print(sql)
             cur.execute(sql)
@@ -589,6 +591,7 @@ Screen `C_04`
                     data_cursor = None
 
                 for data in data_cursor:
+                    print(data)
                     val = {
                         'AREA_NAME': data[0],
                         'SLNS_DINH_BIEN': data[1],
@@ -728,7 +731,13 @@ Screen `C_04`
             ),
             OpenApiParameter(
                 name="key", type=OpenApiTypes.STR, description="key"
-            )
+            ),
+            OpenApiParameter(
+                name="vung", type=OpenApiTypes.STR, description="vung"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            ),
         ],
         # request=ChartFRequestSerializer,
         responses={
@@ -744,7 +753,15 @@ Screen `C_04`
             screen = params['screen']
             key = params['key']
 
-            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}' ) FROM DUAL".format(screen, key)
+            vung = ""
+            if 'vung' in params.keys():
+                vung = ",P_VUNG=>'{}'".format(params['vung'])
+
+            dv = ""
+            if 'dv' in params.keys():
+                dv = ",P_DV=>'{}'".format(params['dv'])
+
+            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{} ) FROM DUAL".format(screen, key, vung, dv)
 
             print(sql)
             cur.execute(sql)
@@ -794,7 +811,13 @@ Screen `C_04`
         parameters=[
             OpenApiParameter(
                 name="screen", type=OpenApiTypes.STR, description="screen"
-            )
+            ),
+            OpenApiParameter(
+                name="vung", type=OpenApiTypes.STR, description="vung"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            ),
         ],
         # request=ChartFRequestSerializer,
         responses={
@@ -809,11 +832,15 @@ Screen `C_04`
             params = request.query_params.dict()
             screen = params['screen']
 
-            sql = """
-                select obi.CRM_DWH_PKG.FUN_C04_CHART(
-                    P_MAN_HINH=>'{}',P_MODULE=>'chi_tieu_kinh_doanh'
-                ) FROM DUAL
-            """.format(screen)
+            vung = ""
+            if 'vung' in params.keys():
+                vung = ",P_VUNG=>'{}'".format(params['vung'])
+
+            dv = ""
+            if 'dv' in params.keys():
+                dv = ",P_DV=>'{}'".format(params['dv'])
+
+            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'chi_tieu_kinh_doanh'{}{} ) FROM DUAL".format(screen, vung, dv)
 
             print(sql)
             cur.execute(sql)
@@ -828,6 +855,7 @@ Screen `C_04`
                     data_cursor = None
 
                 for data in data_cursor:
+                    print(data)
                     val = {
                         'NAME': data[0],
                         'THANG': data[1],
