@@ -13,7 +13,9 @@ class EmployeeResponseSerializer(InheritedSerializer):
     email = serializers.CharField(help_text="`email` of data")
     mobile = serializers.CharField(help_text="`mobile` of data")
     avatar = serializers.CharField(help_text="`avatar` of data")
-
+    block_id = serializers.CharField(help_text="`block_id` of data")
+    block_name = serializers.CharField(help_text="`block_name` of data")
+    sex = serializers.CharField(help_text="`sex` of data")
 
 class BranchResponseSerializer(InheritedSerializer):
     id = serializers.CharField(help_text="`id` of data")
