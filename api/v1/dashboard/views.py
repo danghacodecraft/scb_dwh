@@ -145,35 +145,28 @@ The `dv` example:
             # if 'page_number' in params.keys():
             #     page_number = int(params['page_number'])
             # call the function
-            sql = """
-            Select obi.CRM_DWH_PKG.FUN_GET_CHART(
-                P_MAN_HINH=>'TRANG_CHU',P_MODULE=>'{}'{}{}
-            ) FROM DUAL""".format(module, vung, dv)
+            sql = "Select obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'TRANG_CHU',P_MODULE=>'{}'{}{} ) FROM DUAL".format(module, vung, dv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
             datas = []
             if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
+                data_cursor = res[0]
+                if data_cursor is not None:
+                    for data in data_cursor:
+                        print(data)
 
-                for data in data_cursor:
-                    print(data)
-
-                    val = {
-                        'id': lib.create_key(data[1].strip()),
-                        'title': data[3].strip(),
-                        'val': data[2],
-                        'unit': data[4].strip()
-                        # 'week': data[3],
-                        # 'month': data[4],
-                        # 'accumulated': data[5]
-                    }
-                    datas.append(val)
+                        val = {
+                            'id': lib.create_key(data[1].strip()),
+                            'title': data[3].strip(),
+                            'val': data[2],
+                            'unit': data[4].strip()
+                            # 'week': data[3],
+                            # 'month': data[4],
+                            # 'accumulated': data[5]
+                        }
+                        datas.append(val)
 
             cur.close()
             con.close()
