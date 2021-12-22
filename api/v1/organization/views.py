@@ -271,6 +271,11 @@ Param `type` example
         summary='Region_List',
         tags=["ORGANIZATION"],
         description="Region List",
+        parameters=[
+            OpenApiParameter(
+                name="userid", type=OpenApiTypes.STR, description="userid"
+            )
+        ],
         responses={
             status.HTTP_201_CREATED: RegionResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
@@ -280,8 +285,13 @@ Param `type` example
     def region_list(self, request):
         try:
             con, cur = lib.connect()
+            params = request.query_params.dict()
 
-            sql = 'select obi.CRM_DWH_PKG.FUN_GET_REGION FROM DUAL'
+            userid = "P_USER_ID=>'THANGHD'"
+            if 'userid' in params.keys():
+                userid = "P_USER_ID=>'{}'".format(params['userid'])
+
+            sql = 'select obi.CRM_DWH_PKG.FUN_GET_REGION({}) FROM DUAL'.format(userid)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -421,6 +431,9 @@ Param `type` example
 """,
         parameters=[
             OpenApiParameter(
+                name="userid", type=OpenApiTypes.STR, description="userid"
+            ),
+            OpenApiParameter(
                 name="type", type=OpenApiTypes.STR, description="type"
             ),
             OpenApiParameter(
@@ -434,6 +447,10 @@ Param `type` example
 
             params = request.query_params.dict()
 
+            userid = ", P_USER_ID=>'THANGHD'"
+            if 'userid' in params.keys():
+                userid = ", P_USER_ID=>'{}'".format(params['userid'])
+
             type = ", P_TYPE=>'CAP_DVKD'"
             if 'type' in params.keys():
                 type = ", P_TYPE=>'{}'".format(params['type'])
@@ -443,7 +460,7 @@ Param `type` example
                 flevel = params['level']
 
             # call the function
-            sql = "Select obi.crm_dwh_pkg.FUN_GET_BRANCH(P_VUNG=>'ALL'{}) FROM DUAL".format(type)
+            sql = "Select obi.crm_dwh_pkg.FUN_GET_BRANCH(P_VUNG=>'ALL'{}{}) FROM DUAL".format(userid, type)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
