@@ -84,18 +84,20 @@ class User(BaseModel):
 
 
 class DWHUser:
-    def __init__(self, username, password, fullname, jobtitle=None, avatar=None):
+    def __init__(self, username=None, password=None, fullname=None, jobtitle=None, avatar=None, department=None, branch_code=None):
         self.id = username
         self.username = username
         self.password = password
         self.name = fullname
         self.token = base64.b64encode(username.encode()).decode('utf-8')
         if avatar:
+            avatar = avatar.replace('/var/www/EmployeeImage/', '')
             self.avatar = '/cdn/{}'.format(avatar)
         else:
             self.avatar = None
         self.position = 'Director'
-        self.department = 'NGÂN HÀNG TMCP SÀI GÒN'
+        self.department = department
         self.jobtitle = jobtitle
+        self.branch_code = branch_code
 
 
