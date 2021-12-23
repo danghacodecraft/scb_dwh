@@ -172,7 +172,8 @@ class UserView(BaseAPIView):
             'avatar': user.avatar,
             'position': user.position,
             'department': user.department,
-            'jobtitle': user.jobtitle
+            'jobtitle': user.jobtitle,
+            'branch_code': user.branch_code
         }, status_code=status.HTTP_200_OK)
 
 
@@ -217,7 +218,8 @@ class LoginView(BaseAPIView):
                 'avatar': request.user.avatar,
                 'position': request.user.position,
                 'department': request.user.department,
-                'jobtitle': request.user.jobtitle
+                'jobtitle': request.user.jobtitle,
+                'branch_code': request.user.branch_code
             }, status_code=status.HTTP_200_OK)
         else:
             return self.response_success({"error": "Sai thông tin"},

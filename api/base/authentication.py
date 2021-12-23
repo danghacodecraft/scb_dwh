@@ -111,7 +111,8 @@ class TokenAuthentication(BaseAuthentication):
                     fullname=data[1],
                     jobtitle=data[2],
                     avatar=data[8],
-                    department=data[4]
+                    department=data[4],
+                    branch_code=data[12]
                 )
             cur.close()
             con.close()
@@ -198,7 +199,8 @@ class BasicAuthentication(BaseAuthentication):
                     fullname=data[1],
                     jobtitle=data[2],
                     avatar=data[8],
-                    department=data[4]
+                    department=data[4],
+                    branch_code=data[12]
                 )
 
         except cx_Oracle.Error as e:

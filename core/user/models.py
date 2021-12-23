@@ -84,7 +84,7 @@ class User(BaseModel):
 
 
 class DWHUser:
-    def __init__(self, username=None, password=None, fullname=None, jobtitle=None, avatar=None, department=None):
+    def __init__(self, username=None, password=None, fullname=None, jobtitle=None, avatar=None, department=None, branch_code=None):
         self.id = username
         self.username = username
         self.password = password
@@ -98,5 +98,6 @@ class DWHUser:
         self.position = 'Director'
         self.department = department
         self.jobtitle = jobtitle
+        self.branch_code = branch_code
 
 
