@@ -245,8 +245,8 @@ Param `type` example
                             'fullname': branch_name,
                             'level': 2,
                             'child': {
-                                '0': {
-                                    'id': 0,
+                                branch_id: {
+                                    'id': branch_id,
                                     'fullname': data[10],
                                     'level': 3,
                                     'child': {}
@@ -254,7 +254,7 @@ Param `type` example
                             }
                         }
 
-                    department_childs = branch_childs[branch_id]['child']['0']['child']
+                    department_childs = branch_childs[branch_id]['child'][branch_id]['child']
                     department_id = data[13]
                     department_name = data[14]
                     code = data[17]
@@ -402,8 +402,8 @@ Param `type` example
                             'fullname': branch_name,
                             'level': 1,
                             'child': {
-                                '0': {
-                                    'id': 0,
+                                branch_id: {
+                                    'id': branch_id,
                                     'fullname': data[10],
                                     'level': 2,
                                     'child': {}
@@ -411,7 +411,7 @@ Param `type` example
                             }
                         }
 
-                    department_childs = ret[branch_id]['child']['0']['child']
+                    department_childs = ret[branch_id]['child'][branch_id]['child']
                     department_id = data[13]
                     department_name = data[14]
                     code = data[17]
