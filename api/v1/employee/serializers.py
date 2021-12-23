@@ -17,8 +17,18 @@ class EmployeeResponseSerializer(InheritedSerializer):
     block_name = serializers.CharField(help_text="`block_name` of data")
     sex = serializers.CharField(help_text="`sex` of data")
 
+class EmployeeKPIResponseSerializer(InheritedSerializer):
+    ID = serializers.CharField(help_text="`ID` of data")
+    FULLNAME = serializers.CharField(help_text="`FULLNAME` of data")
+    KPI = serializers.CharField(help_text="`KPI` of data")
+    PER = serializers.CharField(help_text="`PER` of data")
+    RES = serializers.CharField(help_text="`RES` of data")
+    DATE = serializers.CharField(help_text="`DATE` of data")
+    NOTE = serializers.CharField(help_text="`NOTE` of data")
+
 class BranchResponseSerializer(InheritedSerializer):
     id = serializers.CharField(help_text="`id` of data")
     fullname = serializers.CharField(help_text="`fullname` of data")
     level = serializers.CharField(help_text="`level` of data")
+
 
