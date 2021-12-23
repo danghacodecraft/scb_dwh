@@ -9,5 +9,4 @@ urlpatterns = [
 
     path('area/', GisView.as_view({'get': 'area'})),
     path('area_branch/', GisView.as_view({'get': 'area_branch'})),
-
 ]
