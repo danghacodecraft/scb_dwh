@@ -6,7 +6,7 @@ EXAMPLE_RESPONSE_LOGIN_SUCCESS1 = OpenApiExample(
     description='''
     Tài khoản mặc định:
         username: THANGHD
-        password: THANGHD@321
+        password: Admin@123
     Lưu ý: Gửi basic auth trên header, không phải gửi qua payload body
     ''',
     value={
