@@ -181,6 +181,8 @@ class BasicAuthentication(BaseAuthentication):
                 'description': ERROR_CODE_MESSAGE[INVALID_LOGIN]
             })
 
+        user = None
+
         try:
             sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(username.upper())
             cur.execute(sql)
