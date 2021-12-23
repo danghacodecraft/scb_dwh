@@ -7,4 +7,5 @@ urlpatterns = [
     path('emp_detail/', EmployeeView.as_view({'get': 'emp_detail'})),
     path('dep_list/', EmployeeView.as_view({'get': 'dep_list'})),
 
+    path('brn_detail/', EmployeeView.as_view({'get': 'brn_detail'})),
 ]

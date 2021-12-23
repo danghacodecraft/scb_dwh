@@ -57,7 +57,16 @@ class RegionInfoResponseSerializer(InheritedSerializer):
     fullname = serializers.CharField(help_text="`fullname` of data")
     email = serializers.CharField(help_text="`email` of data")
     mobile = serializers.CharField(help_text="`mobile` of data")
+    user = serializers.CharField(help_text="`user` of data")
     fullname_op = serializers.CharField(help_text="`fullname_op` of data")
     email_op = serializers.CharField(help_text="`email_op` of data")
     mobile_op = serializers.CharField(help_text="`mobile_op` of data")
+    user_op = serializers.CharField(help_text="`user_op` of data")
 
+class BranchInfoResponseSerializer(InheritedSerializer):
+    address = serializers.CharField(help_text="`address` of data")
+    fullname = serializers.CharField(help_text="`fullname` of data")
+    email = serializers.CharField(help_text="`email` of data")
+    mobile = serializers.CharField(help_text="`mobile` of data")
+    user = serializers.CharField(help_text="`user` of data")
+    id = serializers.CharField(help_text="`id` of data")

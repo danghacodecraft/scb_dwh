@@ -9,7 +9,7 @@ from rest_framework import status
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
 from api.v1.report.business_unit.serializers import ChartFResponseSerializer, DataResponseSerializer, \
-    CustomerResponseSerializer, RegionInfoResponseSerializer
+    CustomerResponseSerializer, RegionInfoResponseSerializer, BranchInfoResponseSerializer
 
 class BusinessUnitView(BaseAPIView):
     @extend_schema(
@@ -726,8 +726,6 @@ Param `region`
 
             sql = "Select obi.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO( P_MAN_HINH=>'{}'{} ) FROM DUAL".format(screen, region)
             print(sql)
-
-            # print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -746,6 +744,75 @@ Param `region`
                         'email_op': data[5],
                         'mobile_op': data[6],
                         "user_op": data[5].replace("@SCB.COM.VN", ""),
+                    }
+                    datas.append(val)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Branch Info',
+        summary='List',
+        tags=["BUSINESS"],
+        description="""
+Param `screen`         
+- **TRANG_CHU**.
+
+Param `dv`         
+- **001**.
+    """,
+        parameters=[
+            OpenApiParameter(
+                name="screen", type=OpenApiTypes.STR, description="screen"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            )
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: BranchInfoResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def branch(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+
+            screen = 'TRANG_CHU'
+            if 'screen' in params.keys():
+                screen = params['screen']
+
+            dv = ""
+            if 'dv' in params.keys():
+                dv = ", p_dv=>'{}'".format(params['dv'])
+
+            sql = "Select obi.CRM_DWH_PKG.FUN_GET_BRN_MANA_INFO( P_MAN_HINH=>'{}'{} ) FROM DUAL".format(screen, dv)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                data_cursor = res[0]
+                for data in data_cursor:
+                    print(data)
+                    #('7/57D Nguyễn Khắc Nhu,Phường Cô Giang,Quận 1,Long An,Việt Nam', 'TRỊNH BÁ VƯƠNG', 'VUONGTB@SCB.COM.VN', '+84 939292368', '001')
+                    val = {
+                        'address': data[0],
+                        'fullname': data[1],
+                        'email': data[2],
+                        'mobile': data[3],
+                        "user": data[2].replace("@SCB.COM.VN", ""),
+                        "id": data[4],
                     }
                     datas.append(val)
 

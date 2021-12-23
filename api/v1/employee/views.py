@@ -269,3 +269,75 @@ Param `dep` example
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='BRN_DETAIL',
+        summary='BRN_DETAIL',
+        tags=["EMPLOYEE"],
+        responses={
+            status.HTTP_201_CREATED: BranchResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        },
+        description="""
+Param `dep` example       
+- **CAP_HOI_SO**.
+
+""",
+        parameters=[
+            OpenApiParameter(
+                name="dep", type=OpenApiTypes.STR, description="dep"
+            )
+        ]
+    )
+    def brn_detail(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            dep = params['dep']
+
+            # call the function
+            sql = "Select obi.CRM_DWH_PKG.FUN_GET_BRN_MANA_INFO(P_MAN_HINH => 'TRANG_CHU',P_DV => '001') from dual"
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            ret = {}
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                for data in data_cursor:
+                    print(data)
+                    # (None, None, None, None, None, None, None, None, '001', 'SCB Cống Quỳnh', 'BAN GIAM DOC', '11838', 'Phòng Khách hàng Wholesale')
+                    # branch_id = data[8]
+                    # branch_name = data[9]
+                    #
+                    # if branch_id not in ret:
+                    #     ret[branch_id] = {
+                    #         'branch_id': branch_id,
+                    #         'branch_name': branch_name,
+                    #         'director': data[10],
+                    #         'departments': {}
+                    #     }
+                    #
+                    # departments = ret[branch_id]['departments']
+                    # department_id = data[11]
+                    # department_name = data[12]
+                    # if department_id != None and department_id not in departments:
+                    #     departments[department_id] = {
+                    #         'department_id': department_id,
+                    #         'department_name': department_name
+                    #     }
+
+            cur.close()
+            con.close()
+            return self.response_success(ret, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
