@@ -32,6 +32,9 @@ Param `type` example
 """,
         parameters=[
             OpenApiParameter(
+                name="orgid", type=OpenApiTypes.STR, description="orgid"
+            ),
+            OpenApiParameter(
                 name="depid", type=OpenApiTypes.STR, description="depid"
             ),
             OpenApiParameter(
@@ -42,16 +45,20 @@ Param `type` example
     def emp_list(self, request):
         try:
             con, cur = lib.connect()
-
             params = request.query_params.dict()
-            depid = params['depid']
 
-            type = ", P_TYPE=>'TONG_HOP'"
+            type = "P_TYPE=>'TONG_HOP'"
             if 'type' in params.keys():
-                type = ", P_TYPE=>'{}'".format(params['type'])
+                type = "P_TYPE=>'{}'".format(params['type'])
+
+            code = ""
+            if 'orgid' in params.keys():
+                code = ", P_ORG_ID=>'{}'".format(params['orgid'])
+            elif 'depid' in params.keys():
+                code = ", P_DEP_ID=>'{}'".format(params['depid'])
 
             # call the function
-            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_DEP_ID=>'{}'{}) FROM DUAL".format(depid, type)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO({}{}) FROM DUAL".format(type, code)
             cur.execute(sql)
             res = cur.fetchone()
 
