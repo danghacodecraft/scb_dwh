@@ -43,6 +43,9 @@ The `Screen` has values:
                 name="vung", type=OpenApiTypes.STR, description="vung"
             ),
             OpenApiParameter(
+                name="kv", type=OpenApiTypes.STR, description="kv"
+            ),
+            OpenApiParameter(
                 name="dv", type=OpenApiTypes.STR, description="dv"
             ),
             OpenApiParameter(
@@ -72,6 +75,10 @@ The `Screen` has values:
             if 'vung' in params.keys():
                 vung = ",P_VUNG=>'{}'".format(params['vung'])
 
+            kv = ""
+            if 'kv' in params.keys():
+                kv = ",P_KV=>'{}'".format(params['kv'])
+
             dv = ""
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
@@ -88,7 +95,7 @@ The `Screen` has values:
             if 'division' in params.keys():
                 division = ",P_DIVISION=>'{}'".format(params['division'])
 
-            sql = """SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}{}{}{}) FROM DUAL""".format(screen, vung, dv, fdate, tdate, division)
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}{}{}{}{}) FROM DUAL".format(screen, vung, kv, dv, fdate, tdate, division)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -269,6 +276,9 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                 name="vung", type=OpenApiTypes.STR, description="vung"
             ),
             OpenApiParameter(
+                name="kv", type=OpenApiTypes.STR, description="kv"
+            ),
+            OpenApiParameter(
                 name="dv", type=OpenApiTypes.STR, description="dv"
             ),
             OpenApiParameter(
@@ -306,6 +316,10 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             if 'vung' in params.keys():
                 vung = ",P_VUNG=>'{}'".format(params['vung'])
 
+            kv = ""
+            if 'kv' in params.keys():
+                kv = ",P_KV=>'{}'".format(params['kv'])
+
             dv = ""
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
@@ -322,7 +336,7 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             if 'division' in params.keys():
                 division = ",P_DIVISION=>'{}'".format(params['division'])
 
-            sql = "Select obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{} ) FROM DUAL".format(screen, key, vung, dv, fdate, tdate, division)
+            sql = "Select obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{}{} ) FROM DUAL".format(screen, key, vung, kv, dv, fdate, tdate, division)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
