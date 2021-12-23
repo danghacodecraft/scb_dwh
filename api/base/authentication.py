@@ -1,14 +1,18 @@
 import base64
 import binascii
 
+import cx_Oracle
+import ldap
+
 import api.v1.function as lib
 
 from drf_spectacular.extensions import OpenApiAuthenticationExtension
-from rest_framework import HTTP_HEADER_ENCODING, exceptions
+from rest_framework import HTTP_HEADER_ENCODING, exceptions, status
 from rest_framework.authentication import (
     BaseAuthentication, get_authorization_header
 )
 
+from config.settings import LDAP_SERVER, LDAP_DOMAIN
 from core.user.models import User, DWHUser
 from library.constant.error_codes import (
     BASIC_AUTH_NOT_FOUND, BASIC_AUTH_NOT_VALID, BEARER_TOKEN_NOT_FOUND,
@@ -94,9 +98,7 @@ class TokenAuthentication(BaseAuthentication):
 
         con, cur = lib.connect()
 
-        sql = """
-             select obi.CRM_DWH_PKG.FUN_GET_LOGIN(P_USER_NAME=>'{}') FROM DUAL
-                    """.format(user_id)
+        sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(user_id.upper())
         cur.execute(sql)
         res = cur.fetchone()
 
@@ -105,11 +107,12 @@ class TokenAuthentication(BaseAuthentication):
 
             for data in data_cursor:
                 user = DWHUser(
-                    username=data[0],
-                    password=data[2],
+                    username=user_id,
                     fullname=data[1],
-                    jobtitle=data[3],
-                    avatar=data[4]
+                    jobtitle=data[2],
+                    avatar=data[8],
+                    department=data[4],
+                    branch_code=data[12]
                 )
             cur.close()
             con.close()
@@ -164,7 +167,7 @@ class BasicAuthentication(BaseAuthentication):
                 'error_code': BASIC_AUTH_NOT_VALID,
                 'description': ERROR_CODE_MESSAGE[BASIC_AUTH_NOT_VALID]
             })
-
+        self.ldap_login(username, password, request)
         return self.check_username_password(username, password, request)
 
     def authenticate_header(self, request):
@@ -172,33 +175,90 @@ class BasicAuthentication(BaseAuthentication):
 
     @staticmethod
     def check_username_password(username, password, request=None):
+        con, cur = lib.connect()
         if not username or not password:
             raise exceptions.AuthenticationFailed({
                 'error_code': INVALID_LOGIN,
                 'description': ERROR_CODE_MESSAGE[INVALID_LOGIN]
             })
 
-        # user = User.objects.filter(username=username).first()
-        # if user is None:
-        #     raise exceptions.AuthenticationFailed({
-        #         'error_code': INVALID_USERNAME,
-        #         'description': ERROR_CODE_MESSAGE[INVALID_USERNAME]
-        #     })
-        #
-        # if not user.check_password(password):
-        #     raise exceptions.AuthenticationFailed({
-        #         'error_code': INVALID_PASSWORD,
-        #         'description': ERROR_CODE_MESSAGE[INVALID_PASSWORD]
-        #     })
-        #
-        # user.last_login = now()
-        # user.save()
-        user = User(
-            id=0,
-            name='test',
-            token='abc'
-        )
+        user = None
+
+        try:
+            sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(username.upper())
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            data_cursor = res[0]
+
+            user = None
+
+            for data in data_cursor:
+                user = DWHUser(
+                    username=username,
+                    fullname=data[1],
+                    jobtitle=data[2],
+                    avatar=data[8],
+                    department=data[4],
+                    branch_code=data[12]
+                )
+
+        except cx_Oracle.Error as e:
+            pass
+        except IndexError:
+            return exceptions.AuthenticationFailed({
+                'error_code': INVALID_USERNAME,
+                'description': ERROR_CODE_MESSAGE[INVALID_USERNAME]
+            })
+        finally:
+            cur.close()
+            con.close()
+
         setattr(request, 'user', user)
 
         return user, None  # authentication successful
 
+    @staticmethod
+    def ldap_login(username, password, request=None):
+        try:
+            LDAP_USERNAME = '{}{}'.format(username, LDAP_DOMAIN)
+
+            LDAP_PASSWORD = password
+
+            ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
+
+            ldap_client = ldap.initialize(LDAP_SERVER)
+
+            ldap_client.protocol_version = ldap.VERSION3
+
+            ldap_client.set_option(ldap.OPT_REFERRALS, 0)
+            ldap_client.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
+            ldap_client.simple_bind_s(LDAP_USERNAME, LDAP_PASSWORD)
+
+            ldap_client.unbind()
+
+            return True
+
+        except ldap.INVALID_CREDENTIALS as e:
+            # print('Wrong ad info', e)
+            mess = 'Wrong LDAP information'
+
+        except ldap.SERVER_DOWN:
+            # print('AD server not available')
+            mess = 'AD server not available'
+
+        raise exceptions.AuthenticationFailed({
+            'error_code': INVALID_LOGIN,
+            'description': ERROR_CODE_MESSAGE[INVALID_LOGIN] + ' ' + mess
+        })
+
+
+class BasicAuthenticationScheme(OpenApiAuthenticationExtension):
+    target_class = 'api.base.authentication.BasicAuthentication'
+    name = 'BasicAuthentication'
+
+    def get_security_definition(self, auto_schema):
+        return {
+            "type": "http",
+            "scheme": "basic"
+        }

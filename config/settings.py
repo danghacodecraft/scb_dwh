@@ -233,3 +233,6 @@ SPECTACULAR_SETTINGS = {
     },
     'COMPONENT_SPLIT_REQUEST': True  # chuyển FileField về dạng chọn file binary
 }
+
+LDAP_SERVER = 'ldaps://192.168.73.57:636'
+LDAP_DOMAIN = '@scbuat.local'
