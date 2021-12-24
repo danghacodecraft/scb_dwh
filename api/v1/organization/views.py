@@ -208,7 +208,7 @@ Param `type` example
             #     userid = ", P_USER_ID=>'{}'".format(params['userid'])
 
             # call the function
-            sql = "Select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION( P_REGION => '{}'{}) FROM DUAL".format(name, type)
+            sql = "Select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_REGION=>'{}'{}) FROM DUAL".format(name, type)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
