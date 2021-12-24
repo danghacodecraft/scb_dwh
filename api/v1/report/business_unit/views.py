@@ -110,7 +110,8 @@ The `Screen` has values:
 
                 for data in data_cursor:
                     print(data)
-                    #('C_02_01_DWH_0007', 'Khách hàng Prime Platinum', 0, 0, 0, 0, 'Khách hàng Prime Platinum', 'khách hàng', 0)
+                    #('0-0-A-05.09',        'Nợ xấu',       54685588,   109371176,  54685588,   54685588,   'Nợ xấu[Khối DN]',  None,       109371176)
+                    #('C_02_01_DWH_0007',   'Khách hàng ',  0,          0,          0,          0,          'Khách hàng ',      'khách hàng', 0)
                     val = {
                         'id': lib.create_key(data[6].strip()),
                         "title": data[6].strip(),
