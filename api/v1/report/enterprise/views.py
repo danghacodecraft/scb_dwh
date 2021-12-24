@@ -340,7 +340,8 @@ Screen `C_04`
                         'NAME': data[0],
                         'THANG': data[1],
                         'LUY_KE': data[2],
-                        'NAM': data[3]
+                        'NAM': data[3],
+                        'ID_NAME': data[4]
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
