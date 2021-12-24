@@ -32,16 +32,8 @@ class OrganizationView(BaseAPIView):
         try:
             con, cur = lib.connect()
 
-            # print(cx_Oracle.version)
-            # print("Database version:", con.version)
-            # print("Client version:", cx_Oracle.clientversion())
-
             # call the function
-            sql = """
-                SELECT *
-                FROM OBI.dwhf_hr_organization
-                ORDER BY NVL(PARENT_ID,ID), ORDER_BY
-            """
+            sql = "SELECT * FROM OBI.dwhf_hr_organization ORDER BY NVL(PARENT_ID,ID), ORDER_BY"
             print(sql)
             cur.execute(sql)
             datas = cur.fetchall()
@@ -208,7 +200,7 @@ Param `type` example
             #     userid = ", P_USER_ID=>'{}'".format(params['userid'])
 
             # call the function
-            sql = "Select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_REGION=>'{}'{}) FROM DUAL".format(name, type)
+            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_REGION=>'{}'{}) FROM DUAL".format(name, type)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -300,7 +292,7 @@ Param `type` example
             if 'userid' in params.keys():
                 userid = "P_USER_ID=>'{}'".format(params['userid'])
 
-            sql = 'select obi.CRM_DWH_PKG.FUN_GET_REGION({}) FROM DUAL'.format(userid)
+            sql = 'SELECT obi.CRM_DWH_PKG.FUN_GET_REGION({}) FROM DUAL'.format(userid)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -377,7 +369,7 @@ Param `type` example
             #     userid = ", P_USER_ID=>'{}'".format(params['userid'])
 
             # call the function
-            sql = "Select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_BRANCH=>'{}'{}) FROM DUAL".format(name, type)
+            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_BRANCH=>'{}'{}) FROM DUAL".format(name, type)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -476,7 +468,7 @@ Param `type` example
                 flevel = params['level']
 
             # call the function
-            sql = "Select obi.crm_dwh_pkg.FUN_GET_BRANCH(P_VUNG=>'ALL'{}{}) FROM DUAL".format(userid, type)
+            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_BRANCH(P_VUNG=>'ALL'{}{}) FROM DUAL".format(userid, type)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()

@@ -88,5 +88,6 @@ class BusinessResponseSerializer(InheritedSerializer):
     THANG = serializers.CharField(help_text="`THANG` of data")
     LUY_KE = serializers.CharField(help_text="`LUY_KE` of data")
     NAM = serializers.CharField(help_text="`NAM` of data")
+    ID_NAME = serializers.CharField(help_text="`ID_NAME` of data")
 
 
