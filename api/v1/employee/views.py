@@ -86,7 +86,7 @@ Param `type` example
                         'sex': data[11],
                         'branch_code': data[12],
                         'manager': data[13],
-                        'working_processes': working_processes
+                        'working_processes': []
                     }
                     datas.append(val)
 
