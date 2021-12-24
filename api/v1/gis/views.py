@@ -227,6 +227,9 @@ class GisView(BaseAPIView):
         tags=["GIS"],
         description="Area",
         parameters=[
+            OpenApiParameter(
+                name="userid", type=OpenApiTypes.STR, description="userid"
+            ),
         ],
         # request=ChartFRequestSerializer,
         responses={
@@ -238,8 +241,13 @@ class GisView(BaseAPIView):
     def area(self, request):
         try:
             con, cur = lib.connect()
-            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_AREA() from dual"
 
+            params = request.query_params.dict()
+            userid = "P_USER_ID=>'THANGHD'"
+            if 'userid' in params.keys():
+                userid = "P_USER_ID=>'{}'".format(params['userid'])
+
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_AREA() from dual".format(userid)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -282,6 +290,9 @@ Param `screen`
             OpenApiParameter(
                 name="kv", type=OpenApiTypes.STR, description="kv"
             ),
+            OpenApiParameter(
+                name="kv", type=OpenApiTypes.STR, description="kv"
+            ),
         ],
         # request=ChartFRequestSerializer,
         responses={
@@ -295,29 +306,58 @@ Param `screen`
             con, cur = lib.connect()
             params = request.query_params.dict()
 
-            kv = "P_KV=>'K01'"
-            if 'kv' in params.keys():
-                kv = "P_KV=>'{}'".format(params['kv'])
+            userid = "P_USER_ID=>'THANGHD'"
+            if 'userid' in params.keys():
+                userid = "P_USER_ID=>'{}'".format(params['userid'])
 
-            sql = "select obi.CRM_DWH_PKG.FUN_GET_BRANCH_AREA({}) from dual".format(kv)
+            kv = "K01"
+            if 'kv' in params.keys():
+                kv = params['kv']
+
+            #--------------------------------------------------
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            branches = {}
+            if len(res) > 0:
+                data_cursor = res[0]
+                for data in data_cursor:
+                    print(data)
+                    # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
+                    branch_id = data[6].strip()
+                    if branch_id not in branches.keys() and data[8] != None and data[9] != None:
+                        branches[branch_id] = {
+                            'latitude': data[8],
+                            'longitude': data[9],
+                        }
+
+            # --------------------------------------------------
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_BRANCH_AREA(P_KV=>'{}') from dual".format( kv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
             datas = []
             if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
+                data_cursor = res[0]
                 for data in data_cursor:
                     print(data)
+                    branch_id = data[0]
                     val = {
-                        'ID': data[0],
-                        'NAME': data[1]
+                        'ID': branch_id,
+                        'NAME': data[1],
+                        'latitude': 0,
+                        'longitude': 0,
+                        'KHU_VUC': kv
                     }
+
+                    if branch_id in branches.keys():
+                        branch = branches[branch_id]
+                        val['longitude'] = branch['longitude']
+                        val['latitude'] = branch['latitude']
+
                     datas.append(val)
                 datas.sort(key=myArea)
 
