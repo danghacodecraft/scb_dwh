@@ -10,7 +10,7 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.employee.serializers import EmployeeResponseSerializer, BranchResponseSerializer
+from api.v1.employee.serializers import EmployeeResponseSerializer, BranchResponseSerializer, EmployeeKPIResponseSerializer, EmployeeWorkprocessResponseSerializer
 
 class EmployeeView(BaseAPIView):
     @extend_schema(
@@ -67,31 +67,8 @@ Param `type` example
 
             datas = []
             if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
-                print(data_cursor)
+                data_cursor = res[0]
                 for data in data_cursor:
-                    emp_id = data[0]
-
-                    working_processes = []
-                    sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_WORKING_PROCESS('{}') FROM DUAL".format(emp_id)
-                    print(sql)
-                    cur.execute(sql)
-                    res2 = cur.fetchone()
-                    for data2 in res2[0]:
-                        val2 = {
-                            'EMPLOYEE_CODE': data2[0],
-                            'TU_NGAY': data2[1],
-                            'DEN_NGAY': data2[2],
-                            'CONG_TY': data2[3],
-                            'CHUC_VU': data2[4]
-                        }
-                        working_processes.append(val2)
-
                     #('06150', 'VÕ KHANG NINH', 'CHUYÊN VIÊN QUẢN LÝ DỮ LIỆU', '84', 'MẢNG QUẢN LÝ DỮ LIỆU', datetime.datetime(2015, 2, 26, 0, 0), 'NINHVK@SCB.COM.VN', '+84 969627333', '/var/www/EmployeeImage/06150.jpeg')
                     print(data)
                     val = {
@@ -158,21 +135,6 @@ Param `emp` example
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    working_processes = []
-                    sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_WORKING_PROCESS('{}') FROM DUAL".format(emp_id)
-                    print(sql)
-                    cur.execute(sql)
-                    res2 = cur.fetchone()
-                    for data2 in res2[0]:
-                        val2 = {
-                            'EMPLOYEE_CODE': data2[0],
-                            'TU_NGAY': data2[1],
-                            'DEN_NGAY': data2[2],
-                            'CONG_TY': data2[3],
-                            'CHUC_VU': data2[4]
-                        }
-                        working_processes.append(val2)
-
                     print(data)
                     #[('03627', 'HỒ ĐỨC THẮNG', 'GIÁM ĐỐC PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
                     # '84', 'PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
@@ -192,7 +154,7 @@ Param `emp` example
                         'sex': data[11],
                         'branch_code': data[12],
                         'manager': data[13],
-                        'working_processes': working_processes
+                        'working_processes': []
                     }
                     datas.append(val)
 
@@ -209,7 +171,7 @@ Param `emp` example
         summary='EMP_DETAIL_KPI',
         tags=["EMPLOYEE"],
         responses={
-            status.HTTP_201_CREATED: EmployeeResponseSerializer(many=True),
+            status.HTTP_201_CREATED: EmployeeKPIResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
             status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
         },
@@ -232,7 +194,7 @@ Param `emp` example
             emp_id = params['emp']
 
             # call the function
-            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_KPI(P_EMP_CODE => '{}') from dual".format(emp_id)
+            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_KPI(P_EMP_CODE=>'{}') from dual".format(emp_id)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -261,6 +223,63 @@ Param `emp` example
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='EMP_DETAIL_WORK_PROCESS',
+        summary='EMP_DETAIL_WORK_PROCESS',
+        tags=["EMPLOYEE"],
+        responses={
+            status.HTTP_201_CREATED: EmployeeWorkprocessResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        },
+        description="""
+Param `emp` example       
+- **17889**.
+- **14856**
+""",
+        parameters=[
+            OpenApiParameter(
+                name="emp", type=OpenApiTypes.STR, description="emp"
+            )
+        ]
+    )
+    def emp_detail_work_process(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            emp_id = params['emp']
+
+            # call the function
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_WORKING_PROCESS('{}') FROM DUAL".format(emp_id)
+            # sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_WORKING_PROCESS(P_EMP_CODE=>'{}') from dual".format(emp_id)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                data_cursor = res[0]
+                for data in data_cursor:
+                    print(data)
+                    val = {
+                        'EMPLOYEE_CODE': data[0],
+                        'TU_NGAY': data[1],
+                        'DEN_NGAY': data[2],
+                        'CONG_TY': data[3],
+                        'CHUC_VU': data[4]
+                    }
+                    datas.append(val)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     @extend_schema(
         operation_id='DEP_LIST',
