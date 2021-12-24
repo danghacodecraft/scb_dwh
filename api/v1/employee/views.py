@@ -107,6 +107,8 @@ Param `type` example
                         'block_id': data[9],
                         'block_name': data[10],
                         'sex': data[11],
+                        'branch_code': data[12],
+                        'manager': data[13],
                         'working_processes': working_processes
                     }
                     datas.append(val)
@@ -188,6 +190,8 @@ Param `emp` example
                         'block_id': data[9],
                         'block_name': data[10],
                         'sex': data[11],
+                        'branch_code': data[12],
+                        'manager': data[13],
                         'working_processes': working_processes
                     }
                     datas.append(val)

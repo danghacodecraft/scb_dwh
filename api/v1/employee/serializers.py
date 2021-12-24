@@ -16,6 +16,8 @@ class EmployeeResponseSerializer(InheritedSerializer):
     block_id = serializers.CharField(help_text="`block_id` of data")
     block_name = serializers.CharField(help_text="`block_name` of data")
     sex = serializers.CharField(help_text="`sex` of data")
+    branch_code = serializers.CharField(help_text="`branch_code` of data")
+    manager = serializers.CharField(help_text="`manager` of data")
 
 class EmployeeKPIResponseSerializer(InheritedSerializer):
     ID = serializers.CharField(help_text="`ID` of data")
