@@ -28,7 +28,9 @@ Param `depid` example
 
 Param `type` example       
 - **TONG_HOP**.
-
+- **CAP_HOI_SO**.
+- **CAP_VUNG**.
+- **CAP_DVKD**.
 """,
         parameters=[
             OpenApiParameter(
@@ -59,6 +61,7 @@ Param `type` example
 
             # call the function
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO({}{}) FROM DUAL".format(type, code)
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -267,7 +270,8 @@ Param `emp` example
         description="""
 Param `dep` example       
 - **CAP_HOI_SO**.
-
+- **CAP_VUNG**.
+- **CAP_DVKD**.
 """,
         parameters=[
             OpenApiParameter(
@@ -283,7 +287,7 @@ Param `dep` example
             dep = params['dep']
 
             # call the function
-            sql = "select obi.crm_dwh_pkg.FUN_GET_ORGANIZATION('ALL','{}', 'ALL') FROM DUAL".format(dep)
+            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_ORGANIZATION('ALL','{}', 'ALL') FROM DUAL".format(dep)
             print(sql)
 
             cur.execute(sql)
