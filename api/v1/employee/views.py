@@ -225,8 +225,8 @@ Param `emp` example
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        operation_id='EMP_DETAIL_WORK_PROCESS',
-        summary='EMP_DETAIL_WORK_PROCESS',
+        operation_id='EMP_DETAIL_PROFILE',
+        summary='EMP_DETAIL_PROFILE',
         tags=["EMPLOYEE"],
         responses={
             status.HTTP_201_CREATED: EmployeeWorkprocessResponseSerializer(many=True),
@@ -244,7 +244,7 @@ Param `emp` example
             )
         ]
     )
-    def emp_detail_work_process(self, request):
+    def emp_detail_profile(self, request):
         try:
             con, cur = lib.connect()
 
@@ -253,12 +253,11 @@ Param `emp` example
 
             # call the function
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_WORKING_PROCESS('{}') FROM DUAL".format(emp_id)
-            # sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_WORKING_PROCESS(P_EMP_CODE=>'{}') from dual".format(emp_id)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
-            datas = []
+            work_process = []
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
@@ -270,7 +269,15 @@ Param `emp` example
                         'CONG_TY': data[3],
                         'CHUC_VU': data[4]
                     }
-                    datas.append(val)
+                    work_process.append(val)
+
+            datas = [
+                {
+                    "profile": {},
+                    "contract": {},
+                    "work_process": work_process
+                }
+            ]
 
             cur.close()
             con.close()
