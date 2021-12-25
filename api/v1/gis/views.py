@@ -314,26 +314,6 @@ Param `screen`
             if 'kv' in params.keys():
                 kv = params['kv']
 
-            #--------------------------------------------------
-            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
-            print(sql)
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            branches = {}
-            if len(res) > 0:
-                data_cursor = res[0]
-                for data in data_cursor:
-                    print(data)
-                    # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
-                    branch_id = data[6].strip()
-                    if branch_id not in branches.keys() and data[8] != None and data[9] != None:
-                        branches[branch_id] = {
-                            'latitude': data[8],
-                            'longitude': data[9],
-                        }
-
-            # --------------------------------------------------
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_BRANCH_AREA(P_KV=>'{}') from dual".format( kv)
             print(sql)
             cur.execute(sql)
@@ -348,16 +328,10 @@ Param `screen`
                     val = {
                         'ID': branch_id,
                         'NAME': data[1],
-                        'latitude': 0,
-                        'longitude': 0,
+                        'latitude': data[3],
+                        'longitude': data[4],
                         'KHU_VUC': kv
                     }
-
-                    if branch_id in branches.keys():
-                        branch = branches[branch_id]
-                        val['longitude'] = branch['longitude']
-                        val['latitude'] = branch['latitude']
-
                     datas.append(val)
                 datas.sort(key=myArea)
 
