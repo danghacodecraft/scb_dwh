@@ -25,6 +25,10 @@ The `vung` example:
 The `dv` example: 
 - **001**.
 
+The `division` example: 
+- **A**. khối PFS
+- **B**. khối DOANH NGHIỆP
+
 """,
         parameters=[
             OpenApiParameter(
@@ -32,7 +36,10 @@ The `dv` example:
             ),
             OpenApiParameter(
                 name="dv", type=OpenApiTypes.STR, description="dv"
-            )
+            ),
+            OpenApiParameter(
+                name="division", type=OpenApiTypes.STR, description="division"
+            ),
         ],
         responses={
             status.HTTP_201_CREATED: DataResponseSerializer(many=True),
@@ -56,8 +63,12 @@ The `dv` example:
             if 'dv' in params.keys():
                 dv = ", p_dv=>'{}'".format(params['dv'])
 
+            division = ""
+            if 'division' in params.keys():
+                division = ", P_DIVISION=>'{}'".format(params['division'])
+
             # call the function
-            sql = "Select obi.CRM_DWH_PKG.FUN_GET_DATA('TRANG_CHU'{}{}) FROM DUAL".format(vung, dv)
+            sql = "Select obi.CRM_DWH_PKG.FUN_GET_DATA('TRANG_CHU'{}{}{}) FROM DUAL".format(vung, dv, division)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -107,6 +118,10 @@ The `vung` example:
 The `dv` example: 
 - **001**.
 
+The `division` example: 
+- **A**. khối PFS
+- **B**. khối DOANH NGHIỆP
+
 """,
         parameters=[
             OpenApiParameter(
@@ -117,7 +132,10 @@ The `dv` example:
             ),
             OpenApiParameter(
                 name="dv", type=OpenApiTypes.STR, description="dv"
-            )
+            ),
+            OpenApiParameter(
+                name="division", type=OpenApiTypes.STR, description="division"
+            ),
         ],
         # request=ChartRequestSerializer,
         responses={
@@ -131,7 +149,7 @@ The `dv` example:
             con, cur = lib.connect()
 
             params = request.query_params.dict()
-            module = params['module']
+            module = ",P_MODULE=>'{}'".format(params['module'])
 
             vung = ""
             if 'vung' in params.keys():
@@ -141,11 +159,15 @@ The `dv` example:
             if 'dv' in params.keys():
                 dv = ", p_dv=>'{}'".format(params['dv'])
 
+            division = ""
+            if 'division' in params.keys():
+                division = ", P_DIVISION=>'{}'".format(params['division'])
+
             # page_number = 1
             # if 'page_number' in params.keys():
             #     page_number = int(params['page_number'])
             # call the function
-            sql = "Select obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'TRANG_CHU',P_MODULE=>'{}'{}{} ) FROM DUAL".format(module, vung, dv)
+            sql = "Select obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'TRANG_CHU'{}{}{}{} ) FROM DUAL".format(module, vung, dv, division)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
