@@ -20,6 +20,13 @@ class AllView(BaseAPIView):
 Screen `C_06`
 - **ket_qua_chi_tieu_ke_hoach**.
 
+Screen `division`
+- **TH0**: TOÀN HÀNG 
+- **A**: KHỐI DVNH&TCCN
+- **B**: KHỐI DOANH NGHIỆP
+- **C**: KHỐI KDTT
+- **H**: KHỐI XLN&KTTS
+
 """,
         parameters=[
             OpenApiParameter(
@@ -27,6 +34,9 @@ Screen `C_06`
             ),
             OpenApiParameter(
                 name="key", type=OpenApiTypes.STR, description="key"
+            ),
+            OpenApiParameter(
+                name="division", type=OpenApiTypes.STR, description="division"
             ),
             OpenApiParameter(
                 name="kv", type=OpenApiTypes.STR, description="kv"
@@ -57,6 +67,10 @@ Screen `C_06`
             if 'key' in params.keys():
                 key = ",P_MODULE=>'{}'".format(params['key'])
 
+            division = ",P_DIVISION=>'TH0'"
+            if 'division' in params.keys():
+                division = ",P_DIVISION=>'{}'".format(params['division'])
+
             kv = ""
             if 'kv' in params.keys():
                 kv = ",P_KV=>'{}'".format(params['kv'])
@@ -69,7 +83,7 @@ Screen `C_06`
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
-            sql = "select  obi.crm_dwh_pkg.FUN_C06_CHART(P_MAN_HINH =>'{}'{}{}{}{}) from dual".format(screen, key, kv, vung, dv)
+            sql = "select  obi.crm_dwh_pkg.FUN_C06_CHART(P_MAN_HINH =>'{}'{}{}{}{}{}) from dual".format(screen, key, division, kv, vung, dv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
