@@ -9,94 +9,16 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.report.enterprise.serializers import HRResponseSerializer, KPIResponseSerializer, IncomeResponseSerializer, BusinessResponseSerializer
+from api.v1.report.all.serializers import ChartResponseSerializer
 
-class EnterpriseView(BaseAPIView):
+class AllView(BaseAPIView):
     @extend_schema(
-        operation_id='Chart HR',
+        operation_id='Chart',
         summary='List',
-        tags=["ENTERPRISE"],
+        tags=["ALL"],
         description="""
-Screen `C_04`
-""",
-        parameters=[
-            OpenApiParameter(
-                name="screen", type=OpenApiTypes.STR, description="screen"
-            ),
-            OpenApiParameter(
-                name="kv", type=OpenApiTypes.STR, description="kv"
-            ),
-            OpenApiParameter(
-                name="dv", type=OpenApiTypes.STR, description="dv"
-            ),
-        ],
-        # request=ChartFRequestSerializer,
-        responses={
-            status.HTTP_201_CREATED: HRResponseSerializer(many=True),
-            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
-            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
-        }
-    )
-    def chart_hr(self, request):
-        try:
-            con, cur = lib.connect()
-            params = request.query_params.dict()
-            screen = "C_04"
-            if 'screen' in params.keys():
-                screen = format(params['screen'])
-
-            kv = ""
-            if 'kv' in params.keys():
-                kv = ",P_KV=>'{}'".format(params['kv'])
-
-            dv = ""
-            if 'dv' in params.keys():
-                dv = ",P_DV=>'{}'".format(params['dv'])
-
-            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'dinh_bien_nhan_su'{}{} ) FROM DUAL".format(screen, kv, dv)
-            print(sql)
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            datas = []
-            if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
-                for data in data_cursor:
-                    print(data)
-                    val = {
-                        'AREA_NAME': data[0],
-                        'SLNS_DINH_BIEN': data[1],
-                        'SLNS_KY_NAY': data[2],
-                        'SLNS_KY_TRUOC': data[3]
-                    }
-                    datas.append(val)
-                # datas.sort(key=myBranch)
-
-            cur.close()
-            con.close()
-            return self.response_success(datas, status_code=status.HTTP_200_OK)
-        except cx_Oracle.Error as error:
-            cur.close()
-            con.close()
-            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @extend_schema(
-        operation_id='Chart KPI',
-        summary='List',
-        tags=["ENTERPRISE"],
-        description="""
-Screen `ALL`, kv = `ALL`, dv = `001`, ccy = `VND`
-- **kpi_chi_tiet_nhanvien**
-
-Screen `C_04`
-- **kpi_chart_khu_vuc**.
-- **kpi_cac_don_vi_kinh_doanh**.
-- **kpi_chi_tiet_nhanvien**
+Screen `C_06`
+- **ket_qua_chi_tieu_ke_hoach**.
 
 """,
         parameters=[
@@ -110,138 +32,44 @@ Screen `C_04`
                 name="kv", type=OpenApiTypes.STR, description="kv"
             ),
             OpenApiParameter(
-                name="dv", type=OpenApiTypes.STR, description="dv"
+                name="vung", type=OpenApiTypes.STR, description="vung"
             ),
             OpenApiParameter(
-                name="ccy", type=OpenApiTypes.STR, description="ccy"
-            )
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            ),
         ],
         # request=ChartFRequestSerializer,
         responses={
-            status.HTTP_201_CREATED: KPIResponseSerializer(many=True),
+            status.HTTP_201_CREATED: ChartResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
             status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
         }
     )
-    def chart_kpi(self, request):
+    def chart(self, request):
         try:
             con, cur = lib.connect()
             params = request.query_params.dict()
-            screen = "C_04"
+            screen = "C_06"
             if 'screen' in params.keys():
                 screen = format(params['screen'])
 
-            key = ""
+            key = ",P_MODULE=>'ket_qua_chi_tieu_ke_hoach'"
             if 'key' in params.keys():
-                key = ", P_MODULE=>'{}'".format(params['key'])
-
-            kv = ""
-            if 'kv' in params.keys():
-                kv = ", P_KV=>'{}'".format(params['kv'])
-
-            dv = ""
-            if 'dv' in params.keys():
-                dv = ", P_DV=>'{}'".format(params['dv'])
-
-            ccy = ""
-            if 'ccy' in params.keys():
-                ccy = ", P_CCY=>'{}'".format(params['ccy'])
-
-            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}'{}{}{}{} ) FROM DUAL".format(screen, key, kv, dv, ccy)
-            print(sql)
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            datas = []
-            if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
-                for data in data_cursor:
-                    print(data)
-                    if key == ", P_MODULE=>'kpi_chart_khu_vuc'":
-                        val = {
-                            'branch_name': data[0],
-                            'SLNS_DANH_GIA': data[1],
-                            'SLNS_HOAN_THANH': data[2],
-                            'TY_LE_HOAN_THANH': data[3],
-                            'TIME': data[4]
-                        }
-                    else:
-                        val = {
-                            'branch_name': data[0],
-                            'REGION_NAME': data[1],
-                            'SLNS_DANH_GIA': data[2],
-                            'SLNS_HOAN_THANH': data[3],
-                            'TY_LE_HOAN_THANH': data[4]
-                        }
-
-                        if len(data) > 5:
-                            val['KY_DANH_GIA'] = data[5]
-
-                    datas.append(val)
-                # datas.sort(key=myBranch)
-
-            cur.close()
-            con.close()
-            return self.response_success(datas, status_code=status.HTTP_200_OK)
-        except cx_Oracle.Error as error:
-            cur.close()
-            con.close()
-            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @extend_schema(
-        operation_id='Chart Income',
-        summary='List',
-        tags=["ENTERPRISE"],
-        description="""
-Screen `C_04` 
-- **thu_nhap_vay_gui**.
-""",
-        parameters=[
-            OpenApiParameter(
-                name="screen", type=OpenApiTypes.STR, description="screen"
-            ),
-            OpenApiParameter(
-                name="key", type=OpenApiTypes.STR, description="key"
-            ),
-            OpenApiParameter(
-                name="kv", type=OpenApiTypes.STR, description="kv"
-            ),
-            OpenApiParameter(
-                name="dv", type=OpenApiTypes.STR, description="dv"
-            ),
-        ],
-        # request=ChartFRequestSerializer,
-        responses={
-            status.HTTP_201_CREATED: IncomeResponseSerializer(many=True),
-            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
-            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
-        }
-    )
-    def chart_income(self, request):
-        try:
-            con, cur = lib.connect()
-            params = request.query_params.dict()
-
-            key = params['key']
-            screen = "C_04"
-            if 'screen' in params.keys():
-                screen = format(params['screen'])
+                key = ",P_MODULE=>'{}'".format(params['key'])
 
             kv = ""
             if 'kv' in params.keys():
                 kv = ",P_KV=>'{}'".format(params['kv'])
 
+            vung = ""
+            if 'vung' in params.keys():
+                vung = ",P_VUNG=>'{}'".format(params['vung'])
+
             dv = ""
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
-            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{} ) FROM DUAL".format(screen, key, kv, dv)
-
+            sql = "select  obi.crm_dwh_pkg.FUN_C06_CHART(P_MAN_HINH =>'{}'{}{}{}{}) from dual".format(screen, key, kv, vung, dv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -257,91 +85,21 @@ Screen `C_04`
                 for data in data_cursor:
                     print(data)
                     val = {
-                        'BR': data[0],
-                        'TIEU_DE': data[1],
-                        'AMT': data[2],
-                        'UNIT': data[3],
-                        'NIM_HUY_DONG': 0,#data[4],
-                        'NIM_CHO_VAY': 0,#data[5]
-                    }
-                    if len(data) > 4:
-                        val['NIM_HUY_DONG'] = data[4]
-                    if len(data) > 5:
-                        val['NIM_CHO_VAY'] = data[5]
-
-                    datas.append(val)
-                # datas.sort(key=myBranch)
-
-            cur.close()
-            con.close()
-            return self.response_success(datas, status_code=status.HTTP_200_OK)
-        except cx_Oracle.Error as error:
-            cur.close()
-            con.close()
-            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @extend_schema(
-        operation_id='Chart Business',
-        summary='List',
-        tags=["ENTERPRISE"],
-        description="""
-Screen `C_04`
-""",
-        parameters=[
-            OpenApiParameter(
-                name="screen", type=OpenApiTypes.STR, description="screen"
-            ),
-            OpenApiParameter(
-                name="kv", type=OpenApiTypes.STR, description="kv"
-            ),
-            OpenApiParameter(
-                name="dv", type=OpenApiTypes.STR, description="dv"
-            ),
-        ],
-        # request=ChartFRequestSerializer,
-        responses={
-            status.HTTP_201_CREATED: BusinessResponseSerializer(many=True),
-            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
-            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
-        }
-    )
-    def chart_business(self, request):
-        try:
-            con, cur = lib.connect()
-            params = request.query_params.dict()
-            screen = "C_04"
-            if 'screen' in params.keys():
-                screen = format(params['screen'])
-
-            kv = ""
-            if 'kv' in params.keys():
-                kv = ",P_KV=>'{}'".format(params['kv'])
-
-            dv = ""
-            if 'dv' in params.keys():
-                dv = ",P_DV=>'{}'".format(params['dv'])
-
-            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'chi_tieu_kinh_doanh'{}{} ) FROM DUAL".format(screen, kv, dv)
-            print(sql)
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            datas = []
-            if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
-                for data in data_cursor:
-                    print(data)
-                    val = {
-                        'NAME': data[0],
-                        'THANG': data[1],
-                        'LUY_KE': data[2],
-                        'NAM': data[3],
-                        'ID_NAME': data[4]
+                        'PROCESS_DATE': data[0],
+                        'CHITIEU': data[1],
+                        'SODU_DS_LK_KYT': data[2],
+                        'THUC_HIEN_KY_T': data[3],
+                        'KE_HOACH_KY_T': data[4],
+                        'TYLE_KY_T': data[5],
+                        'THUC_HIEN_LK': data[6],
+                        'KE_HOACH_LK': data[7],
+                        'TY_LY_LK': data[8],
+                        'DIEM_CHI_TIEU_LK': data[9],
+                        'DIEM_KH_LK': data[10],
+                        'KH_NAM': data[11],
+                        'TY_LE_NAM': data[12],
+                        'DIEM_CHI_TIEU_KH_NAM': data[13],
+                        'DIEM_KH_NAM': data[14],
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
@@ -353,4 +111,3 @@ Screen `C_04`
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
