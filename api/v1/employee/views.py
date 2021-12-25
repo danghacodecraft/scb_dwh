@@ -271,13 +271,11 @@ Param `emp` example
                     }
                     work_process.append(val)
 
-            datas = [
-                {
-                    "profile": {},
-                    "contract": {},
-                    "work_process": work_process
-                }
-            ]
+            datas = {
+                "profile": {},
+                "contract": {},
+                "work_process": work_process
+            }
 
             cur.close()
             con.close()
