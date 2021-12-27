@@ -20,7 +20,7 @@ class AllView(BaseAPIView):
 Screen `C_06`
 - **ket_qua_chi_tieu_ke_hoach**.
 
-Screen `division`
+`division`
 - **TH0**: TOÀN HÀNG 
 - **A**: KHỐI DVNH&TCCN
 - **B**: KHỐI DOANH NGHIỆP
@@ -67,7 +67,7 @@ Screen `division`
             if 'key' in params.keys():
                 key = ",P_MODULE=>'{}'".format(params['key'])
 
-            division = ",P_DIVISION=>'TH0'"
+            division = ""
             if 'division' in params.keys():
                 division = ",P_DIVISION=>'{}'".format(params['division'])
 

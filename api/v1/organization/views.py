@@ -38,6 +38,9 @@ class OrganizationView(BaseAPIView):
             cur.execute(sql)
             datas = cur.fetchall()
 
+            BLOCK_PFS = 1687 #Khối Doanh nghiệp
+            BLOCK_ENTERPRISE = 5 #Khối Dịch vụ Ngân hàng và Tài chính Cá nhân
+
             ret = {}
             for data in datas:
                 # ('1', 'Ngân hàng TMCP Sài Gòn',
@@ -48,52 +51,91 @@ class OrganizationView(BaseAPIView):
                 # 'Mảng Thẩm định Tài sản Hồ Chí Minh 2', 'Mảng Thẩm định Tài sản Hồ Chí Minh 2', 'D8', 13736, 13729,
                 # '1;4;11422;13729;13736;', 'Ngân hàng TMCP Sài Gòn;Ban Điều hành;Khối Phê duyệt Tín dụng và Xử lý nợ;Trung tâm Thẩm định Tài sản;Mảng Thẩm định Tài sản Hồ Chí Minh 2;', 7, datetime.datetime(2021, 9, 1, 0, 0))
 
-                print(data)
-                key1 = data[0]
-                name1 = data[1]
-
                 code = data[16]
                 depid = str(data[17])
 
-                if key1 not in ret:
-                    ret[key1] = {
-                        'id': key1,
-                        'fullname': name1,
-                        'level': 1,
-                        'child': {}
-                    }
-
-                ret1 = ret[key1]
-                key2 = data[2]
-                name2 = data[3]
-                if key2 is not None:
-                    if key2 not in ret1['child']:
-                        ret1['child'][key2] = {
-                            'id': key2,
-                            'fullname': name2,
-                            'level': 2,
+                print(data)
+                key1 = data[0]
+                name1 = data[1]
+                if key1 is not None and name1 is not None:
+                    if key1 not in ret:
+                        ret[key1] = {
+                            'id': key1,
+                            'fullname': name1,
+                            'level': 1,
                             'child': {}
                         }
 
-                    ret2 = ret1['child'][key2]
-                    key3 = data[4]
-                    name3 = data[5]
-                    if key3 is not None:
-                        if key3 not in ret2['child']:
-                            ret2['child'][key3] = {
-                                'id': key3,
-                                'fullname': name3,
-                                'level': 3,
+                    ret1 = ret[key1]
+                    key2 = data[2]
+                    name2 = data[3]
+                    if key2 is not None and name2 is not None:
+                        if key2 not in ret1['child']:
+                            ret1['child'][key2] = {
+                                'id': key2,
+                                'fullname': name2,
+                                'level': 2,
                                 'child': {}
                             }
 
-                        ret3 = ret2['child'][key3]
-                        key4 = data[6]
-                        name4 = data[7]
+                        ret2 = ret1['child'][key2]
+                        key3 = data[4]
+                        name3 = data[5]
+                        if key3 is not None and name3 is not None:
+                            if key3 not in ret2['child']:
+                                ret2['child'][key3] = {
+                                    'id': key3,
+                                    'fullname': name3,
+                                    'level': 3,
+                                    'child': {}
+                                }
 
-                        if name4 is not None and "Vùng" not in name4 and "Kênh" not in name4:
-                            if key4 is not None:
-                                if key4 not in ret3['child']:
+                                #if key3 == BLOCK_PFS or key3 == BLOCK_ENTERPRISE:
+                            ret3 = ret2['child'][key3]
+                            key4 = data[6]
+                            name4 = data[7]
+                            if key4 is not None and name4 is not None: # and "Vùng" not in name4 and "Kênh" not in name4:
+                                name_lower = name4.lower()
+                                if "vùng" in name_lower:
+                                    if 'region' not in ret3:
+                                        ret3['region'] = {}
+
+                                    if key4 not in ret3['region']:
+                                        ret3['region'][key4] = {
+                                            'id': key4,
+                                            'fullname': name4,
+                                            'level': 4,
+                                            'child': {}
+                                        }
+                                    continue
+
+                                elif "khu vực" in name_lower:
+                                    if 'area' not in ret3:
+                                        ret3['area'] = {}
+
+                                    if key4 not in ret3['area']:
+                                        ret3['area'][key4] = {
+                                            'id': key4,
+                                            'fullname': name4,
+                                            'level': 4,
+                                            'child': {}
+                                        }
+                                    continue
+
+                                elif "kênh" in name_lower:
+                                    if 'channel' not in ret3:
+                                        ret3['channel'] = {}
+
+                                    if key4 not in ret3['channel']:
+                                        ret3['channel'][key4] = {
+                                            'id': key4,
+                                            'fullname': name4,
+                                            'level': 4,
+                                            'child': {}
+                                        }
+                                    continue
+
+                                elif key4 not in ret3['child']:
                                     ret3['child'][key4] = {
                                         'id': key4,
                                         'fullname': name4,
@@ -104,7 +146,7 @@ class OrganizationView(BaseAPIView):
                                 ret4 = ret3['child'][key4]
                                 key5 = data[8]
                                 name5 = data[9]
-                                if key5 is not None:
+                                if key5 is not None and name5 is not None:
                                     if key5 not in ret4['child']:
                                         ret4['child'][key5] = {
                                             'id': key5,
@@ -121,15 +163,13 @@ class OrganizationView(BaseAPIView):
 
                                     key6 = data[10]
                                     name6 = data[11]
-                                    if key6 is not None:
+                                    if key6 is not None and name6 is not None:
                                         if key6 not in ret5['child']:
                                             ret5['child'][key6] = {
                                                 'id': key6,
                                                 'fullname': name6,
                                                 'level': 6,
-                                                'child': {},
-                                                # 'code': code,
-                                                # 'depid': depid
+                                                'child': {}
                                             }
 
                                         ret6 = ret5['child'][key6]

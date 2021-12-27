@@ -20,6 +20,10 @@ def myBranch(e):
 def myArea(e):
     return e['NAME']
 
+
+LATITUDE_DEFAULT = 10.771912559303502
+LONGITUDE_DEFAULT = 106.70564814326777
+
 class GisView(BaseAPIView):
     @extend_schema(
         operation_id='Region',
@@ -46,29 +50,174 @@ class GisView(BaseAPIView):
             if 'userid' in params.keys():
                 userid = "P_USER_ID=>'{}'".format(params['userid'])
 
-            sql = 'SELECT obi.CRM_DWH_PKG.FUN_GET_REGION({}) FROM DUAL'.format(userid)
+            # ======================================================================
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
-            datas = []
+            gis = {}
             if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
+                data_cursor = res[0]
                 for data in data_cursor:
                     print(data)
-                    val = {
-                        'region_id': data[0].strip(),
-                        'region_name': data[1].strip()
-                    }
-                    datas.append(val)
+                    region_id = data[0].strip()
+                    region_name = data[1].strip()
+                    branch_id = data[6].strip()
+                    branch_name = data[7].strip()
+                    latitude = data[8] if data[8] is not None else LATITUDE_DEFAULT
+                    longitude = data[9] if data[9] is not None else LONGITUDE_DEFAULT
 
-                datas.sort(key=myRegion)
+                    # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
+                    if region_id not in gis:
+                        gis[region_id] = {
+                            'region_id': region_id,
+                            'region_name': region_name,
+                            'branches': {}
+                        }
 
+                    region = gis[region_id]
+                    if branch_id not in region['branches']:
+                        region['branches'][branch_id] = {
+                            'branch_id': branch_id,
+                            'branch_name': branch_name,
+                            'longitude': longitude,
+                            'latitude': latitude,
+                        }
+
+            datas = []
+            for region_id in gis.keys():
+                region = gis[region_id]
+                branches = []
+                left = 120
+                top = 10
+                right = 100
+                bottom = 20
+                for branch_id in region['branches']:
+                    branch = region['branches'][branch_id]
+                    longitude = branch['longitude']
+                    latitude = branch['latitude']
+                    branches.append({
+                        'branch_id': branch['branch_id'],
+                        'branch_name': branch['branch_name'],
+                        'longitude': longitude,
+                        'latitude': latitude,
+                    })
+                    left = left if left > longitude else longitude
+                    right = right if right < longitude else longitude
+                    top = top if top > latitude else latitude
+                    bottom = bottom if bottom < latitude else latitude
+
+                datas.append({
+                    'region_id': region['region_id'],
+                    'region_name': region['region_name'],
+                    'branches': branches,
+                    'left': left,
+                    'right': right,
+                    'top': top,
+                    'bottom': bottom
+                })
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Area',
+        summary='List',
+        tags=["GIS"],
+        description="Area",
+        parameters=[
+            OpenApiParameter(
+                name="userid", type=OpenApiTypes.STR, description="userid"
+            ),
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: AreaResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def area(self, request):
+        try:
+            con, cur = lib.connect()
+            params = request.query_params.dict()
+
+            userid = "P_USER_ID=>'THANGHD'"
+            if 'userid' in params.keys():
+                userid = "P_USER_ID=>'{}'".format(params['userid'])
+
+            # ======================================================================
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            gis = {}
+            if len(res) > 0:
+                data_cursor = res[0]
+                for data in data_cursor:
+                    print(data)
+                    area_id = data[2].strip()
+                    area_name = data[3].strip()
+                    branch_id = data[6].strip()
+                    branch_name = data[7].strip()
+                    latitude = data[8] if data[8] is not None else LATITUDE_DEFAULT
+                    longitude = data[9] if data[9] is not None else LONGITUDE_DEFAULT
+
+                    # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
+                    if area_id not in gis:
+                        gis[area_id] = {
+                            'area_id': area_id,
+                            'area_name': area_name,
+                            'branches': {}
+                        }
+
+                    area = gis[area_id]
+                    if branch_id not in area['branches']:
+                        area['branches'][branch_id] = {
+                            'branch_id': branch_id,
+                            'branch_name': branch_name,
+                            'longitude': longitude,
+                            'latitude': latitude,
+                        }
+
+            datas = []
+            for area_id in gis.keys():
+                area = gis[area_id]
+                branches = []
+                left = 120
+                top = 10
+                right = 100
+                bottom = 20
+                for branch_id in area['branches']:
+                    branch = area['branches'][branch_id]
+                    longitude = branch['longitude']
+                    latitude = branch['latitude']
+                    branches.append({
+                        'branch_id': branch['branch_id'],
+                        'branch_name': branch['branch_name'],
+                        'longitude': longitude,
+                        'latitude': latitude,
+                    })
+                    left = left if left > longitude else longitude
+                    right = right if right < longitude else longitude
+                    top = top if top > latitude else latitude
+                    bottom = bottom if bottom < latitude else latitude
+
+                datas.append({
+                    'area_id': area['area_id'],
+                    'area_name': area['area_name'],
+                    'branches': branches,
+                    'left': left,
+                    'right': right,
+                    'top': top,
+                    'bottom': bottom
+                })
             cur.close()
             con.close()
             return self.response_success(datas, status_code=status.HTTP_200_OK)
@@ -99,6 +248,7 @@ class GisView(BaseAPIView):
     )
     def branch(self, request):
         try:
+            con, cur = lib.connect()
             params = request.query_params.dict()
 
             userid = "P_USER_ID=>'THANGHD'"
@@ -109,28 +259,21 @@ class GisView(BaseAPIView):
             if 'region' in params.keys():
                 region = ", P_VUNG=>'{}'".format(params['region'])
 
-            con, cur = lib.connect()
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}{}) FROM DUAL".format(userid, region)
             print(sql)
-
             cur.execute(sql)
             res = cur.fetchone()
 
             datas = []
             if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
-                filter = {}
+                data_cursor = res[0]
+                gis = {}
                 for data in data_cursor:
                     print(data)
                     #('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
                     branch_id = data[6].strip()
-                    if branch_id not in filter.keys() and data[8] != None and data[9] != None:
-                        filter[branch_id] = data
+                    if branch_id not in gis.keys() and data[8] != None and data[9] != None:
+                        gis[branch_id] = data
                         val = {
                             'region_id': data[0],
                             'region_name': data[1],
@@ -173,29 +316,22 @@ class GisView(BaseAPIView):
     )
     def search(self, request):
         try:
+            con, cur = lib.connect()
             params = request.query_params.dict()
+            code = params['code']
 
             userid = "P_USER_ID=>'THANGHD'"
             if 'userid' in params.keys():
                 userid = "P_USER_ID=>'{}'".format(params['userid'])
 
-            code = params['code']
-
-            con, cur = lib.connect()
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
             print(sql)
-
             cur.execute(sql)
             res = cur.fetchone()
 
             datas = []
             if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
+                data_cursor = res[0]
                 for data in data_cursor:
                     print(data)
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
@@ -212,62 +348,6 @@ class GisView(BaseAPIView):
                         datas.append(val)
                         break
 
-
-            cur.close()
-            con.close()
-            return self.response_success(datas, status_code=status.HTTP_200_OK)
-        except cx_Oracle.Error as error:
-            cur.close()
-            con.close()
-            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @extend_schema(
-        operation_id='Area',
-        summary='List',
-        tags=["GIS"],
-        description="Area",
-        parameters=[
-            OpenApiParameter(
-                name="userid", type=OpenApiTypes.STR, description="userid"
-            ),
-        ],
-        # request=ChartFRequestSerializer,
-        responses={
-            status.HTTP_201_CREATED: AreaResponseSerializer(many=True),
-            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
-            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
-        }
-    )
-    def area(self, request):
-        try:
-            con, cur = lib.connect()
-
-            params = request.query_params.dict()
-            userid = "P_USER_ID=>'THANGHD'"
-            if 'userid' in params.keys():
-                userid = "P_USER_ID=>'{}'".format(params['userid'])
-
-            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_AREA() from dual".format(userid)
-            print(sql)
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            datas = []
-            if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
-                for data in data_cursor:
-                    print(data)
-                    val = {
-                        'ID': data[0],
-                        'NAME': data[1]
-                    }
-                    datas.append(val)
-                datas.sort(key=myArea)
 
             cur.close()
             con.close()
@@ -306,9 +386,9 @@ Param `screen`
             con, cur = lib.connect()
             params = request.query_params.dict()
 
-            userid = "P_USER_ID=>'THANGHD'"
-            if 'userid' in params.keys():
-                userid = "P_USER_ID=>'{}'".format(params['userid'])
+            # userid = "P_USER_ID=>'THANGHD'"
+            # if 'userid' in params.keys():
+            #     userid = "P_USER_ID=>'{}'".format(params['userid'])
 
             kv = "K01"
             if 'kv' in params.keys():
