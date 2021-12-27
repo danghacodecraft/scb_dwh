@@ -88,8 +88,8 @@ class GisView(BaseAPIView):
 
             datas = []
             datas.append({
-                'ID': 'ALL',
-                'NAME': 'Tất cả',
+                'region_id': 'ALL',
+                'region_name': 'Tất cả',
                 'branches': [
                     {
                         'branch_id': 'ALL',
