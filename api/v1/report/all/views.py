@@ -114,6 +114,7 @@ Screen `C_06`
                         'TY_LE_NAM': data[12],
                         'DIEM_CHI_TIEU_KH_NAM': data[13],
                         'DIEM_KH_NAM': data[14],
+                        'AMOUNT_CHART': data[15]
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
