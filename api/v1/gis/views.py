@@ -67,7 +67,7 @@ class GisView(BaseAPIView):
                     branch_name = data[7].strip()
                     latitude = data[8] if data[8] is not None else LATITUDE_DEFAULT
                     longitude = data[9] if data[9] is not None else LONGITUDE_DEFAULT
-
+                    branchtype = data[10]
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
                     if region_id not in gis:
                         gis[region_id] = {
@@ -83,13 +83,22 @@ class GisView(BaseAPIView):
                             'branch_name': branch_name,
                             'longitude': longitude,
                             'latitude': latitude,
+                            'type': branchtype
                         }
 
             datas = []
             datas.append({
-                'ID': 0,
-                'NAME': 'ALL',
-                'branches': [],
+                'ID': 'ALL',
+                'NAME': 'Tất cả',
+                'branches': [
+                    {
+                        'branch_id': 'ALL',
+                        'branch_name': 'Tất cả',
+                        'longitude': LONGITUDE_DEFAULT,
+                        'latitude': LATITUDE_DEFAULT,
+                        'type': 'KXD'
+                    }
+                ],
                 'left': 100,
                 'right': 120,
                 'top': 20,
@@ -112,6 +121,7 @@ class GisView(BaseAPIView):
                         'branch_name': branch['branch_name'],
                         'longitude': longitude,
                         'latitude': latitude,
+                        'type': branch['type']
                     })
                     left = left if left > longitude else longitude
                     right = right if right < longitude else longitude
@@ -178,6 +188,7 @@ class GisView(BaseAPIView):
                     branch_name = data[7].strip()
                     latitude = data[8] if data[8] is not None else LATITUDE_DEFAULT
                     longitude = data[9] if data[9] is not None else LONGITUDE_DEFAULT
+                    branchtype = data[10]
 
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
                     if area_id not in gis:
@@ -194,13 +205,22 @@ class GisView(BaseAPIView):
                             'branch_name': branch_name,
                             'longitude': longitude,
                             'latitude': latitude,
+                            'type': branchtype
                         }
 
             datas = []
             datas.append({
-                'ID': 0,
-                'NAME': 'ALL',
-                'branches': [],
+                'ID': 'ALL',
+                'NAME': 'Tất cả',
+                'branches': [
+                    {
+                        'branch_id': 'ALL',
+                        'branch_name': 'Tất cả',
+                        'longitude': LONGITUDE_DEFAULT,
+                        'latitude': LATITUDE_DEFAULT,
+                        'type': 'KXD'
+                    }
+                ],
                 'left': 100,
                 'right': 120,
                 'top': 20,
@@ -222,6 +242,7 @@ class GisView(BaseAPIView):
                         'branch_name': branch['branch_name'],
                         'longitude': longitude,
                         'latitude': latitude,
+                        'type': branch['type']
                     })
                     left = left if left > longitude else longitude
                     right = right if right < longitude else longitude
@@ -294,12 +315,15 @@ class GisView(BaseAPIView):
                     if branch_id not in gis.keys() and data[8] != None and data[9] != None:
                         gis[branch_id] = data
                         val = {
-                            'region_id': data[0],
-                            'region_name': data[1],
+                            'region_id': data[0].strip(),
+                            'region_name': data[1].strip(),
+                            'area_id': data[2].strip(),
+                            'area_name': data[3].strip(),
                             'branch_id': branch_id,
                             'branch_name': data[7].strip(),
                             'latitude': data[8],
                             'longitude': data[9],
+                            'type': data[10].strip()
                         }
                         datas.append(val)
 
