@@ -86,6 +86,16 @@ class GisView(BaseAPIView):
                         }
 
             datas = []
+            datas.append({
+                'ID': 0,
+                'NAME': 'ALL',
+                'branches': [],
+                'left': 100,
+                'right': 120,
+                'top': 20,
+                'bottom': 10
+            })
+
             for region_id in gis.keys():
                 region = gis[region_id]
                 branches = []
@@ -187,6 +197,15 @@ class GisView(BaseAPIView):
                         }
 
             datas = []
+            datas.append({
+                'ID': 0,
+                'NAME': 'ALL',
+                'branches': [],
+                'left': 100,
+                'right': 120,
+                'top': 20,
+                'bottom': 10
+            })
             for area_id in gis.keys():
                 area = gis[area_id]
                 branches = []
@@ -210,8 +229,8 @@ class GisView(BaseAPIView):
                     bottom = bottom if bottom < latitude else latitude
 
                 datas.append({
-                    'area_id': area['area_id'],
-                    'area_name': area['area_name'],
+                    'ID': area['area_id'],
+                    'NAME': area['area_name'],
                     'branches': branches,
                     'left': left,
                     'right': right,
