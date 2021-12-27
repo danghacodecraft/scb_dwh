@@ -18,3 +18,4 @@ class ChartResponseSerializer(InheritedSerializer):
     TY_LE_NAM = serializers.CharField(help_text="`TY_LE_NAM` of data")
     DIEM_CHI_TIEU_KH_NAM = serializers.CharField(help_text="`DIEM_CHI_TIEU_KH_NAM` of data")
     DIEM_KH_NAM = serializers.CharField(help_text="`DIEM_KH_NAM` of data")
+    AMOUNT_CHART = serializers.CharField(help_text="`AMOUNT_CHART` of data")
