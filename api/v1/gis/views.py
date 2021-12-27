@@ -9,7 +9,7 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.gis.serializers import BranchResponseSerializer, RegionResponseSerializer, AreaResponseSerializer
+from api.v1.gis.serializers import BranchResponseSerializer, RegionResponseSerializer, AreaResponseSerializer, BranchAreaResponseSerializer
 
 def myRegion(e):
     return e['region_id']
@@ -23,6 +23,7 @@ def myArea(e):
 
 LATITUDE_DEFAULT = 10.771912559303502
 LONGITUDE_DEFAULT = 106.70564814326777
+TYPE_DEFAULT = "CN Đa năng"
 
 class GisView(BaseAPIView):
     @extend_schema(
@@ -56,7 +57,21 @@ class GisView(BaseAPIView):
             cur.execute(sql)
             res = cur.fetchone()
 
-            gis = {}
+            gis = {
+                'ALL': {
+                    'region_id': 'ALL',
+                    'region_name': 'Tất cả',
+                    'branches': {
+                        'ALL': {
+                            'branch_id': 'ALL',
+                            'branch_name': 'Tất cả',
+                            'longitude': LONGITUDE_DEFAULT,
+                            'latitude': LATITUDE_DEFAULT,
+                            'type': TYPE_DEFAULT
+                        }
+                    }
+                }
+            }
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
@@ -73,7 +88,15 @@ class GisView(BaseAPIView):
                         gis[region_id] = {
                             'region_id': region_id,
                             'region_name': region_name,
-                            'branches': {}
+                            'branches': {
+                                'ALL': {
+                                    'branch_id': 'ALL',
+                                    'branch_name': 'Tất cả',
+                                    'longitude': LONGITUDE_DEFAULT,
+                                    'latitude': LATITUDE_DEFAULT,
+                                    'type': TYPE_DEFAULT
+                                }
+                            }
                         }
 
                     region = gis[region_id]
@@ -86,25 +109,15 @@ class GisView(BaseAPIView):
                             'type': branchtype
                         }
 
-            datas = []
-            datas.append({
-                'region_id': 'ALL',
-                'region_name': 'Tất cả',
-                'branches': [
-                    {
-                        'branch_id': 'ALL',
-                        'branch_name': 'Tất cả',
-                        'longitude': LONGITUDE_DEFAULT,
-                        'latitude': LATITUDE_DEFAULT,
-                        'type': 'KXD'
-                    }
-                ],
-                'left': 100,
-                'right': 120,
-                'top': 20,
-                'bottom': 10
-            })
+                        gis['ALL']['branches'][branch_id] = {
+                            'branch_id': branch_id,
+                            'branch_name': branch_name,
+                            'longitude': longitude,
+                            'latitude': latitude,
+                            'type': branchtype
+                        }
 
+            datas = []
             for region_id in gis.keys():
                 region = gis[region_id]
                 branches = []
@@ -177,7 +190,21 @@ class GisView(BaseAPIView):
             cur.execute(sql)
             res = cur.fetchone()
 
-            gis = {}
+            gis = {
+                'ALL': {
+                    'area_id': 'ALL',
+                    'area_name': 'Tất cả',
+                    'branches': {
+                        'ALL': {
+                            'branch_id': 'ALL',
+                            'branch_name': 'Tất cả',
+                            'longitude': LONGITUDE_DEFAULT,
+                            'latitude': LATITUDE_DEFAULT,
+                            'type': TYPE_DEFAULT
+                        }
+                    }
+                }
+            }
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
@@ -195,7 +222,15 @@ class GisView(BaseAPIView):
                         gis[area_id] = {
                             'area_id': area_id,
                             'area_name': area_name,
-                            'branches': {}
+                            'branches': {
+                                'ALL': {
+                                    'branch_id': 'ALL',
+                                    'branch_name': 'Tất cả',
+                                    'longitude': LONGITUDE_DEFAULT,
+                                    'latitude': LATITUDE_DEFAULT,
+                                    'type': TYPE_DEFAULT
+                                }
+                            }
                         }
 
                     area = gis[area_id]
@@ -208,24 +243,15 @@ class GisView(BaseAPIView):
                             'type': branchtype
                         }
 
+                        gis['ALL']['branches'][branch_id] = {
+                            'branch_id': branch_id,
+                            'branch_name': branch_name,
+                            'longitude': longitude,
+                            'latitude': latitude,
+                            'type': branchtype
+                        }
+
             datas = []
-            datas.append({
-                'ID': 'ALL',
-                'NAME': 'Tất cả',
-                'branches': [
-                    {
-                        'branch_id': 'ALL',
-                        'branch_name': 'Tất cả',
-                        'longitude': LONGITUDE_DEFAULT,
-                        'latitude': LATITUDE_DEFAULT,
-                        'type': 'KXD'
-                    }
-                ],
-                'left': 100,
-                'right': 120,
-                'top': 20,
-                'bottom': 10
-            })
             for area_id in gis.keys():
                 area = gis[area_id]
                 branches = []
@@ -419,7 +445,7 @@ Param `screen`
         ],
         # request=ChartFRequestSerializer,
         responses={
-            status.HTTP_201_CREATED: AreaResponseSerializer(many=True),
+            status.HTTP_201_CREATED: BranchAreaResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
             status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
         }
