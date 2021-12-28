@@ -84,7 +84,7 @@ class GisView(BaseAPIView):
                     longitude = data[9] if data[9] is not None else LONGITUDE_DEFAULT
                     branchtype = data[10]
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
-                    if region_id not in gis:
+                    if "Kênh" not in region_name and region_id not in gis:
                         gis[region_id] = {
                             'region_id': region_id,
                             'region_name': region_name,
@@ -218,7 +218,7 @@ class GisView(BaseAPIView):
                     branchtype = data[10]
 
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
-                    if area_id not in gis:
+                    if "Kênh" not in area_name and area_id not in gis:
                         gis[area_id] = {
                             'area_id': area_id,
                             'area_name': area_name,
