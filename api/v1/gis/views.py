@@ -20,6 +20,10 @@ def myBranch(e):
 def myArea(e):
     return e['NAME']
 
+def filterName(name_lower):
+    if "kênh" in name_lower or "khác" in name_lower or "hội sở" in name_lower:
+        return True
+    return False
 
 LATITUDE_DEFAULT = 10.771912559303502
 LONGITUDE_DEFAULT = 106.70564814326777
@@ -84,7 +88,11 @@ class GisView(BaseAPIView):
                     longitude = data[9] if data[9] is not None else LONGITUDE_DEFAULT
                     branchtype = data[10]
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
-                    if "Kênh" not in region_name and region_id not in gis:
+
+                    if filterName(region_name.lower()):
+                        continue
+
+                    if region_id not in gis:
                         gis[region_id] = {
                             'region_id': region_id,
                             'region_name': region_name,
@@ -118,7 +126,7 @@ class GisView(BaseAPIView):
                         }
 
             datas = []
-            for region_id in gis.keys():
+            for region_id in sorted(gis):
                 region = gis[region_id]
                 branches = []
                 left = 120
@@ -217,8 +225,11 @@ class GisView(BaseAPIView):
                     longitude = data[9] if data[9] is not None else LONGITUDE_DEFAULT
                     branchtype = data[10]
 
+                    if filterName(area_name.lower()):
+                        continue
+
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
-                    if "Kênh" not in area_name and area_id not in gis:
+                    if area_id not in gis:
                         gis[area_id] = {
                             'area_id': area_id,
                             'area_name': area_name,
@@ -252,7 +263,7 @@ class GisView(BaseAPIView):
                         }
 
             datas = []
-            for area_id in gis.keys():
+            for area_id in sorted(gis):
                 area = gis[area_id]
                 branches = []
                 left = 120
