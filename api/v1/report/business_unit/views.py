@@ -498,7 +498,7 @@ Screen `C_03_08` program `VUD`
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
-            year = ""
+            year = ",P_YEAR=>'ALL_YEAR'"
             if 'year' in params.keys():
                 date = datetime.date.today()
                 cy = date.strftime("%Y")
