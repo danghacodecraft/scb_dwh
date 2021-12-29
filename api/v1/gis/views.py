@@ -130,9 +130,10 @@ class GisView(BaseAPIView):
                 region = gis[region_id]
                 branches = []
                 left = 120
-                top = 10
                 right = 100
+                top = 10
                 bottom = 20
+
                 for branch_id in region['branches']:
                     branch = region['branches'][branch_id]
                     longitude = branch['longitude']
@@ -144,10 +145,18 @@ class GisView(BaseAPIView):
                         'latitude': latitude,
                         'type': branch['type']
                     })
-                    left = left if left > longitude else longitude
-                    right = right if right < longitude else longitude
-                    top = top if top > latitude else latitude
-                    bottom = bottom if bottom < latitude else latitude
+
+                    if branch_id != 'ALL':
+                        left = left if left < longitude else longitude
+                        right = right if right > longitude else longitude
+                        top = top if top > latitude else latitude
+                        bottom = bottom if bottom < latitude else latitude
+
+                if region_id == 'ALL':
+                    left = 100
+                    right = 120
+                    top = 20
+                    bottom = 10
 
                 datas.append({
                     'region_id': region['region_id'],
@@ -267,9 +276,10 @@ class GisView(BaseAPIView):
                 area = gis[area_id]
                 branches = []
                 left = 120
-                top = 10
                 right = 100
+                top = 10
                 bottom = 20
+
                 for branch_id in area['branches']:
                     branch = area['branches'][branch_id]
                     longitude = branch['longitude']
@@ -281,10 +291,17 @@ class GisView(BaseAPIView):
                         'latitude': latitude,
                         'type': branch['type']
                     })
-                    left = left if left > longitude else longitude
-                    right = right if right < longitude else longitude
-                    top = top if top > latitude else latitude
-                    bottom = bottom if bottom < latitude else latitude
+                    if branch_id != 'ALL':
+                        left = left if left < longitude else longitude
+                        right = right if right > longitude else longitude
+                        top = top if top > latitude else latitude
+                        bottom = bottom if bottom < latitude else latitude
+
+                if area_id == 'ALL':
+                    left = 100
+                    right = 120
+                    top = 20
+                    bottom = 10
 
                 datas.append({
                     'ID': area['area_id'],
@@ -374,131 +391,131 @@ class GisView(BaseAPIView):
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    @extend_schema(
-        operation_id='Search Branch',
-        summary='List',
-        tags=["GIS"],
-        description="Branch",
-        parameters=[
-            OpenApiParameter(
-                name="userid", type=OpenApiTypes.STR, description="userid"
-            ),
-            OpenApiParameter(
-                name="code", type=OpenApiTypes.STR, description="code"
-            )
-        ],
-        # request=BranchRequestSerializer,
-        responses={
-            status.HTTP_201_CREATED: BranchResponseSerializer(many=True),
-            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
-            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
-        }
-    )
-    def search(self, request):
-        try:
-            con, cur = lib.connect()
-            params = request.query_params.dict()
-            code = params['code']
+    # @extend_schema(
+    #     operation_id='Search Branch',
+    #     summary='List',
+    #     tags=["GIS"],
+    #     description="Branch",
+    #     parameters=[
+    #         OpenApiParameter(
+    #             name="userid", type=OpenApiTypes.STR, description="userid"
+    #         ),
+    #         OpenApiParameter(
+    #             name="code", type=OpenApiTypes.STR, description="code"
+    #         )
+    #     ],
+    #     # request=BranchRequestSerializer,
+    #     responses={
+    #         status.HTTP_201_CREATED: BranchResponseSerializer(many=True),
+    #         status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+    #         status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+    #     }
+    # )
+    # def search(self, request):
+    #     try:
+    #         con, cur = lib.connect()
+    #         params = request.query_params.dict()
+    #         code = params['code']
+    #
+    #         userid = "P_USER_ID=>'THANGHD'"
+    #         if 'userid' in params.keys():
+    #             userid = "P_USER_ID=>'{}'".format(params['userid'])
+    #
+    #         sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
+    #         print(sql)
+    #         cur.execute(sql)
+    #         res = cur.fetchone()
+    #
+    #         datas = []
+    #         if len(res) > 0:
+    #             data_cursor = res[0]
+    #             for data in data_cursor:
+    #                 print(data)
+    #                 # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
+    #                 branch_id = data[6].strip()
+    #                 if branch_id == code:
+    #                     val = {
+    #                         'region_id': data[0],
+    #                         'region_name': data[1],
+    #                         'branch_id': branch_id,
+    #                         'branch_name': data[7].strip(),
+    #                         'latitude': data[8],
+    #                         'longitude': data[9],
+    #                     }
+    #                     datas.append(val)
+    #                     break
+    #
+    #
+    #         cur.close()
+    #         con.close()
+    #         return self.response_success(datas, status_code=status.HTTP_200_OK)
+    #     except cx_Oracle.Error as error:
+    #         cur.close()
+    #         con.close()
+    #         return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-            userid = "P_USER_ID=>'THANGHD'"
-            if 'userid' in params.keys():
-                userid = "P_USER_ID=>'{}'".format(params['userid'])
-
-            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
-            print(sql)
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            datas = []
-            if len(res) > 0:
-                data_cursor = res[0]
-                for data in data_cursor:
-                    print(data)
-                    # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
-                    branch_id = data[6].strip()
-                    if branch_id == code:
-                        val = {
-                            'region_id': data[0],
-                            'region_name': data[1],
-                            'branch_id': branch_id,
-                            'branch_name': data[7].strip(),
-                            'latitude': data[8],
-                            'longitude': data[9],
-                        }
-                        datas.append(val)
-                        break
-
-
-            cur.close()
-            con.close()
-            return self.response_success(datas, status_code=status.HTTP_200_OK)
-        except cx_Oracle.Error as error:
-            cur.close()
-            con.close()
-            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @extend_schema(
-        operation_id='Area Branch',
-        summary='List',
-        tags=["GIS"],
-        description="""
-Param `screen`         
-- **K01**.
-- **K02**.
-""",
-        parameters=[
-            OpenApiParameter(
-                name="kv", type=OpenApiTypes.STR, description="kv"
-            ),
-            OpenApiParameter(
-                name="kv", type=OpenApiTypes.STR, description="kv"
-            ),
-        ],
-        # request=ChartFRequestSerializer,
-        responses={
-            status.HTTP_201_CREATED: BranchAreaResponseSerializer(many=True),
-            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
-            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
-        }
-    )
-    def area_branch(self, request):
-        try:
-            con, cur = lib.connect()
-            params = request.query_params.dict()
-
-            # userid = "P_USER_ID=>'THANGHD'"
-            # if 'userid' in params.keys():
-            #     userid = "P_USER_ID=>'{}'".format(params['userid'])
-
-            kv = "K01"
-            if 'kv' in params.keys():
-                kv = params['kv']
-
-            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_BRANCH_AREA(P_KV=>'{}') from dual".format( kv)
-            print(sql)
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            datas = []
-            if len(res) > 0:
-                data_cursor = res[0]
-                for data in data_cursor:
-                    print(data)
-                    branch_id = data[0]
-                    val = {
-                        'ID': branch_id,
-                        'NAME': data[1],
-                        'latitude': data[3],
-                        'longitude': data[4],
-                        'KHU_VUC': kv
-                    }
-                    datas.append(val)
-                datas.sort(key=myArea)
-
-            cur.close()
-            con.close()
-            return self.response_success(datas, status_code=status.HTTP_200_OK)
-        except cx_Oracle.Error as error:
-            cur.close()
-            con.close()
-            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#     @extend_schema(
+#         operation_id='Area Branch',
+#         summary='List',
+#         tags=["GIS"],
+#         description="""
+# Param `screen`
+# - **K01**.
+# - **K02**.
+# """,
+#         parameters=[
+#             OpenApiParameter(
+#                 name="kv", type=OpenApiTypes.STR, description="kv"
+#             ),
+#             OpenApiParameter(
+#                 name="kv", type=OpenApiTypes.STR, description="kv"
+#             ),
+#         ],
+#         # request=ChartFRequestSerializer,
+#         responses={
+#             status.HTTP_201_CREATED: BranchAreaResponseSerializer(many=True),
+#             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+#             status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+#         }
+#     )
+#     def area_branch(self, request):
+#         try:
+#             con, cur = lib.connect()
+#             params = request.query_params.dict()
+#
+#             # userid = "P_USER_ID=>'THANGHD'"
+#             # if 'userid' in params.keys():
+#             #     userid = "P_USER_ID=>'{}'".format(params['userid'])
+#
+#             kv = "K01"
+#             if 'kv' in params.keys():
+#                 kv = params['kv']
+#
+#             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_BRANCH_AREA(P_KV=>'{}') from dual".format( kv)
+#             print(sql)
+#             cur.execute(sql)
+#             res = cur.fetchone()
+#
+#             datas = []
+#             if len(res) > 0:
+#                 data_cursor = res[0]
+#                 for data in data_cursor:
+#                     print(data)
+#                     branch_id = data[0]
+#                     val = {
+#                         'ID': branch_id,
+#                         'NAME': data[1],
+#                         'latitude': data[3],
+#                         'longitude': data[4],
+#                         'KHU_VUC': kv
+#                     }
+#                     datas.append(val)
+#                 datas.sort(key=myArea)
+#
+#             cur.close()
+#             con.close()
+#             return self.response_success(datas, status_code=status.HTTP_200_OK)
+#         except cx_Oracle.Error as error:
+#             cur.close()
+#             con.close()
+#             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
