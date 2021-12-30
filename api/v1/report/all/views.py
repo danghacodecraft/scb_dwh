@@ -14,6 +14,7 @@ from api.v1.report.all.serializers import ChartResponseSerializer, PFSChartRespo
 def parseFloat(data):
     if data is None:
         return 0
+    data = data.replace(",", "")
     return float(data.strip())
 
 class AllView(BaseAPIView):
@@ -76,22 +77,19 @@ Screen `C_06`
             if 'division' in params.keys():
                 division = ",P_DIVISION=>'{}'".format(params['division'])
 
-            kv = ""
-            if 'kv' in params.keys():
-                if params['kv'] != 'ALL':
-                    kv = ",P_KV=>'{}'".format(params['kv'])
-
             vung = ""
-            if 'vung' in params.keys():
-                if params['kv'] != 'ALL':
-                    vung = ",P_VUNG=>'{}'".format(params['vung'])
+            kv = ""
+            if 'vung' in params.keys() and params['vung'] != 'ALL':
+                vung = ",P_VUNG=>'{}'".format(params['vung'])
+            elif 'kv' in params.keys() and params['kv'] != 'ALL':
+                kv = ",P_VUNG=>'{}'".format(params['kv'])
 
             dv = ""
             if 'dv' in params.keys():
                 if params['dv'] != 'ALL':
                     dv = ",P_DV=>'{}'".format(params['dv'])
 
-            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH =>'{}'{}{}{}{}{}) from dual".format(screen, key,
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH =>'{}'{}{}{}{}{}) FROM DUAL".format(screen, key,
                                                                                                        division, kv,
                                                                                                        vung, dv)
             print(sql)
@@ -174,18 +172,17 @@ Screen `C_06_02_02_02`
                 screen = format(params['screen'])
 
             kv = ""
-            if 'kv' in params.keys():
-                kv = ",P_KV=>'{}'".format(params['kv'])
-
             vung = ""
-            if 'vung' in params.keys():
+            if 'kv' in params.keys() and params['kv'] != 'ALL':
+                kv = ",P_VUNG=>'{}'".format(params['kv'])
+            elif 'vung' in params.keys() and params['vung'] != 'ALL':
                 vung = ",P_VUNG=>'{}'".format(params['vung'])
 
             dv = ""
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
-            sql = "select obi.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}) FROM DUAL".format(screen, kv, vung, dv)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}) FROM DUAL".format(screen, kv, vung, dv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -270,18 +267,17 @@ Screen `C_06_03_02_03`
                 screen = format(params['screen'])
 
             kv = ""
-            if 'kv' in params.keys():
-                kv = ",P_KV=>'{}'".format(params['kv'])
-
             vung = ""
-            if 'vung' in params.keys():
+            if 'kv' in params.keys() and params['kv'] != 'ALL':
+                kv = ",P_VUNG=>'{}'".format(params['kv'])
+            elif 'vung' in params.keys() and params['vung'] != 'ALL':
                 vung = ",P_VUNG=>'{}'".format(params['vung'])
 
             dv = ""
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
-            sql = "select obi.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}) FROM DUAL".format(screen, kv, vung, dv)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}) FROM DUAL".format(screen, kv, vung, dv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
