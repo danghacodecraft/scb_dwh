@@ -78,11 +78,13 @@ Screen `C_06`
 
             kv = ""
             if 'kv' in params.keys():
-                kv = ",P_KV=>'{}'".format(params['kv'])
+                if params['kv'] != 'ALL':
+                    kv = ",P_KV=>'{}'".format(params['kv'])
 
             vung = ""
             if 'vung' in params.keys():
-                vung = ",P_VUNG=>'{}'".format(params['vung'])
+                if params['kv'] != 'ALL':
+                    vung = ",P_VUNG=>'{}'".format(params['vung'])
 
             dv = ""
             if 'dv' in params.keys():
@@ -113,12 +115,12 @@ Screen `C_06`
                         'THUC_HIEN_LK': data[6],
                         'KE_HOACH_LK': data[7],
                         'TY_LY_LK': data[8],
-                        'DIEM_CHI_TIEU_LK': data[9],
-                        'DIEM_KH_LK': data[10],
+                        'DIEM_CHI_TIEU_LK': parseFloat(data[9]),
+                        'DIEM_KH_LK': parseFloat(data[10]),
                         'KH_NAM': data[11],
                         'TY_LE_NAM': data[12],
-                        'DIEM_CHI_TIEU_KH_NAM': data[13],
-                        'DIEM_KH_NAM': data[14],
+                        'DIEM_CHI_TIEU_KH_NAM': parseFloat(data[13]),
+                        'DIEM_KH_NAM': parseFloat(data[14]),
                         'AMOUNT_CHART': data[15]
                     }
                     datas.append(val)
