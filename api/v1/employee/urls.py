@@ -6,9 +6,7 @@ urlpatterns = [
     path('emp_list/', EmployeeView.as_view({'get': 'emp_list'})),
     path('emp_detail/', EmployeeView.as_view({'get': 'emp_detail'})),
     path('emp_detail_kpi/', EmployeeView.as_view({'get': 'emp_detail_kpi'})),
-    path('emp_detail_profile/', EmployeeView.as_view({'get': 'emp_detail_profile'})),
-    path('emp_detail_curriculum_vitae/', EmployeeView.as_view({'get': 'emp_detail_curriculum_vitae'})),
-    path('emp_detail_level/', EmployeeView.as_view({'get': 'emp_detail_level'})),
+    path('emp_detail_work_process/', EmployeeView.as_view({'get': 'emp_detail_work_process'})),
 
-    path('dep_list/', EmployeeView.as_view({'get': 'dep_list'})),
+    # path('dep_list/', EmployeeView.as_view({'get': 'dep_list'})),
 ]

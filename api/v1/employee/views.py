@@ -154,97 +154,104 @@ Param `emp` example
                         'sex': data[11],
                         'branch_code': data[12],
                         'manager': data[13],
-                        # 'nhom_nv': data[24],
-                        # 'profile': {
-                        #     'work': {
-                        #         'cur_branch_code': data[14],
-                        #         'cur_branch_name': data[15],
-                        #         'cur_job_title_code': data[16],
-                        #         'org_branch_code': data[17],
-                        #         'org_branch_name': data[18],
-                        #         'org_job_title_code': data[19],
-                        #         'org_job_title_name': data[20],
-                        #         'card_no': data[21],
-                        #         'thu_viec': data[22],
-                        #         'chinh_thuc': data[23],
-                        #     },
-                        #     'contract': {
-                        #         'type': data[32],
-                        #         'name': data[33],
-                        #         'start_date': data[34],
-                        #         'end_date': data[35],
-                        #     },
-                        #     'work_process': []
-                        # },
-                        # 'curriculum_vitae': {
-                        #     'individual': {
-                        #         'birth_date': data[59],
-                        #         'birth_province': data[60],
-                        #         'gender': data[61],
-                        #         'native': data[62],
-                        #         'religion': data[63],
-                        #         'nationality': data[64],
-                        #         'marital': data[65],
-                        #         'passport': {
-                        #             'id': data[66],
-                        #             'issue_date': data[67],
-                        #             'expire_date': data[68],
-                        #             'issue_place': data[69]
-                        #         }
-                        #     },
-                        #     'contact': {
-                        #         'temp': {
-                        #             'address': data[36],
-                        #             'nation': data[37],
-                        #             'province': data[38],
-                        #             'ward': data[39],
-                        #             'district': data[40],
-                        #         },
-                        #         'per': {
-                        #             'address': data[41],
-                        #             'nation': data[42],
-                        #             'province': data[43],
-                        #             'ward': data[44],
-                        #             'district': data[45],
-                        #         },
-                        #         'nav': {
-                        #             'address': data[46],
-                        #             'nation': data[47],
-                        #             'province': data[48],
-                        #             'ward': data[49],
-                        #             'district': data[50],
-                        #         },
-                        #         'contact': {
-                        #             'address': data[51],
-                        #             'nation': data[52],
-                        #             'province': data[53],
-                        #             'ward': data[54],
-                        #             'district': data[55],
-                        #         },
-                        #         'family': {
-                        #             'name': data[56],
-                        #             'relation': data[57],
-                        #             'phone': data[58],
-                        #
-                        #         }
-                        #     }
-                        # },
-                        # 'level': {
-                        #     'cultural': {
-                        #         'academy': data[70],
-                        #         'education_level': data[71],
-                        #         'major': data[72],
-                        #         'degree': data[73],
-                        #         'school': data[74],
-                        #         'training': data[75]
-                        #     },
-                        #     'foreign_language': {
-                        #
-                        #     },
-                        #     'information_technology': {
-                        #
-                        #     }
-                        # }
+                        'nhom_nv': data[24],
+                        'org_id': data[76],
+                        'profile': {
+                            'work': {
+                                'cur':{
+                                    'branch_code': data[14],
+                                    'branch_name': data[15],
+                                    'job_title_code': data[16],
+                                    'job_title_name': data[2],
+                                },
+                                'org':{
+                                    'branch_code': data[17],
+                                    'branch_name': data[18],
+                                    'job_title_code': data[19],
+                                    'job_title_name': data[20],
+                                },
+                                'card_no': data[21],
+                                'thu_viec': data[22],
+                                'chinh_thuc': data[23],
+                                'resident_status': data[77],
+                            },
+                            'contract': {
+                                'type': data[32],
+                                'name': data[33],
+                                'start_date': data[34],
+                                'end_date': data[35],
+                            },
+                            'work_process': []
+                        },
+                        'curriculum_vitae': {
+                            'individual': {
+                                'birth_date': data[59],
+                                'birth_province': data[60],
+                                'gender': data[61],
+                                'native': data[62],
+                                'religion': data[63],
+                                'nationality': data[64],
+                                'marital': data[65],
+                                'passport': {
+                                    'id': data[66],
+                                    'issue_date': data[67],
+                                    'expire_date': data[68],
+                                    'issue_place': data[69]
+                                }
+                            },
+                            'contact': {
+                                'temp': {
+                                    'address': data[36],
+                                    'nation': data[37],
+                                    'province': data[38],
+                                    'ward': data[39],
+                                    'district': data[40],
+                                },
+                                'per': {
+                                    'address': data[41],
+                                    'nation': data[42],
+                                    'province': data[43],
+                                    'ward': data[44],
+                                    'district': data[45],
+                                },
+                                'nav': {
+                                    'address': data[46],
+                                    'nation': data[47],
+                                    'province': data[48],
+                                    'ward': data[49],
+                                    'district': data[50],
+                                },
+                                'contact': {
+                                    'address': data[51],
+                                    'nation': data[52],
+                                    'province': data[53],
+                                    'ward': data[54],
+                                    'district': data[55],
+                                },
+                                'family': {
+                                    'name': data[56],
+                                    'relation': data[57],
+                                    'phone': data[58],
+
+                                }
+                            }
+                        },
+                        'level': {
+                            'cultural': {
+                                'academy': data[70],
+                                'education_level': data[71],
+                                'major': data[72],
+                                'degree': data[73],
+                                'school': data[74],
+                                'training': data[75]
+                            },
+                            'foreign_language': {
+
+                            },
+                            'information_technology': {
+
+                            }
+                        }
                     }
                     datas.append(val)
 
@@ -289,7 +296,7 @@ Param `emp` example
             cur.execute(sql)
             res = cur.fetchone()
 
-            datas = []
+            kpis = []
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
@@ -304,11 +311,11 @@ Param `emp` example
                         'DATE': data[5],
                         'NOTE': data[6]
                     }
-                    datas.append(val)
+                    kpis.append(val)
 
             cur.close()
             con.close()
-            return self.response_success(datas, status_code=status.HTTP_200_OK)
+            return self.response_success(kpis, status_code=status.HTTP_200_OK)
         except cx_Oracle.Error as error:
             cur.close()
             con.close()
@@ -334,15 +341,12 @@ Param `emp` example
             )
         ]
     )
-    def emp_detail_profile(self, request):
+    def emp_detail_work_process(self, request):
         try:
             con, cur = lib.connect()
-
             params = request.query_params.dict()
             emp_id = params['emp']
 
-            profile = {}
-            contract = {}
             work_process = []
             # =============================================
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_WORKING_PROCESS('{}') FROM DUAL".format(emp_id)
@@ -362,293 +366,87 @@ Param `emp` example
                         'CHUC_VU': data[4]
                     }
                     work_process.append(val)
-            #=============================================
-            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL".format(emp_id)
-            print(sql)
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            if len(res) > 0:
-                data_cursor = res[0]
-                for data in data_cursor:
-                    print(data)
-                    # [('03627', 'HỒ ĐỨC THẮNG', 'GIÁM ĐỐC PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
-                    # '84', 'PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
-                    # datetime.datetime(2010, 9, 6, 0, 0), 'THANGHD@SCB.COM.VN', '+84 907138520', '/var/www/EmployeeImage/03627.jpeg')]
-                    profile = {
-                        'current': {
-                            'branch_code': data[14],
-                            'branch_name': data[15],
-                            'job_title_code': data[16],
-                            'job_title_name': data[4],
-                        },
-                        'org': {
-                            'branch_code': data[17],
-                            'branch_name': data[18],
-                            'job_title_code': data[19],
-                            'job_title_name': data[20],
-                        },
-                        'join_date': data[5],
-                        'probation': data[22],
-                        'official': data[23],
-                    }
-                    contract = {
-                        'type': data[32],
-                        'name': data[33],
-                        'start_date': data[34],
-                        'end_date': data[35],
-                    },
-
-            data = {
-                "profile": profile,
-                "contract": contract,
-                "work_process": work_process
-            }
 
             cur.close()
             con.close()
-            return self.response_success(data, status_code=status.HTTP_200_OK)
-        except cx_Oracle.Error as error:
-            cur.close()
-            con.close()
-            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @extend_schema(
-        operation_id='EMP_DETAIL_CURRICULUM_VITAE',
-        summary='EMP_DETAIL',
-        tags=["EMP_DETAIL_CURRICULUM_VITAE"],
-        responses={
-            status.HTTP_201_CREATED: EmployeeResponseSerializer(many=True),
-            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
-            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
-        },
-        description="""
-Param `emp` example       
-- **17889**.
-
-    """,
-        parameters=[
-            OpenApiParameter(
-                name="emp", type=OpenApiTypes.STR, description="emp"
-            )
-        ]
-    )
-    def emp_detail_curriculum_vitae(self, request):
-        try:
-            con, cur = lib.connect()
-
-            params = request.query_params.dict()
-            emp_id = params['emp']
-
-            # call the function
-            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL".format(emp_id)
-            print(sql)
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            data = {}
-            if len(res) > 0:
-                data_cursor = res[0]
-                for data in data_cursor:
-                    print(data)
-                    data = {
-                        'individual': {
-                            'birth_date': data[59],
-                            'birth_province': data[60],
-                            'gender': data[61],
-                            'native': data[62],
-                            'religion': data[63],
-                            'nationality': data[64],
-                            'marital': data[65],
-                            'passport': {
-                                'id': data[66],
-                                'issue_date': data[67],
-                                'expire_date': data[68],
-                                'issue_place': data[69]
-                            }
-                        },
-                        'contact': {
-                            'temp': {
-                                'address': data[36],
-                                'nation': data[37],
-                                'province': data[38],
-                                'ward': data[39],
-                                'district': data[40],
-                            },
-                            'per': {
-                                'address': data[41],
-                                'nation': data[42],
-                                'province': data[43],
-                                'ward': data[44],
-                                'district': data[45],
-                            },
-                            'nav': {
-                                'address': data[46],
-                                'nation': data[47],
-                                'province': data[48],
-                                'ward': data[49],
-                                'district': data[50],
-                            },
-                            'contact': {
-                                'address': data[51],
-                                'nation': data[52],
-                                'province': data[53],
-                                'ward': data[54],
-                                'district': data[55],
-                            },
-                            'family': {
-                                'name': data[56],
-                                'relation': data[57],
-                                'phone': data[58],
-                            }
-                        }
-                    }
-
-            cur.close()
-            con.close()
-            return self.response_success(data, status_code=status.HTTP_200_OK)
-        except cx_Oracle.Error as error:
-            cur.close()
-            con.close()
-            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @extend_schema(
-        operation_id='EMP_DETAIL_LEVEL',
-        summary='EMP_DETAIL_LEVEL',
-        tags=["EMPLOYEE"],
-        responses={
-            status.HTTP_201_CREATED: EmployeeResponseSerializer(many=True),
-            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
-            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
-        },
-        description="""
-Param `emp` example       
-- **17889**.
-
-""",
-        parameters=[
-            OpenApiParameter(
-                name="emp", type=OpenApiTypes.STR, description="emp"
-            )
-        ]
-    )
-    def emp_detail_level(self, request):
-        try:
-            con, cur = lib.connect()
-            params = request.query_params.dict()
-            emp_id = params['emp']
-
-            # call the function
-            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL".format(emp_id)
-            print(sql)
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            data = {}
-            if len(res) > 0:
-                data_cursor = res[0]
-                for data in data_cursor:
-                    print(data)
-                    # [('03627', 'HỒ ĐỨC THẮNG', 'GIÁM ĐỐC PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
-                    # '84', 'PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
-                    # datetime.datetime(2010, 9, 6, 0, 0), 'THANGHD@SCB.COM.VN', '+84 907138520', '/var/www/EmployeeImage/03627.jpeg')]
-                    data = {
-                        'cultural': {
-                            'academy': data[70],
-                            'education_level': data[71],
-                            'major': data[72],
-                            'degree': data[73],
-                            'school': data[74],
-                            'training': data[75]
-                        },
-                        'foreign_language': {
-
-                        },
-                        'information_technology': {
-
-                        }
-                    }
-
-            cur.close()
-            con.close()
-            return self.response_success(data, status_code=status.HTTP_200_OK)
+            return self.response_success(work_process, status_code=status.HTTP_200_OK)
         except cx_Oracle.Error as error:
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-    @extend_schema(
-        operation_id='DEP_LIST',
-        summary='DEP_LIST',
-        tags=["EMPLOYEE"],
-        responses={
-            status.HTTP_201_CREATED: BranchResponseSerializer(many=True),
-            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
-            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
-        },
-        description="""
-Param `dep` example       
-- **CAP_HOI_SO**.
-- **CAP_VUNG**.
-- **CAP_DVKD**.
-""",
-        parameters=[
-            OpenApiParameter(
-                name="dep", type=OpenApiTypes.STR, description="dep"
-            )
-        ]
-    )
-    def dep_list(self, request):
-        try:
-            con, cur = lib.connect()
-
-            params = request.query_params.dict()
-            dep = params['dep']
-
-            # call the function
-            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_ORGANIZATION('ALL','{}', 'ALL') FROM DUAL".format(dep)
-            print(sql)
-
-            cur.execute(sql)
-            res = cur.fetchone()
-
-            ret = {}
-            if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
-                for data in data_cursor:
-                    print(data)
-                    # (None, None, None, None, None, None, None, None, '001', 'SCB Cống Quỳnh', 'BAN GIAM DOC', '11838', 'Phòng Khách hàng Wholesale')
-                    branch_id = data[8]
-                    branch_name = data[9]
-
-                    if branch_id not in ret:
-                        ret[branch_id] = {
-                            'branch_id': branch_id,
-                            'branch_name': branch_name,
-                            'director': data[10],
-                            'departments': {}
-                        }
-
-                    departments = ret[branch_id]['departments']
-                    department_id = data[11]
-                    department_name = data[12]
-                    if department_id != None and department_id not in departments:
-                        departments[department_id] = {
-                            'department_id': department_id,
-                            'department_name': department_name
-                        }
-
-            cur.close()
-            con.close()
-            return self.response_success(ret, status_code=status.HTTP_200_OK)
-        except cx_Oracle.Error as error:
-            cur.close()
-            con.close()
-            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#     @extend_schema(
+#         operation_id='DEP_LIST',
+#         summary='DEP_LIST',
+#         tags=["EMPLOYEE"],
+#         responses={
+#             status.HTTP_201_CREATED: BranchResponseSerializer(many=True),
+#             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+#             status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+#         },
+#         description="""
+# Param `dep` example
+# - **CAP_HOI_SO**.
+# - **CAP_VUNG**.
+# - **CAP_DVKD**.
+# """,
+#         parameters=[
+#             OpenApiParameter(
+#                 name="dep", type=OpenApiTypes.STR, description="dep"
+#             )
+#         ]
+#     )
+#     def dep_list(self, request):
+#         try:
+#             con, cur = lib.connect()
+#
+#             params = request.query_params.dict()
+#             dep = params['dep']
+#
+#             # call the function
+#             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_ORGANIZATION('ALL','{}', 'ALL') FROM DUAL".format(dep)
+#             print(sql)
+#
+#             cur.execute(sql)
+#             res = cur.fetchone()
+#
+#             ret = {}
+#             if len(res) > 0:
+#                 try:
+#                     data_cursor = res[0]
+#                 except:
+#                     print("Loi data ")
+#                     data_cursor = None
+#
+#                 for data in data_cursor:
+#                     print(data)
+#                     # (None, None, None, None, None, None, None, None, '001', 'SCB Cống Quỳnh', 'BAN GIAM DOC', '11838', 'Phòng Khách hàng Wholesale')
+#                     branch_id = data[8]
+#                     branch_name = data[9]
+#
+#                     if branch_id not in ret:
+#                         ret[branch_id] = {
+#                             'branch_id': branch_id,
+#                             'branch_name': branch_name,
+#                             'director': data[10],
+#                             'departments': {}
+#                         }
+#
+#                     departments = ret[branch_id]['departments']
+#                     department_id = data[11]
+#                     department_name = data[12]
+#                     if department_id != None and department_id not in departments:
+#                         departments[department_id] = {
+#                             'department_id': department_id,
+#                             'department_name': department_name
+#                         }
+#
+#             cur.close()
+#             con.close()
+#             return self.response_success(ret, status_code=status.HTTP_200_OK)
+#         except cx_Oracle.Error as error:
+#             cur.close()
+#             con.close()
+#             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
