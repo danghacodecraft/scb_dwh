@@ -131,7 +131,7 @@ Param `emp` example
             cur.execute(sql)
             res = cur.fetchone()
 
-            datas = []
+            data = {}
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
@@ -139,7 +139,7 @@ Param `emp` example
                     #[('03627', 'HỒ ĐỨC THẮNG', 'GIÁM ĐỐC PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
                     # '84', 'PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
                     # datetime.datetime(2010, 9, 6, 0, 0), 'THANGHD@SCB.COM.VN', '+84 907138520', '/var/www/EmployeeImage/03627.jpeg')]
-                    val = {
+                    data = {
                         'emp_id': data[0],
                         'emp_name': data[1],
                         'title': data[2],
@@ -253,11 +253,10 @@ Param `emp` example
                             }
                         }
                     }
-                    datas.append(val)
 
             cur.close()
             con.close()
-            return self.response_success(datas, status_code=status.HTTP_200_OK)
+            return self.response_success(data, status_code=status.HTTP_200_OK)
         except cx_Oracle.Error as error:
             cur.close()
             con.close()
