@@ -692,6 +692,7 @@ Param `page_size` default = 20
         tags=["BUSINESS"],
         description="""
 Param `screen`         
+- **TRANG_CHU**.
 - **C_02_02**.
 
 Param `region`         
@@ -718,15 +719,15 @@ Param `region`
 
             params = request.query_params.dict()
 
-            screen = 'C_02_02'
+            screen = 'TRANG_CHU'
             if 'screen' in params.keys():
                 screen = params['screen']
 
-            region = ", p_vung=>'VÙNG 02'"
+            region = "VÙNG 02"
             if 'region' in params.keys():
-                region = ", p_vung=>'{}'".format(params['region'])
+                region = params['region']
 
-            sql = "Select obi.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO( P_MAN_HINH=>'{}'{} ) FROM DUAL".format(screen, region)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO(P_MAN_HINH=>'{}', P_VUNG=>'{}', P_DV=>'ALL', P_CCY=>'ALL', P_MODULE=>'ALL' ) FROM DUAL".format(screen, region)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -764,6 +765,7 @@ Param `region`
         description="""
 Param `screen`         
 - **TRANG_CHU**.
+- **C_02_02**.
 
 Param `dv`         
 - **001**.
@@ -793,11 +795,9 @@ Param `dv`
             if 'screen' in params.keys():
                 screen = params['screen']
 
-            dv = ""
-            if 'dv' in params.keys():
-                dv = ", p_dv=>'{}'".format(params['dv'])
+            dv = params['dv']
 
-            sql = "Select obi.CRM_DWH_PKG.FUN_GET_BRN_MANA_INFO( P_MAN_HINH=>'{}'{} ) FROM DUAL".format(screen, dv)
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_BRN_MANA_INFO(P_MAN_HINH=>'{}', P_VUNG=>'ALL', P_DV=>'{}', P_CCY=>'ALL', P_MODULE=>'ALL' ) FROM DUAL".format(screen, dv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
