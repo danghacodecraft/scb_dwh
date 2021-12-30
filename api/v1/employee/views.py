@@ -155,7 +155,7 @@ Param `emp` example
                         'branch_code': data[12],
                         'manager': data[13],
                         'nhom_nv': data[24],
-                        # 'org_id': data[76],
+                        'org_id': data[76],
                         'profile': {
                             'work': {
                                 'cur':{
@@ -173,7 +173,7 @@ Param `emp` example
                                 'card_no': data[21],
                                 'thu_viec': data[22],
                                 'chinh_thuc': data[23],
-                                # 'resident_status': data[77],
+                                'resident_status': data[77],
                             },
                             'contract': {
                                 'type': data[32],
@@ -246,10 +246,14 @@ Param `emp` example
                                 'training': data[75]
                             },
                             'foreign_language': {
-
+                                'certificate': data[81],
+                                'level': data[82],
+                                'mark': data[83],
                             },
                             'information_technology': {
-
+                                'certificate': data[78],
+                                'level': data[79],
+                                'mark': data[80],
                             }
                         }
                     }
