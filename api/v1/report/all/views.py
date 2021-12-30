@@ -78,17 +78,21 @@ Screen `C_06`
 
             kv = ""
             if 'kv' in params.keys():
-                kv = ",P_KV=>'{}'".format(params['kv'])
+                data = params['kv']
+                if data != 'ALL':
+                    kv = ",P_KV=>'{}'".format(data)
 
             vung = ""
             if 'vung' in params.keys():
-                vung = ",P_VUNG=>'{}'".format(params['vung'])
+                data = params['vung']
+                if data != 'ALL':
+                    vung = ",P_VUNG=>'{}'".format(data)
 
             dv = ""
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
-            sql = "select  obi.crm_dwh_pkg.FUN_C06_CHART(P_MAN_HINH =>'{}'{}{}{}{}{}) from dual".format(screen, key, division, kv, vung, dv)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH =>'{}'{}{}{}{}{}) from dual".format(screen, key, division, kv, vung, dv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
