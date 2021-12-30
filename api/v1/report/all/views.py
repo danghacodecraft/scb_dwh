@@ -78,7 +78,6 @@ Screen `C_06`
 
             kv = ""
             if 'kv' in params.keys():
-<<<<<<< HEAD
                 if params['kv'] != 'ALL':
                     kv = ",P_KV=>'{}'".format(params['kv'])
 
@@ -86,21 +85,7 @@ Screen `C_06`
             if 'vung' in params.keys():
                 if params['kv'] != 'ALL':
                     vung = ",P_VUNG=>'{}'".format(params['vung'])
-=======
-                data = params['kv']
-                if data != 'ALL':
-                    kv = ",P_KV=>'{}'".format(data)
 
-            vung = ""
-            if 'vung' in params.keys():
-                data = params['vung']
-                if data != 'ALL':
-                    vung = ",P_VUNG=>'{}'".format(data)
->>>>>>> scb-develop-deploy
-
-            dv = ""
-            if 'dv' in params.keys():
-                dv = ",P_DV=>'{}'".format(params['dv'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH =>'{}'{}{}{}{}{}) from dual".format(screen, key, division, kv, vung, dv)
             print(sql)
