@@ -86,6 +86,11 @@ Screen `C_06`
                 if params['kv'] != 'ALL':
                     vung = ",P_VUNG=>'{}'".format(params['vung'])
 
+            dv = ""
+            if 'dv' in params.keys():
+                if params['dv'] != 'ALL':
+                    dv = ",P_DV=>'{}'".format(params['dv'])
+
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH =>'{}'{}{}{}{}{}) from dual".format(screen, key,
                                                                                                        division, kv,
                                                                                                        vung, dv)
