@@ -532,7 +532,8 @@ Screen `C_03_08` program `VUD`
                         'TY_LE_DU_NO_QUA_HAN': data[9],
                         'TY_LE_DU_NO': data[10],
                         'PROGRAM_ID': data[11],
-                        'USING_DETAIL': data[12]
+                        'USING_DETAIL': data[12],
+                        'YEAR': data[13]
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
