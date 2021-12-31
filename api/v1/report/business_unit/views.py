@@ -533,7 +533,7 @@ Screen `C_03_08` program `VUD`
                         'TY_LE_DU_NO': data[10],
                         'PROGRAM_ID': data[11],
                         'USING_DETAIL': data[12],
-                        'YEAR': data[13]
+                        'YEAR': data[13] if len(data) > 13 else None
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
