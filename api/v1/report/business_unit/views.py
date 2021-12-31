@@ -484,7 +484,6 @@ Screen `C_03_08` program `VUD`
             screen = params['screen']
             key = params['key']
 
-
             program = ""
             if 'program' in params.keys():
                 program = ", p_program=>'{}'".format(params['program'])
@@ -497,11 +496,11 @@ Screen `C_03_08` program `VUD`
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
-            py = 'ALL_YEAR'
+            year = ",P_YEAR=>'ALL_YEAR'"
             if 'year' in params.keys():
                 py = params['year']
-
-            year = ",P_YEAR=>'ALL_YEAR'"
+                if py != 'ALL_YEAR':
+                    year = ",P_YEAR=>'{}'".format(py)
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_CHART_loan( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{} ) FROM DUAL".format(screen, key, program, vung, dv, year)
             print(sql)
@@ -517,9 +516,9 @@ Screen `C_03_08` program `VUD`
                     data_cursor = None
 
                 for data in data_cursor:
-                    y = data[13] if len(data) > 13 else None
-                    if py != 'ALL_YEAR' and y is not None and y != py:
-                        continue
+                    # y = data[13] if len(data) > 13 else None
+                    # if py != 'ALL_YEAR' and y is not None and y != py:
+                    #     continue
 
                     val = {
                         'TIEU_DE': data[0],
@@ -535,7 +534,7 @@ Screen `C_03_08` program `VUD`
                         'TY_LE_DU_NO': data[10],
                         'PROGRAM_ID': data[11],
                         'USING_DETAIL': data[12],
-                        'LK_NAM': data[13] if len(data) > 13 else None
+                        # 'LK_NAM': data[13] if len(data) > 13 else None
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
