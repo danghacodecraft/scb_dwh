@@ -385,7 +385,6 @@ Screen `C_03`
 - **du_no_td_khcn**.
 - **du_no_nhom_sp**.
 - **so_luong_khoan_vay**.
-- **so_luong_khoan_vay_theo_nam**.
 
 Screen `C_03_01` 
 - **don_vi_no_qua_han**.
