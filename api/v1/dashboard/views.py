@@ -149,7 +149,8 @@ The `division` example:
             con, cur = lib.connect()
 
             params = request.query_params.dict()
-            module = ",P_MODULE=>'{}'".format(params['module'])
+            key = params['module']
+            module = ",P_MODULE=>'{}'".format(key)
 
             vung = ""
             if 'vung' in params.keys():
@@ -176,19 +177,47 @@ The `division` example:
             if len(res) > 0:
                 data_cursor = res[0]
                 if data_cursor is not None:
-                    for data in data_cursor:
-                        print(data)
 
-                        val = {
-                            'id': lib.create_key(data[1]),
-                            'title': lib.parseString(data[3]),
-                            'val': lib.parseFloat(data[2]),
-                            'unit': lib.parseString(data[4])
-                            # 'week': data[3],
-                            # 'month': data[4],
-                            # 'accumulated': data[5]
-                        }
-                        datas.append(val)
+                    if key == 'tong_so_but_toan' or key == 'thu_phi_dich_vu':
+                        total = 0
+                        dd = []
+                        for data in data_cursor:
+                            dd.append(data)
+                            val = lib.parseFloat(data[2])
+                            unit = lib.parseString(data[4])
+                            if unit != '%':
+                                total = total + val
+
+                        for data in dd:
+                            ids = lib.create_key(data[1])
+                            title = lib.parseString(data[3])
+                            val = lib.parseFloat(data[2])
+                            unit = lib.parseString(data[4])
+
+                            if unit == '%':
+                                val = val / total * 100
+                            print(val)
+                            val = {
+                                'id': ids,
+                                'title': title,
+                                'val': val,
+                                'unit': unit,
+                                # 'week': data[3],
+                                # 'month': data[4],
+                                # 'accumulated': data[5]
+                            }
+                            datas.append(val)
+
+                    else:
+                        for data in data_cursor:
+                            print(data)
+                            val = {
+                                'id': lib.create_key(data[1]),
+                                'title': lib.parseString(data[3]),
+                                'val': lib.parseFloat(data[2]),
+                                'unit': lib.parseString(data[4])
+                            }
+                            datas.append(val)
 
             cur.close()
             con.close()
