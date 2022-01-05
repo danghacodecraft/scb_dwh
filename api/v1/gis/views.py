@@ -92,8 +92,8 @@ class GisView(BaseAPIView):
                     if filterName(region_name.lower()):
                         continue
 
-                    if region_id not in gis:
-                        gis[region_id] = {
+                    if region_name not in gis:
+                        gis[region_name] = {
                             'region_id': region_id,
                             'region_name': region_name,
                             'branches': {
@@ -107,9 +107,9 @@ class GisView(BaseAPIView):
                             }
                         }
 
-                    region = gis[region_id]
-                    if branch_id not in region['branches']:
-                        region['branches'][branch_id] = {
+                    region = gis[region_name]
+                    if branch_name not in region['branches']:
+                        region['branches'][branch_name] = {
                             'branch_id': branch_id,
                             'branch_name': branch_name,
                             'longitude': longitude,
@@ -117,7 +117,7 @@ class GisView(BaseAPIView):
                             'type': branchtype
                         }
 
-                        gis['ALL']['branches'][branch_id] = {
+                        gis['ALL']['branches'][branch_name] = {
                             'branch_id': branch_id,
                             'branch_name': branch_name,
                             'longitude': longitude,
@@ -125,22 +125,29 @@ class GisView(BaseAPIView):
                             'type': branchtype
                         }
 
+            print("||||||||||||||||||||||||||||||||||")
             datas = []
-            for region_id in sorted(gis):
-                region = gis[region_id]
+            for region_name in sorted(gis.keys()):
+                print("======================================")
+                print(region_name)
+                print("-----------------------------")
+                region = gis[region_name]
                 branches = []
                 left = 120
                 right = 100
                 top = 10
                 bottom = 20
 
-                for branch_id in region['branches']:
-                    branch = region['branches'][branch_id]
+                for branch_name in sorted(region['branches'].keys()):
+                    print(branch_name)
+                    branch = region['branches'][branch_name]
+                    branch_id = branch['branch_id']
+                    branch_name = branch['branch_name']
                     longitude = branch['longitude']
                     latitude = branch['latitude']
                     branches.append({
-                        'branch_id': branch['branch_id'],
-                        'branch_name': branch['branch_name'],
+                        'branch_id': branch_id,
+                        'branch_name': branch_name,
                         'longitude': longitude,
                         'latitude': latitude,
                         'type': branch['type']
@@ -254,8 +261,8 @@ class GisView(BaseAPIView):
                         }
 
                     area = gis[area_id]
-                    if branch_id not in area['branches']:
-                        area['branches'][branch_id] = {
+                    if area_name not in area['branches']:
+                        area['branches'][area_name] = {
                             'branch_id': branch_id,
                             'branch_name': branch_name,
                             'longitude': longitude,
@@ -263,7 +270,7 @@ class GisView(BaseAPIView):
                             'type': branchtype
                         }
 
-                        gis['ALL']['branches'][branch_id] = {
+                        gis['ALL']['branches'][area_name] = {
                             'branch_id': branch_id,
                             'branch_name': branch_name,
                             'longitude': longitude,
@@ -272,21 +279,23 @@ class GisView(BaseAPIView):
                         }
 
             datas = []
-            for area_id in sorted(gis):
-                area = gis[area_id]
+            for area_name in sorted(gis):
+                area = gis[area_name]
                 branches = []
                 left = 120
                 right = 100
                 top = 10
                 bottom = 20
 
-                for branch_id in area['branches']:
-                    branch = area['branches'][branch_id]
+                for branch_name in sorted(area['branches']):
+                    branch = area['branches'][branch_name]
+                    branch_id = branch['branch_id']
+                    branch_name = branch['branch_name']
                     longitude = branch['longitude']
                     latitude = branch['latitude']
                     branches.append({
-                        'branch_id': branch['branch_id'],
-                        'branch_name': branch['branch_name'],
+                        'branch_id': branch_id,
+                        'branch_name': branch_name,
                         'longitude': longitude,
                         'latitude': latitude,
                         'type': branch['type']
