@@ -9,7 +9,7 @@ from rest_framework import status
 
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.report.business_unit.serializers import ChartFResponseSerializer, DataResponseSerializer, \
+from api.v1.report.business_unit.serializers import ChartFResponseSerializer, ChartResponseSerializer, DataResponseSerializer, \
     CustomerResponseSerializer, RegionInfoResponseSerializer, BranchInfoResponseSerializer
 
 class BusinessUnitView(BaseAPIView):
@@ -114,14 +114,14 @@ The `Screen` has values:
                     #('0-0-A-05.09',        'Nợ xấu',       54685588,   109371176,  54685588,   54685588,   'Nợ xấu[Khối DN]',  None,       109371176)
                     #('C_02_01_DWH_0007',   'Khách hàng ',  0,          0,          0,          0,          'Khách hàng ',      'khách hàng', 0)
                     val = {
-                        'id': lib.create_key(data[6].strip()),
-                        "title": data[6].strip(),
-                        'day': data[2],
-                        'week': data[3],
-                        'month': data[4],
-                        'accumulated': data[5],
-                        'unit': data[7],
-                        'AMT_KY_TRUOC': data[8]
+                        'id': lib.create_key(data[6]),
+                        "title": lib.parseString(data[6]),
+                        'day': lib.parseFloat(data[2]),
+                        'week': lib.parseFloat(data[3]),
+                        'month': lib.parseFloat(data[4]),
+                        'accumulated': lib.parseFloat(data[5]),
+                        'unit': lib.parseString(data[7]),
+                        'AMT_KY_TRUOC': lib.parseFloat(data[8])
                     }
                     datas.append(val)
 
@@ -295,7 +295,7 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
         ],
         # request=ChartFRequestSerializer,
         responses={
-            status.HTTP_201_CREATED: ChartFResponseSerializer(many=True),
+            status.HTTP_201_CREATED: ChartResponseSerializer(many=True),
             status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
             status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
         }
@@ -355,14 +355,14 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                     print(data)
                     #('0-0-B-10.10', 'Thu nhập từ hoạt động KDNH', 0, 'Thu nhập từ hoạt động KDNH', None, None, 'Toàn hàng', None, 0, 0)
                     val = {
-                        'key': lib.create_key(data[1].strip()),
-                        'label': data[1].strip(),
-                        'val': data[2],
-                        'unit': data[4],
-                        'description': data[5],
-                        'type': data[6],
-                        'AMT_KY_TRUOC': data[8],
-                        'LK_NAM': data[9]
+                        'key': lib.create_key(data[1]),
+                        'label': lib.parseString(data[1]),
+                        'val': lib.parseFloat(data[2]),
+                        'unit': lib.parseString(data[4]),
+                        'description': lib.parseString(data[5]),
+                        'type': lib.parseString(data[6]),
+                        'AMT_KY_TRUOC': lib.parseString(data[8]),
+                        'LK_NAM': lib.parseFloat(data[9])
                     }
                     datas.append(val)
 
@@ -509,32 +509,28 @@ Screen `C_03_08` program `VUD`
 
             datas = []
             if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
+                data_cursor = res[0]
                 for data in data_cursor:
+                    print(data)
                     # y = data[13] if len(data) > 13 else None
                     # if py != 'ALL_YEAR' and y is not None and y != py:
                     #     continue
 
                     val = {
-                        'TIEU_DE': data[0],
-                        'CO_TSDB': data[1],
-                        'UNIT': data[2],
-                        'BR': data[3],
-                        'KH': data[4],
-                        'DU_NO': data[5],
-                        'DU_NO_XAU': data[6],
-                        'DU_NO_QUA_HAN': data[7],
-                        'TY_LE_DU_NO_XAU': data[8],
-                        'TY_LE_DU_NO_QUA_HAN': data[9],
-                        'TY_LE_DU_NO': data[10],
-                        'PROGRAM_ID': data[11],
-                        'USING_DETAIL': data[12],
-                        # 'LK_NAM': data[13] if len(data) > 13 else None
+                        'TIEU_DE': lib.parseString(data[0]),
+                        'CO_TSDB': lib.parseString(data[1]),
+                        'UNIT': lib.parseString(data[2]),
+                        'BR': lib.parseString(data[3]),
+                        'KH': lib.parseString(data[4]),
+                        'DU_NO': lib.parseFloat(data[5]),
+                        'DU_NO_XAU': lib.parseFloat(data[6]),
+                        'DU_NO_QUA_HAN': lib.parseFloat(data[7]),
+                        'TY_LE_DU_NO_XAU': lib.parseFloat(data[8]),
+                        'TY_LE_DU_NO_QUA_HAN': lib.parseFloat(data[9]),
+                        'TY_LE_DU_NO': lib.parseFloat(data[10]),
+                        'PROGRAM_ID': lib.parseString(data[11]),
+                        'USING_DETAIL': lib.parseString(data[12]),
+                        'LK_NAM': lib.parseString(data[13]) if len(data) > 13 else None
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
@@ -641,8 +637,6 @@ Param `page_size` default = 20
                 ) FROM DUAL
             """.format(screen, key, level, page_number, page_size)
             print(sql)
-
-            # print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -658,23 +652,23 @@ Param `page_size` default = 20
                     print(data)
 
                     val = {
-                        'MA_KH': data[0],
-                        'TEN_KH': data[1],
-                        'GIAY_TO_DINH_DANH': data[2],
-                        'DIA_CHI': data[3],
-                        'DIEN_THOAI': data[4],
-                        'EMAIL': data[5],
-                        'HANG_KHACH_HANG': data[6],
-                        'TONG_TAI_SAN': data[7],
-                        'TGCKH': data[8],
-                        'TGTT': data[9],
-                        'TGKKH': data[10],
-                        'THE_TIN_DUNG': data[11],
-                        'DU_NO_VAY': data[12],
-                        'NV_QL_MA': data[13],
-                        'NV_QL_TEN': data[14],
-                        'NV_QL_EMAIL': data[15],
-                        'NV_QL_SO_DT': data[16]
+                        'MA_KH': lib.parseString(data[0]),
+                        'TEN_KH': lib.parseString(data[1]),
+                        'GIAY_TO_DINH_DANH': lib.parseString(data[2]),
+                        'DIA_CHI': lib.parseString(data[3]),
+                        'DIEN_THOAI': lib.parseString(data[4]),
+                        'EMAIL': lib.parseString(data[5]),
+                        'HANG_KHACH_HANG': lib.parseString(data[6]),
+                        'TONG_TAI_SAN': lib.parseFloat(data[7]),
+                        'TGCKH': lib.parseFloat(data[8]),
+                        'TGTT': lib.parseFloat(data[9]),
+                        'TGKKH': lib.parseFloat(data[10]),
+                        'THE_TIN_DUNG': lib.parseString(data[11]),
+                        'DU_NO_VAY': lib.parseFloat(data[12]),
+                        'NV_QL_MA': lib.parseString(data[13]),
+                        'NV_QL_TEN': lib.parseString(data[14]),
+                        'NV_QL_EMAIL': lib.parseString(data[15]),
+                        'NV_QL_SO_DT': lib.parseString(data[16])
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
@@ -739,15 +733,15 @@ Param `region`
                 for data in data_cursor:
                     print(data)
                     val = {
-                        'address': data[0],
-                        'fullname': data[1],
-                        'email': data[2],
-                        'mobile': data[3],
-                        "user": data[2].replace("@SCB.COM.VN", ""),
-                        'fullname_op': data[4],
-                        'email_op': data[5],
-                        'mobile_op': data[6],
-                        "user_op": data[5].replace("@SCB.COM.VN", ""),
+                        'address': lib.parseString(data[0]),
+                        'fullname': lib.parseString(data[1]),
+                        'email': lib.parseString(data[2]),
+                        'mobile': lib.parseString(data[3]),
+                        "user": lib.parseUser(data[2]),
+                        'fullname_op': lib.parseString(data[4]),
+                        'email_op': lib.parseString(data[5]),
+                        'mobile_op': lib.parseString(data[6]),
+                        "user_op": lib.parseUser(data[5]),
                     }
                     datas.append(val)
 

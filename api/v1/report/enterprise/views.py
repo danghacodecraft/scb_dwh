@@ -69,10 +69,10 @@ Screen `C_04`
                 for data in data_cursor:
                     print(data)
                     val = {
-                        'AREA_NAME': data[0],
-                        'SLNS_DINH_BIEN': data[1],
-                        'SLNS_KY_NAY': data[2],
-                        'SLNS_KY_TRUOC': data[3]
+                        'AREA_NAME': lib.parseString(data[0]),
+                        'SLNS_DINH_BIEN': lib.parseFloat(data[1]),
+                        'SLNS_KY_NAY': lib.parseFloat(data[2]),
+                        'SLNS_KY_TRUOC': lib.parseFloat(data[3])
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
@@ -164,19 +164,19 @@ Screen `C_04`
                     print(data)
                     if key == ", P_MODULE=>'kpi_chart_khu_vuc'":
                         val = {
-                            'branch_name': data[0],
-                            'SLNS_DANH_GIA': data[1],
-                            'SLNS_HOAN_THANH': data[2],
-                            'TY_LE_HOAN_THANH': data[3],
+                            'branch_name': lib.parseString(data[0]),
+                            'SLNS_DANH_GIA': lib.parseFloat(data[1]),
+                            'SLNS_HOAN_THANH': lib.parseFloat(data[2]),
+                            'TY_LE_HOAN_THANH': lib.parseFloat(data[3]),
                             'TIME': data[4]
                         }
                     else:
                         val = {
-                            'branch_name': data[0],
-                            'REGION_NAME': data[1],
-                            'SLNS_DANH_GIA': data[2],
-                            'SLNS_HOAN_THANH': data[3],
-                            'TY_LE_HOAN_THANH': data[4]
+                            'branch_name': lib.parseString(data[0]),
+                            'REGION_NAME': lib.parseString(data[1]),
+                            'SLNS_DANH_GIA': lib.parseFloat(data[2]),
+                            'SLNS_HOAN_THANH': lib.parseFloat(data[3]),
+                            'TY_LE_HOAN_THANH': lib.parseFloat(data[4])
                         }
 
                         if len(data) > 5:
@@ -257,17 +257,17 @@ Screen `C_04`
                 for data in data_cursor:
                     print(data)
                     val = {
-                        'BR': data[0],
-                        'TIEU_DE': data[1],
-                        'AMT': data[2],
-                        'UNIT': data[3],
-                        'NIM_HUY_DONG': 0,#data[4],
-                        'NIM_CHO_VAY': 0,#data[5]
+                        'BR': lib.parseString(data[0]),
+                        'TIEU_DE': lib.parseString(data[1]),
+                        'AMT': lib.parseFloat(data[2]),
+                        'UNIT': lib.parseString(data[3]),
+                        'NIM_HUY_DONG': lib.parseFloat(data[4]) if len(data) > 4 else 0,
+                        'NIM_CHO_VAY': lib.parseFloat(data[5]) if len(data) > 5 else 0
                     }
-                    if len(data) > 4:
-                        val['NIM_HUY_DONG'] = data[4]
-                    if len(data) > 5:
-                        val['NIM_CHO_VAY'] = data[5]
+                    # if len(data) > 4:
+                    #     val['NIM_HUY_DONG'] = data[4]
+                    # if len(data) > 5:
+                    #     val['NIM_CHO_VAY'] = data[5]
 
                     datas.append(val)
                 # datas.sort(key=myBranch)
@@ -337,11 +337,11 @@ Screen `C_04`
                 for data in data_cursor:
                     print(data)
                     val = {
-                        'NAME': data[0],
-                        'THANG': data[1],
-                        'LUY_KE': data[2],
-                        'NAM': data[3],
-                        'ID_NAME': data[4]
+                        'NAME': lib.parseString(data[0]),
+                        'THANG': lib.parseFloat(data[1]),
+                        'LUY_KE': lib.parseFloat(data[2]),
+                        'NAM': lib.parseFloat(data[3]),
+                        'ID_NAME': lib.parseString(data[4])
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)

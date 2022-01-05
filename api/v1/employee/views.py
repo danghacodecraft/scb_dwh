@@ -115,6 +115,9 @@ Param `emp` example
         parameters=[
             OpenApiParameter(
                 name="emp", type=OpenApiTypes.STR, description="emp"
+            ),
+            OpenApiParameter(
+                name="dep", type=OpenApiTypes.STR, description="dep"
             )
         ]
     )
@@ -123,10 +126,14 @@ Param `emp` example
             con, cur = lib.connect()
 
             params = request.query_params.dict()
-            emp_id = params['emp']
+            sql = ""
+            if 'emp' in params.keys():
+                sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL".format(params['emp'])
+            else:
+                sql = "SELECT OBI.crm_dwh_pkg.FUN_GET_EMP_INFO(P_EMP=>'ALL', P_TYPE=>'BRN_MANA_INFO', P_DEP_ID=>'{}', P_ORG_ID=>'ALL') FROM DUAL".format(params['dep'])
 
             # call the function
-            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL".format(emp_id)
+            # sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL".format(emp_id)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
