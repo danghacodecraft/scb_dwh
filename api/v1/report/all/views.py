@@ -167,9 +167,9 @@ Screen `C_06_02_02_02`
 
             kv = ""
             vung = ""
-            if 'kv' in params.keys() and params['kv'] != 'ALL':
+            if 'kv' in params.keys():
                 kv = ",P_VUNG=>'{}'".format(params['kv'])
-            elif 'vung' in params.keys() and params['vung'] != 'ALL':
+            elif 'vung' in params.keys():
                 vung = ",P_VUNG=>'{}'".format(params['vung'])
 
             dv = ""
