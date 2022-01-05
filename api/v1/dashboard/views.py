@@ -84,13 +84,13 @@ The `division` example:
                 for data in data_cursor:
                     print(data)
                     val = {
-                        'id': lib.create_key(data[6].strip()),
-                        "title": data[6].strip(),
-                        'day': data[2],
-                        'week': data[3],
-                        'month': data[4],
-                        'accumulated': data[5],
-                        'unit': data[7]
+                        'id': lib.create_key(data[6]),
+                        "title": lib.parseString(data[6]),
+                        'day': lib.parseFloat(data[2]),
+                        'week': lib.parseFloat(data[3]),
+                        'month': lib.parseFloat(data[4]),
+                        'accumulated': lib.parseFloat(data[5]),
+                        'unit': lib.parseString(data[7])
                     }
                     datas.append(val)
 
@@ -180,10 +180,10 @@ The `division` example:
                         print(data)
 
                         val = {
-                            'id': lib.create_key(data[1].strip()),
-                            'title': data[3].strip(),
-                            'val': data[2],
-                            'unit': data[4].strip()
+                            'id': lib.create_key(data[1]),
+                            'title': lib.parseString(data[3]),
+                            'val': lib.parseFloat(data[2]),
+                            'unit': lib.parseString(data[4])
                             # 'week': data[3],
                             # 'month': data[4],
                             # 'accumulated': data[5]

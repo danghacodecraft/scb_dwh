@@ -29,8 +29,36 @@ def no_accent_vietnamese(s):
     return s
 
 def create_key(s):
-    res = no_accent_vietnamese(s)
+    res = no_accent_vietnamese(s.strip())
     res = res.replace(" ", "_")
     res = res.replace(",", "")
     return res
 
+def parseString(data):
+    if data is None:
+        return ""
+
+    t = type(data)
+    if t != str:
+        return data
+
+    data = data.replace("  ", " ").strip()
+    return data
+
+def parseUser(data):
+    data = parseString(data)
+    data = data.replace("@SCB.COM.VN", "")
+    return data
+
+def parseFloat(data):
+    if data is None:
+        return 0
+
+    t = type(data)
+    if t == float:
+        return data
+    elif t == int:
+        return data
+
+    data = data.replace(",", "").strip()
+    return float(data)

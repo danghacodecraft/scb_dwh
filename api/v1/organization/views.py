@@ -227,7 +227,6 @@ Param `type` example
     def region(self, request):
         try:
             con, cur = lib.connect()
-
             params = request.query_params.dict()
 
             name = params['name']
@@ -235,9 +234,9 @@ Param `type` example
             if 'type' in params.keys():
                 type = ", P_TYPE=>'{}'".format(params['type'])
 
-            # userid = ", P_USER_ID=>'THANGHD'"
-            # if 'userid' in params.keys():
-            #     userid = ", P_USER_ID=>'{}'".format(params['userid'])
+            userid = ", P_USER_ID=>'THANGHD'"
+            if 'userid' in params.keys():
+                userid = ", P_USER_ID=>'{}'".format(params['userid'])
 
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_REGION=>'{}'{}) FROM DUAL".format(name, type)
