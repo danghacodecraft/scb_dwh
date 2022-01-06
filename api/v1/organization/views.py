@@ -55,8 +55,8 @@ class OrganizationView(BaseAPIView):
                 depid = str(data[17])
 
                 print(data)
-                key1 = data[0]
-                name1 = data[1]
+                key1 = lib.parseString(data[0])
+                name1 = lib.parseString(data[1])
                 if key1 is not None and name1 is not None:
                     if key1 not in ret:
                         ret[key1] = {
@@ -67,8 +67,8 @@ class OrganizationView(BaseAPIView):
                         }
 
                     ret1 = ret[key1]
-                    key2 = data[2]
-                    name2 = data[3]
+                    key2 = lib.parseString(data[2])
+                    name2 = lib.parseString(data[3])
                     if key2 is not None and name2 is not None:
                         if key2 not in ret1['child']:
                             ret1['child'][key2] = {
@@ -79,8 +79,8 @@ class OrganizationView(BaseAPIView):
                             }
 
                         ret2 = ret1['child'][key2]
-                        key3 = data[4]
-                        name3 = data[5]
+                        key3 = lib.parseString(data[4])
+                        name3 = lib.parseString(data[5])
                         if key3 is not None and name3 is not None:
                             if key3 not in ret2['child']:
                                 ret2['child'][key3] = {
@@ -92,8 +92,8 @@ class OrganizationView(BaseAPIView):
 
                                 #if key3 == BLOCK_PFS or key3 == BLOCK_ENTERPRISE:
                             ret3 = ret2['child'][key3]
-                            key4 = data[6]
-                            name4 = data[7]
+                            key4 = lib.parseString(data[6])
+                            name4 = lib.parseString(data[7])
                             if key4 is not None and name4 is not None: # and "Vùng" not in name4 and "Kênh" not in name4:
                                 name_lower = name4.lower()
                                 if "vùng" in name_lower:
@@ -144,8 +144,8 @@ class OrganizationView(BaseAPIView):
                                     }
 
                                 ret4 = ret3['child'][key4]
-                                key5 = data[8]
-                                name5 = data[9]
+                                key5 = lib.parseString(data[8])
+                                name5 = lib.parseString(data[9])
                                 if key5 is not None and name5 is not None:
                                     if key5 not in ret4['child']:
                                         ret4['child'][key5] = {
@@ -161,8 +161,8 @@ class OrganizationView(BaseAPIView):
                                     if key5 == depid:
                                         ret5['code'] = code
 
-                                    key6 = data[10]
-                                    name6 = data[11]
+                                    key6 = lib.parseString(data[10])
+                                    name6 = lib.parseString(data[11])
                                     if key6 is not None and name6 is not None:
                                         if key6 not in ret5['child']:
                                             ret5['child'][key6] = {
@@ -256,8 +256,8 @@ Param `type` example
                 for data in data_cursor:
                     print(data)
                     # 'V02', 'Vùng 02', '015', 'SCB Quận 10', 'BAN GIAM DOC', None, None, '11986', 'Phòng Dịch vụ Khách hàng', None, None, '03')
-                    region_id = data[6]
-                    region_name = data[7]
+                    region_id = lib.parseString(data[6])
+                    region_name = lib.parseString(data[7])
                     if region_id not in ret:
                         ret[region_id] = {
                             'id': region_id,
@@ -267,9 +267,8 @@ Param `type` example
                         }
 
                     branch_childs = ret[region_id]['child']
-                    branch_id = data[8]
-                    branch_name = data[9]
-
+                    branch_id = lib.parseString(data[8])
+                    branch_name = lib.parseString(data[9])
                     if branch_id not in branch_childs:
                         branch_childs[branch_id] = {
                             'id': branch_id,
@@ -286,8 +285,8 @@ Param `type` example
                         }
 
                     department_childs = branch_childs[branch_id]['child'][branch_id]['child']
-                    department_id = data[13]
-                    department_name = data[14]
+                    department_id = lib.parseString(data[13])
+                    department_name = lib.parseString(data[14])
                     code = data[17]
                     if department_id is not None and department_id not in department_childs:
                         department_childs[department_id] = {
@@ -424,9 +423,8 @@ Param `type` example
                 for data in data_cursor:
                     print(data)
                     # (None, None, None, None, None, None, None, None, '001', 'SCB Cống Quỳnh', 'BAN GIAM DOC', '11838', 'Phòng Khách hàng Wholesale')
-                    branch_id = data[8]
-                    branch_name = data[9]
-
+                    branch_id = lib.parseString(data[8])
+                    branch_name = lib.parseString(data[9])
                     if branch_id not in ret:
                         ret[branch_id] = {
                             'id': branch_id,
@@ -443,8 +441,8 @@ Param `type` example
                         }
 
                     department_childs = ret[branch_id]['child'][branch_id]['child']
-                    department_id = data[13]
-                    department_name = data[14]
+                    department_id = lib.parseString(data[13])
+                    department_name = lib.parseString(data[14])
                     code = data[17]
                     if department_id is not None and department_id not in department_childs:
                         department_childs[department_id] = {
@@ -521,7 +519,7 @@ Param `type` example
                 ret = {}
                 for data in data_cursor:
                     print(data)
-                    id = data[0]
+                    sid = data[0]
                     fullname = data[1]
                     level = data[2]
                     if level is None:
@@ -535,7 +533,7 @@ Param `type` example
 
                     branchs = ret[level]
                     branchs.append({
-                        'id': id,
+                        'id': sid,
                         'fullname': fullname
                     })
 

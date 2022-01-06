@@ -808,7 +808,7 @@ Param `dv`
                         'fullname': data[1],
                         'email': data[2],
                         'mobile': data[3],
-                        "user": data[2].replace("@SCB.COM.VN", ""),
+                        "user": lib.parseUser(data[2]),
                         "id": data[4],
                     }
                     datas.append(val)

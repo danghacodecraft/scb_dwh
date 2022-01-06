@@ -189,28 +189,36 @@ The `division` example:
                             if unit == '%':
                                 total = total + val
 
+                        tt = 100
+                        valmax = None
+
                         for data in dd:
                             ids = lib.create_key(data[1])
                             title = lib.parseString(data[3])
-                            val = lib.parseFloat(data[2])
+                            value = lib.parseFloat(data[2])
                             unit = lib.parseString(data[4])
 
                             if total == 0:
-                                val = 0
+                                value = 0
                             elif unit == '%':
-                                val = val / total * 100
+                                value = round(value / total * 100, 2)
+                                tt = tt - value
+                                print("{}:{}".format(title, value))
 
-                            d = {
+                            val = {
                                 'id': ids,
                                 'title': title,
-                                'val': val,
+                                'val': value,
                                 'unit': unit,
-                                # 'week': data[3],
-                                # 'month': data[4],tong
-                                # 'accumulated': data[5]
                             }
-                            datas.append(d)
+                            if valmax is None:
+                                valmax = val
+                            elif valmax['val'] < value:
+                                valmax = val
 
+                            datas.append(val)
+
+                        valmax['val'] = valmax['val'] + round(tt,2)
                     else:
                         for data in data_cursor:
                             print(data)
