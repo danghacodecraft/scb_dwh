@@ -293,7 +293,7 @@ Screen `C_06_03_02_03`
                         'BRANCH_NAME': data[3],
                         'SORT_REGION': data[4],
                         'HE_SO_DIEM_THEO_MO_HINH_DVKD': data[5],
-                        'HTKH_LK_TANG_TRUONG_HD': data[6].strip(),
+                        'HTKH_LK_TANG_TRUONG_HD': lib.parseFloat(data[6]),
                         'DIEM_TANG_TRUONG_HD': lib.parseFloat(data[7]),
                         'DIEM_TANG_TRUONG_HDVON_BQ_KKH': lib.parseFloat(data[8]),
                         'HTKH_LK_TANG_TRUONG_CHOVAY': lib.parseFloat(data[9]),

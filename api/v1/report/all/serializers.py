@@ -49,7 +49,7 @@ class EnterpriseChartResponseSerializer(InheritedSerializer):
     BRANCH_NAME = serializers.CharField(help_text="`BRANCH_NAME` of data")
     SORT_REGION = serializers.CharField(help_text="`SORT_REGION` of data")
     HE_SO_DIEM_THEO_MO_HINH_DVKD = serializers.CharField(help_text="`HE_SO_DIEM_THEO_MO_HINH_DVKD` of data")
-    HTKH_LK_TANG_TRUONG_HD = serializers.CharField(help_text="`HTKH_LK_TANG_TRUONG_HD` of data")
+    HTKH_LK_TANG_TRUONG_HD = serializers.FloatField(help_text="`HTKH_LK_TANG_TRUONG_HD` of data")
     DIEM_TANG_TRUONG_HD = serializers.FloatField(help_text="`DIEM_TANG_TRUONG_HD` of data")
     DIEM_TANG_TRUONG_HDVON_BQ_KKH = serializers.FloatField(help_text="`DIEM_TANG_TRUONG_HDVON_BQ_KKH` of data")
     HTKH_LK_TANG_TRUONG_CHOVAY = serializers.FloatField(help_text="`HTKH_LK_TANG_TRUONG_CHOVAY` of data")
