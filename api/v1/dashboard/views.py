@@ -182,10 +182,11 @@ The `division` example:
                         total = 0
                         dd = []
                         for data in data_cursor:
+                            print(data)
                             dd.append(data)
                             val = lib.parseFloat(data[2])
                             unit = lib.parseString(data[4])
-                            if unit != '%':
+                            if unit == '%':
                                 total = total + val
 
                         for data in dd:
@@ -194,19 +195,21 @@ The `division` example:
                             val = lib.parseFloat(data[2])
                             unit = lib.parseString(data[4])
 
-                            if unit == '%':
+                            if total == 0:
+                                val = 0
+                            elif unit == '%':
                                 val = val / total * 100
-                            print(val)
-                            val = {
+
+                            d = {
                                 'id': ids,
                                 'title': title,
                                 'val': val,
                                 'unit': unit,
                                 # 'week': data[3],
-                                # 'month': data[4],
+                                # 'month': data[4],tong
                                 # 'accumulated': data[5]
                             }
-                            datas.append(val)
+                            datas.append(d)
 
                     else:
                         for data in data_cursor:
