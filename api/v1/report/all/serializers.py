@@ -18,7 +18,7 @@ class ChartResponseSerializer(InheritedSerializer):
     TY_LE_NAM = serializers.CharField(help_text="`TY_LE_NAM` of data")
     DIEM_CHI_TIEU_KH_NAM = serializers.CharField(help_text="`DIEM_CHI_TIEU_KH_NAM` of data")
     DIEM_KH_NAM = serializers.CharField(help_text="`DIEM_KH_NAM` of data")
-    AMOUNT_CHART = serializers.CharField(help_text="`AMOUNT_CHART` of data")
+    AMOUNT_CHART = serializers.FloatField(help_text="`AMOUNT_CHART` of data")
 
 class PFSChartResponseSerializer(InheritedSerializer):
     REGION_ID = serializers.IntegerField(help_text="`REGION_ID` of data")
@@ -52,32 +52,32 @@ class EnterpriseChartResponseSerializer(InheritedSerializer):
     HTKH_LK_TANG_TRUONG_HD = serializers.CharField(help_text="`HTKH_LK_TANG_TRUONG_HD` of data")
     DIEM_TANG_TRUONG_HD = serializers.FloatField(help_text="`DIEM_TANG_TRUONG_HD` of data")
     DIEM_TANG_TRUONG_HDVON_BQ_KKH = serializers.FloatField(help_text="`DIEM_TANG_TRUONG_HDVON_BQ_KKH` of data")
-    HTKH_LK_TANG_TRUONG_CHOVAY = serializers.CharField(help_text="`HTKH_LK_TANG_TRUONG_CHOVAY` of data")
+    HTKH_LK_TANG_TRUONG_CHOVAY = serializers.FloatField(help_text="`HTKH_LK_TANG_TRUONG_CHOVAY` of data")
     DIEM_TANG_TRUONG_CHOVAY = serializers.FloatField(help_text="`DIEM_TANG_TRUONG_CHOVAY` of data")
-    HTKH_LK_TANG_TRUONG_CHOVAY_BQ = serializers.CharField(help_text="`HTKH_LK_TANG_TRUONG_CHOVAY_BQ` of data")
+    HTKH_LK_TANG_TRUONG_CHOVAY_BQ = serializers.FloatField(help_text="`HTKH_LK_TANG_TRUONG_CHOVAY_BQ` of data")
 
     DIEM_TANG_TRUONG_CHOVAY_BQ = serializers.FloatField(help_text="`DIEM_TANG_TRUONG_CHOVAY_BQ` of data")
-    HTKH_LK_THU_PHI_DICH_VU = serializers.CharField(help_text="`HTKH_LK_THU_PHI_DICH_VU` of data")
+    HTKH_LK_THU_PHI_DICH_VU = serializers.FloatField(help_text="`HTKH_LK_THU_PHI_DICH_VU` of data")
     DIEM_THU_PHI_DICH_VU = serializers.FloatField(help_text="`DIEM_THU_PHI_DICH_VU` of data")
-    HTKH_LK_THUPHI_TTQT_LNKDNH = serializers.CharField(help_text="`HTKH_LK_THUPHI_TTQT_LNKDNH` of data")
+    HTKH_LK_THUPHI_TTQT_LNKDNH = serializers.FloatField(help_text="`HTKH_LK_THUPHI_TTQT_LNKDNH` of data")
     DIEM_THUPHI_TTQT_LNKDNH = serializers.FloatField(help_text="`DIEM_THUPHI_TTQT_LNKDNH` of data")
-    HTKH_LK_DOANHSO_THANHTOAN_QR = serializers.CharField(help_text="`HTKH_LK_DOANHSO_THANHTOAN_QR` of data")
+    HTKH_LK_DOANHSO_THANHTOAN_QR = serializers.FloatField(help_text="`HTKH_LK_DOANHSO_THANHTOAN_QR` of data")
     DIEM_DOANHSO_THANHTOAN_QR = serializers.FloatField(help_text="`DIEM_DOANHSO_THANHTOAN_QR` of data")
-    HTKH_LK_MERCHANT_QR = serializers.CharField(help_text="`HTKH_LK_MERCHANT_QR` of data")
+    HTKH_LK_MERCHANT_QR = serializers.FloatField(help_text="`HTKH_LK_MERCHANT_QR` of data")
     DIEM_MERCHANT_QR = serializers.FloatField(help_text="`DIEM_MERCHANT_QR` of data")
 
-    HTKH_LK_DOANHSO_THANHTOAN_POS = serializers.CharField(help_text="`HTKH_LK_DOANHSO_THANHTOAN_POS` of data")
+    HTKH_LK_DOANHSO_THANHTOAN_POS = serializers.FloatField(help_text="`HTKH_LK_DOANHSO_THANHTOAN_POS` of data")
     DIEM_DOANHSO_THANHTOAN_POS = serializers.FloatField(help_text="`DIEM_DOANHSO_THANHTOAN_POS` of data")
-    HTKH_LK_LOI_NHUAN_TRUOC_THUE = serializers.CharField(help_text="`HTKH_LK_LOI_NHUAN_TRUOC_THUE` of data")
+    HTKH_LK_LOI_NHUAN_TRUOC_THUE = serializers.FloatField(help_text="`HTKH_LK_LOI_NHUAN_TRUOC_THUE` of data")
     DIEM_LOI_NHUAN_TRUOC_THUE = serializers.FloatField(help_text="`DIEM_LOI_NHUAN_TRUOC_THUE` of data")
-    HTKH_LK_SLKH_MOI = serializers.CharField(help_text="`HTKH_LK_SLKH_MOI` of data")
+    HTKH_LK_SLKH_MOI = serializers.FloatField(help_text="`HTKH_LK_SLKH_MOI` of data")
     DIEM_SLKH_MOI = serializers.FloatField(help_text="`DIEM_SLKH_MOI` of data")
 
-    HTKH_LK_SLHD_EBANKING = serializers.CharField(help_text="`HTKH_LK_SLHD_EBANKING` of data")
+    HTKH_LK_SLHD_EBANKING = serializers.FloatField(help_text="`HTKH_LK_SLHD_EBANKING` of data")
     DIEM_SLHD_EBANKING = serializers.FloatField(help_text="`DIEM_SLHD_EBANKING` of data")
-    HTKH_LK_KHMOI_SPVAYTIEN = serializers.CharField(help_text="`HTKH_LK_KHMOI_SPVAYTIEN` of data")
+    HTKH_LK_KHMOI_SPVAYTIEN = serializers.FloatField(help_text="`HTKH_LK_KHMOI_SPVAYTIEN` of data")
     DIEM_KHMOI_SPVAYTIEN = serializers.FloatField(help_text="`DIEM_KHMOI_SPVAYTIEN` of data")
-    HTKH_LK_DOANHSO_BAOLANH = serializers.CharField(help_text="`HTKH_LK_DOANHSO_BAOLANH` of data")
+    HTKH_LK_DOANHSO_BAOLANH = serializers.FloatField(help_text="`HTKH_LK_DOANHSO_BAOLANH` of data")
     DIEM_DOANHSO_BAOLANH = serializers.FloatField(help_text="`DIEM_DOANHSO_BAOLANH` of data")
 
     DIEM_CHITIEU_CHATLUONG_DICHVU = serializers.FloatField(help_text="`DIEM_CHITIEU_CHATLUONG_DICHVU` of data")
@@ -86,7 +86,7 @@ class EnterpriseChartResponseSerializer(InheritedSerializer):
     DIEM_TYLE_NO2_PHATSINH = serializers.FloatField(help_text="`DIEM_TYLE_NO2_PHATSINH` of data")
     DIEM_TYLE_NOXAU_PHATSINH = serializers.FloatField(help_text="`DIEM_TYLE_NOXAU_PHATSINH` of data")
 
-    HTKH_LK_XULY_NOXAU_THONGTHUONG = serializers.CharField(help_text="`HTKH_LK_XULY_NOXAU_THONGTHUONG` of data")
+    HTKH_LK_XULY_NOXAU_THONGTHUONG = serializers.FloatField(help_text="`HTKH_LK_XULY_NOXAU_THONGTHUONG` of data")
     DIEM_XULY_NOXAU_THONGTHUONG = serializers.FloatField(help_text="`DIEM_XULY_NOXAU_THONGTHUONG` of data")
 
     DIEM_KHUYEN_KHICH = serializers.FloatField(help_text="`DIEM_KHUYEN_KHICH` of data")
@@ -94,8 +94,8 @@ class EnterpriseChartResponseSerializer(InheritedSerializer):
     DIEU_CHINHG_TONG_DIEM = serializers.FloatField(help_text="`DIEU_CHINHG_TONG_DIEM` of data")
     TONG_DIEM_SAU_DIEU_CHINH = serializers.FloatField(help_text="`TONG_DIEM_SAU_DIEU_CHINH` of data")
     XEP_HANG = serializers.FloatField(help_text="`XEP_HANG` of data")
-
     XEP_LOAI = serializers.CharField(help_text="`XEP_LOAI` of data")
+    STATUS = serializers.CharField(help_text="`STATUS` of data")
     PROCESS_DATE = serializers.CharField(help_text="`PROCESS_DATE` of data")
 
 
