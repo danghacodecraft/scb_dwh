@@ -61,4 +61,4 @@ def parseFloat(data):
         return data
 
     data = data.replace(",", "").replace("%", "").strip()
-    return float(data)
+    return round( float(data), 2)
