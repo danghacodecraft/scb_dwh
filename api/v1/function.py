@@ -56,9 +56,9 @@ def parseFloat(data):
 
     t = type(data)
     if t == float:
-        return data
+        return round(data, 2)
     elif t == int:
         return data
 
     data = data.replace(",", "").replace("%", "").strip()
-    return round( float(data), 2)
+    return round(float(data), 2)
