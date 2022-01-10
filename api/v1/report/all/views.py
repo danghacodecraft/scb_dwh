@@ -91,6 +91,7 @@ Screen `C_06`
             res = cur.fetchone()
 
             datas = []
+            ratios = []
             if len(res) > 0:
                 try:
                     data_cursor = res[0]
@@ -100,26 +101,35 @@ Screen `C_06`
 
                 for data in data_cursor:
                     print(data)
+
+                    chitieu = lib.parseString(data[1])
                     val = {
                         'PROCESS_DATE':  lib.parseString(data[0]),
-                        'CHITIEU': lib.parseString(data[1]),
-                        'SODU_DS_LK_KYT': lib.parseString(data[2]),
-                        'THUC_HIEN_KY_T': lib.parseString(data[3]),
-                        'KE_HOACH_KY_T': lib.parseString(data[4]),
-                        'TYLE_KY_T': lib.parseString(data[5]),
-                        'THUC_HIEN_LK': lib.parseString(data[6]),
-                        'KE_HOACH_LK': lib.parseString(data[7]),
-                        'TY_LY_LK': lib.parseString(data[8]),
+                        'CHITIEU': chitieu,
+                        'SODU_DS_LK_KYT': lib.parseFloat(data[2]),
+                        'THUC_HIEN_KY_T': lib.parseFloat(data[3]),
+                        'KE_HOACH_KY_T': lib.parseFloat(data[4]),
+                        'TYLE_KY_T': lib.parseFloat(data[5]),
+                        'THUC_HIEN_LK': lib.parseFloat(data[6]),
+                        'KE_HOACH_LK': lib.parseFloat(data[7]),
+                        'TY_LY_LK': lib.parseFloat(data[8]),
                         'DIEM_CHI_TIEU_LK': lib.parseFloat(data[9]),
                         'DIEM_KH_LK': lib.parseFloat(data[10]),
-                        'KH_NAM': lib.parseString(data[11]),
-                        'TY_LE_NAM': lib.parseString(data[12]),
+                        'KH_NAM': lib.parseFloat(data[11]),
+                        'TY_LE_NAM': lib.parseFloat(data[12]),
                         'DIEM_CHI_TIEU_KH_NAM': lib.parseFloat(data[13]),
                         'DIEM_KH_NAM': lib.parseFloat(data[14]),
                         'AMOUNT_CHART': lib.parseFloat(data[15])
                     }
                     datas.append(val)
-
+            #         if "Tỷ lệ" in chitieu:
+            #             ratios.append(val)
+            #         else:
+            #             datas.append(val)
+            # data = {
+            #     "data": datas,
+            #     'ratios': ratios
+            # }
             cur.close()
             con.close()
             return self.response_success(datas, status_code=status.HTTP_200_OK)
