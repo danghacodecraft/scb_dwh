@@ -315,12 +315,11 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             key = params['key']
 
             vung = ""
+            kv = ""
             if 'vung' in params.keys():
                 vung = ",P_VUNG=>'{}'".format(params['vung'])
-
-            kv = ""
-            if 'kv' in params.keys():
-                kv = ",P_KV=>'{}'".format(params['kv'])
+            elif 'kv' in params.keys():
+                kv = ",P_VUNG=>'{}'".format(params['kv'])
 
             dv = ""
             if 'dv' in params.keys():
