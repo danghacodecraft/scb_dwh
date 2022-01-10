@@ -68,7 +68,7 @@ The `division` example:
                 division = ", P_DIVISION=>'{}'".format(params['division'])
 
             # call the function
-            sql = "Select obi.CRM_DWH_PKG.FUN_GET_DATA('TRANG_CHU'{}{}{}) FROM DUAL".format(vung, dv, division)
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('TRANG_CHU'{}{}{}) FROM DUAL".format(vung, dv, division)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -82,6 +82,7 @@ The `division` example:
                     data_cursor = None
 
                 for data in data_cursor:
+                    #ID, NAME, AMT_DAY, AMT_WEEK, AMT_MONTH, AMT_YEAR, TIEU_DE, UNIT, AMT_KY_TRUOC
                     print(data)
                     val = {
                         'id': lib.create_key(data[6]),
@@ -90,7 +91,9 @@ The `division` example:
                         'week': lib.parseFloat(data[3]),
                         'month': lib.parseFloat(data[4]),
                         'accumulated': lib.parseFloat(data[5]),
-                        'unit': lib.parseString(data[7])
+                        'unit': lib.parseString(data[7]),
+                        'amt_year': lib.parseString(data[5]),
+                        'amt_ky_truoc': lib.parseFloat(data[8])
                     }
                     datas.append(val)
 
@@ -168,7 +171,7 @@ The `division` example:
             # if 'page_number' in params.keys():
             #     page_number = int(params['page_number'])
             # call the function
-            sql = "Select obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'TRANG_CHU'{}{}{}{} ) FROM DUAL".format(module, vung, dv, division)
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'TRANG_CHU'{}{}{}{} ) FROM DUAL".format(module, vung, dv, division)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
