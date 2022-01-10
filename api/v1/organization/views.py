@@ -57,7 +57,7 @@ class OrganizationView(BaseAPIView):
                 print(data)
                 key1 = lib.parseString(data[0])
                 name1 = lib.parseString(data[1])
-                if key1 is not None and name1 is not None:
+                if key1 is not None and name1 is not None and name1 != "":
                     if key1 not in ret:
                         ret[key1] = {
                             'id': key1,
@@ -69,7 +69,7 @@ class OrganizationView(BaseAPIView):
                     ret1 = ret[key1]
                     key2 = lib.parseString(data[2])
                     name2 = lib.parseString(data[3])
-                    if key2 is not None and name2 is not None:
+                    if key2 is not None and name2 is not None and name2 != "":
                         if key2 not in ret1['child']:
                             ret1['child'][key2] = {
                                 'id': key2,
@@ -81,7 +81,7 @@ class OrganizationView(BaseAPIView):
                         ret2 = ret1['child'][key2]
                         key3 = lib.parseString(data[4])
                         name3 = lib.parseString(data[5])
-                        if key3 is not None and name3 is not None:
+                        if key3 is not None and name3 is not None and name3 != "":
                             if key3 not in ret2['child']:
                                 ret2['child'][key3] = {
                                     'id': key3,
@@ -94,7 +94,7 @@ class OrganizationView(BaseAPIView):
                             ret3 = ret2['child'][key3]
                             key4 = lib.parseString(data[6])
                             name4 = lib.parseString(data[7])
-                            if key4 is not None and name4 is not None: # and "Vùng" not in name4 and "Kênh" not in name4:
+                            if key4 is not None and name4 is not None and name4 != "": # and "Vùng" not in name4 and "Kênh" not in name4:
                                 name_lower = name4.lower()
                                 if "vùng" in name_lower:
                                     if 'region' not in ret3:
@@ -146,7 +146,7 @@ class OrganizationView(BaseAPIView):
                                 ret4 = ret3['child'][key4]
                                 key5 = lib.parseString(data[8])
                                 name5 = lib.parseString(data[9])
-                                if key5 is not None and name5 is not None:
+                                if key5 is not None and name5 is not None and name5 != "":
                                     if key5 not in ret4['child']:
                                         ret4['child'][key5] = {
                                             'id': key5,
@@ -163,7 +163,7 @@ class OrganizationView(BaseAPIView):
 
                                     key6 = lib.parseString(data[10])
                                     name6 = lib.parseString(data[11])
-                                    if key6 is not None and name6 is not None:
+                                    if key6 is not None and name6 is not None and name6 != "":
                                         if key6 not in ret5['child']:
                                             ret5['child'][key6] = {
                                                 'id': key6,
@@ -288,7 +288,7 @@ Param `type` example
                     department_id = lib.parseString(data[13])
                     department_name = lib.parseString(data[14])
                     code = data[17]
-                    if department_id is not None and department_id not in department_childs:
+                    if department_id not in department_childs and department_name is not None and department_name != "":
                         department_childs[department_id] = {
                             'id': department_id,
                             'fullname': department_name,
@@ -444,7 +444,7 @@ Param `type` example
                     department_id = lib.parseString(data[13])
                     department_name = lib.parseString(data[14])
                     code = data[17]
-                    if department_id is not None and department_id not in department_childs:
+                    if department_id not in department_childs and department_name is not None and department_name != "":
                         department_childs[department_id] = {
                             'id': department_id,
                             'fullname': department_name,
