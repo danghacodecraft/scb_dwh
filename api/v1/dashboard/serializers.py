@@ -20,3 +20,5 @@ class DataResponseSerializer(InheritedSerializer):
     month = serializers.IntegerField(help_text="`month` of data")
     accumulated = serializers.IntegerField(help_text="`accumulated` of data")
     unit = serializers.CharField(help_text="`unit` of data")
+    amt_year = serializers.CharField(help_text="`amt_year` of data")
+    amt_ky_truoc = serializers.CharField(help_text="`amt_ky_truoc` of data")
