@@ -35,6 +35,9 @@ The `division` example:
                 name="vung", type=OpenApiTypes.STR, description="vung"
             ),
             OpenApiParameter(
+                name="kv", type=OpenApiTypes.STR, description="kv"
+            ),
+            OpenApiParameter(
                 name="dv", type=OpenApiTypes.STR, description="dv"
             ),
             OpenApiParameter(
@@ -59,6 +62,10 @@ The `division` example:
             if 'vung' in params.keys():
                 vung = ", p_vung=>'{}'".format(params['vung'])
 
+            kv = "kv"
+            if 'kv' in params.keys():
+                kv = params['kv']
+
             dv = ""
             if 'dv' in params.keys():
                 dv = ", p_dv=>'{}'".format(params['dv'])
@@ -75,15 +82,13 @@ The `division` example:
 
             datas = []
             if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
-
+                data_cursor = res[0]
                 for data in data_cursor:
                     #ID, NAME, AMT_DAY, AMT_WEEK, AMT_MONTH, AMT_YEAR, TIEU_DE, UNIT, AMT_KY_TRUOC
                     print(data)
+                    if kv != "" and kv != data[9]:
+                        continue
+
                     val = {
                         'id': lib.create_key(data[6]),
                         "title": lib.parseString(data[6]),
