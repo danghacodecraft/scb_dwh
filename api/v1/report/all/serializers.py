@@ -41,6 +41,13 @@ class PFSChartResponseSerializer(InheritedSerializer):
     DIEM_TPBQ = serializers.FloatField(help_text="`DIEM_TPBQ` of data")
     TY_LE_PHAT_TRIEN_KH_MOI = serializers.CharField(help_text="`TY_LE_PHAT_TRIEN_KH_MOI` of data")
     DIEM_PHAT_TRIEN_KH_MOI = serializers.FloatField(help_text="`DIEM_PHAT_TRIEN_KH_MOI` of data")
+    DIEM_KHUYEN_KHICH = serializers.FloatField(help_text="`DIEM_KHUYEN_KHICH` of data")
+    TONG_DIEM = serializers.FloatField(help_text="`TONG_DIEM` of data")
+    DIEU_CHINH_TONG_DIEM = serializers.FloatField(help_text="`DIEU_CHINH_TONG_DIEM` of data")
+    TONG_DIEM_SAU_DIEU_CHINH = serializers.FloatField(help_text="`TONG_DIEM_SAU_DIEU_CHINH` of data")
+    XEP_HANG = serializers.FloatField(help_text="`XEP_HANG` of data")
+    XEP_LOAI = serializers.CharField(help_text="`XEP_LOAI` of data")
+    PROCESS_DATE = serializers.CharField(help_text="`PROCESS_DATE` of data")
 
 class EnterpriseChartResponseSerializer(InheritedSerializer):
     STT = serializers.IntegerField(help_text="`STT` of data")
