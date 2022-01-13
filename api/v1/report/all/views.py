@@ -222,6 +222,13 @@ Screen `C_06_02_02_02`
                         'DIEM_TPBQ': lib.parseFloat(data[17]),
                         'TY_LE_PHAT_TRIEN_KH_MOI': lib.parseString(data[18]),
                         'DIEM_PHAT_TRIEN_KH_MOI': lib.parseFloat(data[19]),
+                        'DIEM_KHUYEN_KHICH': lib.parseFloat(data[20]),
+                        'TONG_DIEM': lib.parseFloat(data[21]),
+                        'DIEU_CHINH_TONG_DIEM': lib.parseFloat(data[22]),
+                        'TONG_DIEM_SAU_DIEU_CHINH': lib.parseFloat(data[23]),
+                        'XEP_HANG': lib.parseFloat(data[24]),
+                        'XEP_LOAI': lib.parseString(data[25]),
+                        'PROCESS_DATE': lib.parseString(data[26])
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
