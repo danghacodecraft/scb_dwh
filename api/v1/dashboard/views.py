@@ -62,7 +62,7 @@ The `division` example:
             if 'vung' in params.keys():
                 vung = ", p_vung=>'{}'".format(params['vung'])
 
-            kv = "kv"
+            kv = ""
             if 'kv' in params.keys():
                 kv = params['kv']
 
