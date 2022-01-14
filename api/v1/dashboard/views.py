@@ -105,12 +105,12 @@ The `division` example:
                         }
                     else:
                         d = dicdatas[sid]
-                        d['day'] = d['day'] + lib.parseFloat(data[2])
-                        d['week'] = d['week'] + lib.parseFloat(data[3])
-                        d['month'] = d['month'] + lib.parseFloat(data[4])
-                        d['accumulated'] = d['accumulated'] + lib.parseFloat(data[5])
-                        d['amt_year'] = d['amt_year'] + lib.parseFloat(data[5])
-                        d['amt_ky_truoc'] = d['amt_ky_truoc'] + lib.parseFloat(data[5])
+                        d['day'] = lib.parseFloat(d['day'] + lib.parseFloat(data[2]))
+                        d['week'] = lib.parseFloat(d['week'] + lib.parseFloat(data[3]))
+                        d['month'] = lib.parseFloat(d['month'] + lib.parseFloat(data[4]))
+                        d['accumulated'] = lib.parseFloat(d['accumulated'] + lib.parseFloat(data[5]))
+                        d['amt_year'] = lib.parseFloat(d['amt_year'] + lib.parseFloat(data[5]))
+                        d['amt_ky_truoc'] = lib.parseFloat(d['amt_ky_truoc'] + lib.parseFloat(data[5]))
 
                 for k in dicdatas:
                     datas.append(dicdatas[k])

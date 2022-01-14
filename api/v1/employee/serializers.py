@@ -28,6 +28,15 @@ class EmployeeKPIResponseSerializer(InheritedSerializer):
     DATE = serializers.CharField(help_text="`DATE` of data")
     NOTE = serializers.CharField(help_text="`NOTE` of data")
 
+class EmployeeDecisionResponseSerializer(InheritedSerializer):
+    ID = serializers.CharField(help_text="`ID` of data")
+    FULLNAME = serializers.CharField(help_text="`FULLNAME` of data")
+    DEP_ID = serializers.CharField(help_text="`KPI` of data")
+    DEP_NAME = serializers.CharField(help_text="`PER` of data")
+    REASON_COMMEND = serializers.CharField(help_text="`RES` of data")
+    REASON_DISCIPLINE = serializers.CharField(help_text="`DATE` of data")
+    DATETIME = serializers.CharField(help_text="`NOTE` of data")
+
 class EmployeeWorkprocessResponseSerializer(InheritedSerializer):
     EMPLOYEE_CODE = serializers.CharField(help_text="`EMPLOYEE_CODE` of data")
     TU_NGAY = serializers.CharField(help_text="`TU_NGAY` of data")
