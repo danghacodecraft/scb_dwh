@@ -83,24 +83,38 @@ The `division` example:
             datas = []
             if len(res) > 0:
                 data_cursor = res[0]
+                dicdatas = {}
                 for data in data_cursor:
                     #ID, NAME, AMT_DAY, AMT_WEEK, AMT_MONTH, AMT_YEAR, TIEU_DE, UNIT, AMT_KY_TRUOC
                     print(data)
                     if kv != "" and kv != data[9]:
                         continue
 
-                    val = {
-                        'id': lib.create_key(data[6]),
-                        "title": lib.parseString(data[6]),
-                        'day': lib.parseFloat(data[2]),
-                        'week': lib.parseFloat(data[3]),
-                        'month': lib.parseFloat(data[4]),
-                        'accumulated': lib.parseFloat(data[5]),
-                        'unit': lib.parseString(data[7]),
-                        'amt_year': lib.parseString(data[5]),
-                        'amt_ky_truoc': lib.parseFloat(data[8])
-                    }
-                    datas.append(val)
+                    sid = lib.create_key(data[6])
+                    if sid not in dicdatas:
+                        dicdatas[sid] = {
+                            'id': lib.create_key(data[6]),
+                            "title": lib.parseString(data[6]),
+                            'day': lib.parseFloat(data[2]),
+                            'week': lib.parseFloat(data[3]),
+                            'month': lib.parseFloat(data[4]),
+                            'accumulated': lib.parseFloat(data[5]),
+                            'unit': lib.parseString(data[7]),
+                            'amt_year': lib.parseFloat(data[5]),
+                            'amt_ky_truoc': lib.parseFloat(data[8])
+                        }
+                    else:
+                        d = dicdatas[sid]
+                        d['day'] = d['day'] + lib.parseFloat(data[2])
+                        d['week'] = d['week'] + lib.parseFloat(data[3])
+                        d['month'] = d['month'] + lib.parseFloat(data[4])
+                        d['accumulated'] = d['accumulated'] + lib.parseFloat(data[5])
+                        d['amt_year'] = d['amt_year'] + lib.parseFloat(data[5])
+                        d['amt_ky_truoc'] = d['amt_ky_truoc'] + lib.parseFloat(data[5])
+
+                for k in dicdatas:
+                    datas.append(dicdatas[k])
+                    # datas.append(val)
 
             cur.close()
             con.close()
@@ -226,7 +240,8 @@ The `division` example:
 
                             datas.append(val)
 
-                        valmax['val'] = valmax['val'] + round(tt,2)
+                        if valmax is not None:
+                            valmax['val'] = valmax['val'] + round(tt,2)
                     else:
                         for data in data_cursor:
                             print(data)
