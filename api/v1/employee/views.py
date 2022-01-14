@@ -10,7 +10,7 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.employee.serializers import EmployeeResponseSerializer, BranchResponseSerializer, EmployeeKPIResponseSerializer, EmployeeWorkprocessResponseSerializer
+from api.v1.employee.serializers import EmployeeResponseSerializer, EmployeeDecisionResponseSerializer, EmployeeKPIResponseSerializer, EmployeeWorkprocessResponseSerializer
 
 class EmployeeView(BaseAPIView):
     @extend_schema(
@@ -332,8 +332,65 @@ Param `emp` example
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
-        operation_id='EMP_DETAIL_PROFILE',
-        summary='EMP_DETAIL_PROFILE',
+        operation_id='EMP_DETAIL_DECISION',
+        summary='EMP_DETAIL_DECISION',
+        tags=["EMPLOYEE"],
+        responses={
+            status.HTTP_201_CREATED: EmployeeDecisionResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        },
+        description="""
+Param `emp` example       
+- **04260**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="emp", type=OpenApiTypes.STR, description="emp"
+            )
+        ]
+    )
+    def emp_detail_decision(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            emp_id = params['emp']
+
+            # call the function
+            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_DECISION(P_EMP=>'{}') from dual".format(emp_id)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                data_cursor = res[0]
+                for data in data_cursor:
+                    print(data)
+                    #('04260', 'BÙI THỊ NHƯ QUỲNH', '000', 'MẢNG KẾ TOÁN CHI TIÊU NỘI BỘ TẬP TRUNG', None, '4894-4897/QĐ-TGĐ.16-Vi phạm An toàn kho quỹ', datetime.datetime(2016, 12, 14, 0, 0))
+
+                    val = {
+                        'ID': lib.parseString(data[0]),
+                        'FULLNAME': lib.parseString(data[1]),
+                        'DEP_ID': lib.parseString(data[2]),
+                        'DEP_NAME': lib.parseString(data[3]),
+                        'REASON_COMMEND': lib.parseString(data[4]),
+                        'REASON_DISCIPLINE': lib.parseString(data[5]),
+                        'DATETIME': lib.parseString(data[6])
+                    }
+                    datas.append(val)
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='EMP_DETAIL_WORK_PROCESS',
+        summary='EMP_DETAIL_WORK_PROCESS',
         tags=["EMPLOYEE"],
         responses={
             status.HTTP_201_CREATED: EmployeeWorkprocessResponseSerializer(many=True),
