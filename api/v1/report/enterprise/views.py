@@ -168,7 +168,7 @@ Screen `C_04`
                             'SLNS_DANH_GIA': lib.parseFloat(data[1]),
                             'SLNS_HOAN_THANH': lib.parseFloat(data[2]),
                             'TY_LE_HOAN_THANH': lib.parseString(data[3]),
-                            'TIME': data[4]
+                            'TIME': lib.parseString(data[4])
                         }
                     else:
                         val = {
@@ -176,7 +176,7 @@ Screen `C_04`
                             'REGION_NAME': lib.parseString(data[1]),
                             'SLNS_DANH_GIA': lib.parseFloat(data[2]),
                             'SLNS_HOAN_THANH': lib.parseFloat(data[3]),
-                            'TY_LE_HOAN_THANH': lib.parseString(data[4])
+                            'TY_LE_HOAN_THANH': lib.parseFloat(data[4])
                         }
 
                         if len(data) > 5:
