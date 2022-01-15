@@ -61,4 +61,11 @@ def parseFloat(data):
         return data
 
     data = data.replace(",", "").replace("%", "").strip()
-    return round(float(data), 2)
+
+    val = 0
+    try:
+        val = round(float(data), 2)
+    except:
+        val = 0
+    return val
+
