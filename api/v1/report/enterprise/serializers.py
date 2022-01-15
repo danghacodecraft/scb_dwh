@@ -70,8 +70,8 @@ class HRResponseSerializer(InheritedSerializer):
 class KPIResponseSerializer(InheritedSerializer):
     branch_name = serializers.CharField(help_text="`branch_name` of data")
     REGION_NAME = serializers.CharField(help_text="`REGION_NAME` of data")
-    SLNS_DANH_GIA = serializers.CharField(help_text="`SLNS_DANH_GIA` of data")
-    SLNS_HOAN_THANH = serializers.CharField(help_text="`SLNS_HOAN_THANH` of data")
+    SLNS_DANH_GIA = serializers.FloatField(help_text="`SLNS_DANH_GIA` of data")
+    SLNS_HOAN_THANH = serializers.FloatField(help_text="`SLNS_HOAN_THANH` of data")
     TY_LE_HOAN_THANH = serializers.CharField(help_text="`TY_LE_HOAN_THANH` of data")
     KY_DANH_GIA = serializers.CharField(help_text="`TY_LE_HOAN_THANH` of data")
 
