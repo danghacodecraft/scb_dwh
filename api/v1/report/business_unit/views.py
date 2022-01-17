@@ -383,6 +383,7 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
 Screen `C_03` 
 - **du_no_td_khcn**.
 - **du_no_nhom_sp**.
+- **du_no_vay_theo_nam**.
 - **so_luong_khoan_vay**.
 
 Screen `C_03_01` 
