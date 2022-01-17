@@ -361,7 +361,9 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                         'description': lib.parseString(data[5]),
                         'type': lib.parseString(data[6]),
                         'AMT_KY_TRUOC': lib.parseString(data[8]),
-                        'LK_NAM': lib.parseFloat(data[9])
+                        'LK_NAM': lib.parseFloat(data[9]),
+                        'LOAI_KH': lib.parseString(data[13]) if len(data) > 13 else "",
+                        'BRANCH': lib.parseString(data[14]) if len(data) > 14 else ""
                     }
                     datas.append(val)
 
