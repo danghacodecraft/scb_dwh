@@ -138,6 +138,10 @@ The `Screen` has values:
         summary='List',
         tags=["BUSINESS"],
         description="""
+ `Sum` default 1        
+- **0**.
+- **1**.
+        
 Screen `C_02_01` DVKD - Tong quan        
 - **quan_ly_khach_hang**.
 - **tong_so_don_vi**.
@@ -291,6 +295,9 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             ),
             OpenApiParameter(
                 name="division", type=OpenApiTypes.STR, description="division"
+            ),
+            OpenApiParameter(
+                name="sum", type=OpenApiTypes.STR, description="sum"
             )
         ],
         # request=ChartFRequestSerializer,
@@ -337,6 +344,10 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             if 'division' in params.keys():
                 division = ",P_DIVISION=>'{}'".format(params['division'])
 
+            sum = "1"
+            if 'sum' in params.keys():
+                sum = params['sum']
+
             sql = "Select obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{}{} ) FROM DUAL".format(screen, key, vung, kv, dv, fdate, tdate, division)
             print(sql)
             cur.execute(sql)
@@ -344,29 +355,49 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
 
             datas = []
             if len(res) > 0:
-                try:
-                    data_cursor = res[0]
-                except:
-                    print("Loi data ")
-                    data_cursor = None
+                data_cursor = res[0]
 
-                for data in data_cursor:
-                    print(data)
-                    #('0-0-B-10.10', 'Thu nhập từ hoạt động KDNH', 0, 'Thu nhập từ hoạt động KDNH', None, None, 'Toàn hàng', None, 0, 0)
-                    val = {
-                        'key': lib.create_key(data[1]),
-                        'label': lib.parseString(data[1]),
-                        'val': lib.parseFloat(data[2]),
-                        'unit': lib.parseString(data[4]),
-                        'description': lib.parseString(data[5]),
-                        'type': lib.parseString(data[6]),
-                        'AMT_KY_TRUOC': lib.parseString(data[8]),
-                        'LK_NAM': lib.parseFloat(data[9]),
-                        'LOAI_KH': lib.parseString(data[13]) if len(data) > 13 else "",
-                        'BRANCH': lib.parseString(data[14]) if len(data) > 14 else ""
-                    }
-                    datas.append(val)
+                if sum == "1":
+                    dicdatas = {}
+                    for data in data_cursor:
+                        print(data)
+                        key = lib.create_key(data[1])
+                        if key not in dicdatas:
+                            dicdatas[key] = {
+                                'key': key,
+                                'label': lib.parseString(data[1]),
+                                'val': lib.parseFloat(data[2]),
+                                'unit': lib.parseString(data[4]),
+                                'description': lib.parseString(data[5]),
+                                'type': lib.parseString(data[6]),
+                                'AMT_KY_TRUOC': lib.parseString(data[8]),
+                                'LK_NAM': lib.parseFloat(data[9])
+                            }
+                        else:
+                            d = dicdatas[key]
+                            d['val'] = d['val'] + lib.parseFloat(data[2])
+                            d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[2])
 
+                    for k in dicdatas:
+                        datas.append(dicdatas[k])
+
+                else:
+                    for data in data_cursor:
+                        print(data)
+                        #('0-0-B-10.10', 'Thu nhập từ hoạt động KDNH', 0, 'Thu nhập từ hoạt động KDNH', None, None, 'Toàn hàng', None, 0, 0)
+                        val = {
+                            'key': lib.create_key(data[1]),
+                            'label': lib.parseString(data[1]),
+                            'val': lib.parseFloat(data[2]),
+                            'unit': lib.parseString(data[4]),
+                            'description': lib.parseString(data[5]),
+                            'type': lib.parseString(data[6]),
+                            'AMT_KY_TRUOC': lib.parseString(data[8]),
+                            'LK_NAM': lib.parseFloat(data[9]),
+                            'LOAI_KH': lib.parseString(data[13]) if len(data) > 13 else "",
+                            'BRANCH': lib.parseString(data[14]) if len(data) > 14 else "",
+                        }
+                        datas.append(val)
                 # datas.sort(key=myBranch)
 
             cur.close()

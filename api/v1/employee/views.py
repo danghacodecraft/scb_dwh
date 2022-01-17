@@ -380,6 +380,7 @@ Param `emp` example
                         'DATETIME': lib.parseString(data[6])
                     }
                     datas.append(val)
+
             cur.close()
             con.close()
             return self.response_success(datas, status_code=status.HTTP_200_OK)
