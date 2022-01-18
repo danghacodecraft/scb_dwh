@@ -255,6 +255,7 @@ The `division` example:
                             elif unit == '%':
                                 val = round(val / total * 100, 2)
                                 tt = tt - val
+                                d['val'] = val
 
                             if valmax is None:
                                 valmax = d
