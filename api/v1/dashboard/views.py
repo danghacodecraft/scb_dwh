@@ -101,7 +101,7 @@ The `division` example:
                         continue
 
                     precision = 2
-                    # key = lib.create_key(data[6])
+                    key = lib.create_key(data[6])
                     # if key in ds:
                     #     precision = 0
 
