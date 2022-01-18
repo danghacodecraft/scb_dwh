@@ -216,49 +216,58 @@ The `division` example:
 
                     if key == 'tong_so_but_toan' or key == 'thu_phi_dich_vu':
                         total = 0
-                        dd = []
+                        dd = {}
                         for data in data_cursor:
                             print(data)
-                            dd.append(data)
+                            # dd.append(data)
+                            ids = lib.create_key(data[1])
+                            title = lib.parseString(data[3])
                             val = lib.parseFloat(data[2])
                             unit = lib.parseString(data[4])
+
+                            if ids not in dd:
+                                dd[ids] = {
+                                    'id': ids,
+                                    'title': title,
+                                    'val': val,
+                                    'unit': unit,
+                                }
+                            else:
+                                d = dd[ids]
+                                d['val'] = d['val'] + val
+
                             if unit == '%':
                                 total = total + val
 
                         tt = 100
                         valmax = None
 
-                        for data in dd:
-                            ids = lib.create_key(data[1])
-                            title = lib.parseString(data[3])
-                            value = lib.parseFloat(data[2])
-                            unit = lib.parseString(data[4])
+                        for key in dd:
+                            d = dd[key]
+
+                            # ids = lib.create_key(data[1])
+                            # title = lib.parseString(data[3])
+                            val = d['val']
+                            unit = d['unit']
 
                             if total == 0:
-                                value = 0
+                                val = 0
                             elif unit == '%':
-                                value = round(value / total * 100, 2)
-                                tt = tt - value
-                                print("{}:{}".format(title, value))
+                                val = round(val / total * 100, 2)
+                                tt = tt - val
 
-                            val = {
-                                'id': ids,
-                                'title': title,
-                                'val': value,
-                                'unit': unit,
-                            }
                             if valmax is None:
-                                valmax = val
-                            elif valmax['val'] < value:
-                                valmax = val
+                                valmax = d
+                            elif valmax['val'] < val:
+                                valmax = d
 
-                            datas.append(val)
+                            datas.append(d)
 
                         if valmax is not None:
                             valmax['val'] = valmax['val'] + round(tt,2)
                     else:
                         for data in data_cursor:
-                            print(data)
+                            # print(data)
                             val = {
                                 'id': lib.create_key(data[1]),
                                 'title': lib.parseString(data[3]),
