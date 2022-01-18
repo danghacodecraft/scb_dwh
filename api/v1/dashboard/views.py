@@ -74,6 +74,16 @@ The `division` example:
             if 'division' in params.keys():
                 division = ", P_DIVISION=>'{}'".format(params['division'])
 
+            ds = [
+                'tong_tai_san',
+                'ho_so_vay',
+                'no_xau_dn'
+                'no_xau_pfs'
+                'tong_du_no_tin_dung'
+                'tong_huy_dong'
+                'tong_chi_phi_hoat_dong'
+                'loi_nhuan_truoc_thue'
+            ]
             # call the function
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('TRANG_CHU'{}{}{}) FROM DUAL".format(vung, dv, division)
             print(sql)
@@ -90,27 +100,31 @@ The `division` example:
                     if kv != "" and kv != data[9]:
                         continue
 
-                    sid = lib.create_key(data[6])
-                    if sid not in dicdatas:
-                        dicdatas[sid] = {
+                    precision = 2
+                    key = lib.create_key(data[6])
+                    if key in ds:
+                        precision = 0
+
+                    if key not in dicdatas:
+                        dicdatas[key] = {
                             'id': lib.create_key(data[6]),
                             "title": lib.parseString(data[6]),
-                            'day': lib.parseFloat(data[2]),
-                            'week': lib.parseFloat(data[3]),
-                            'month': lib.parseFloat(data[4]),
-                            'accumulated': lib.parseFloat(data[5]),
+                            'day': lib.parseFloat(data[2], precision),
+                            'week': lib.parseFloat(data[3], precision),
+                            'month': lib.parseFloat(data[4], precision),
+                            'accumulated': lib.parseFloat(data[5], precision),
                             'unit': lib.parseString(data[7]),
-                            'amt_year': lib.parseFloat(data[5]),
-                            'amt_ky_truoc': lib.parseFloat(data[8])
+                            'amt_year': lib.parseFloat(data[5], precision),
+                            'amt_ky_truoc': lib.parseFloat(data[8], precision)
                         }
                     else:
-                        d = dicdatas[sid]
-                        d['day'] = lib.parseFloat(d['day'] + lib.parseFloat(data[2]))
-                        d['week'] = lib.parseFloat(d['week'] + lib.parseFloat(data[3]))
-                        d['month'] = lib.parseFloat(d['month'] + lib.parseFloat(data[4]))
-                        d['accumulated'] = lib.parseFloat(d['accumulated'] + lib.parseFloat(data[5]))
-                        d['amt_year'] = lib.parseFloat(d['amt_year'] + lib.parseFloat(data[5]))
-                        d['amt_ky_truoc'] = lib.parseFloat(d['amt_ky_truoc'] + lib.parseFloat(data[5]))
+                        d = dicdatas[key]
+                        d['day'] = lib.parseFloat(d['day'] + lib.parseFloat(data[2]), precision)
+                        d['week'] = lib.parseFloat(d['week'] + lib.parseFloat(data[3]), precision)
+                        d['month'] = lib.parseFloat(d['month'] + lib.parseFloat(data[4]), precision)
+                        d['accumulated'] = lib.parseFloat(d['accumulated'] + lib.parseFloat(data[5]), precision)
+                        d['amt_year'] = lib.parseFloat(d['amt_year'] + lib.parseFloat(data[5]), precision)
+                        d['amt_ky_truoc'] = lib.parseFloat(d['amt_ky_truoc'] + lib.parseFloat(data[5]), precision)
 
                 for k in dicdatas:
                     datas.append(dicdatas[k])

@@ -360,7 +360,7 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                 if sum == "1":
                     dicdatas = {}
                     for data in data_cursor:
-                        print(data)
+                        # print(data)
                         key = lib.create_key(data[1])
                         if key not in dicdatas:
                             dicdatas[key] = {
