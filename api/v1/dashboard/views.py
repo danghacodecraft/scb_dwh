@@ -256,15 +256,19 @@ The `division` example:
                                 val = round(val / total * 100, 2)
                                 tt = tt - val
                                 d['val'] = val
+                            else:
+                                d['val'] = round(val)
 
-                            if valmax is None:
-                                valmax = d
-                            elif valmax['val'] < val:
-                                valmax = d
+                            if unit == '%':
+                                if valmax is None:
+                                    valmax = d
+                                elif valmax['val'] < val:
+                                    valmax = d
 
                             datas.append(d)
 
                         if valmax is not None:
+                            print(valmax)
                             valmax['val'] = valmax['val'] + round(tt,2)
                     else:
                         for data in data_cursor:
