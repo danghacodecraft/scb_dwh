@@ -74,16 +74,16 @@ The `division` example:
             if 'division' in params.keys():
                 division = ", P_DIVISION=>'{}'".format(params['division'])
 
-            ds = [
-                'tong_tai_san',
-                'ho_so_vay',
-                'no_xau_dn'
-                'no_xau_pfs'
-                'tong_du_no_tin_dung'
-                'tong_huy_dong'
-                'tong_chi_phi_hoat_dong'
-                'loi_nhuan_truoc_thue'
-            ]
+            # ds = [
+            #     'tong_tai_san',
+            #     'ho_so_vay',
+            #     'no_xau_dn'
+            #     'no_xau_pfs'
+            #     'tong_du_no_tin_dung'
+            #     'tong_huy_dong'
+            #     'tong_chi_phi_hoat_dong'
+            #     'loi_nhuan_truoc_thue'
+            # ]
             # call the function
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('TRANG_CHU'{}{}{}) FROM DUAL".format(vung, dv, division)
             print(sql)
@@ -101,9 +101,9 @@ The `division` example:
                         continue
 
                     precision = 2
-                    key = lib.create_key(data[6])
-                    if key in ds:
-                        precision = 0
+                    # key = lib.create_key(data[6])
+                    # if key in ds:
+                    #     precision = 0
 
                     if key not in dicdatas:
                         dicdatas[key] = {
