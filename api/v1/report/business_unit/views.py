@@ -109,22 +109,34 @@ The `Screen` has values:
                     print("Loi data ")
                     data_cursor = None
 
+                dd = {}
                 for data in data_cursor:
                     print(data)
                     #('0-0-A-05.09',        'Nợ xấu',       54685588,   109371176,  54685588,   54685588,   'Nợ xấu[Khối DN]',  None,       109371176)
                     #('C_02_01_DWH_0007',   'Khách hàng ',  0,          0,          0,          0,          'Khách hàng ',      'khách hàng', 0)
-                    val = {
-                        'id': lib.create_key(data[6]),
-                        "title": lib.parseString(data[6]),
-                        'day': lib.parseFloat(data[2]),
-                        'week': lib.parseFloat(data[3]),
-                        'month': lib.parseFloat(data[4]),
-                        'accumulated': lib.parseFloat(data[5]),
-                        'unit': lib.parseString(data[7]),
-                        'AMT_KY_TRUOC': lib.parseFloat(data[8])
-                    }
-                    datas.append(val)
+                    ids = lib.create_key(data[6])
+                    if ids not in dd:
+                        dd[ids] = {
+                            'id': ids,
+                            "title": lib.parseString(data[6]),
+                            'day': lib.parseFloat(data[2]),
+                            'week': lib.parseFloat(data[3]),
+                            'month': lib.parseFloat(data[4]),
+                            'accumulated': lib.parseFloat(data[5]),
+                            'unit': lib.parseString(data[7]),
+                            'AMT_KY_TRUOC': lib.parseFloat(data[8])
+                        }
+                    else:
+                        d = dd[ids]
+                        d['day'] = d['day'] + lib.parseFloat(data[2])
+                        d['week'] = d['week'] + lib.parseFloat(data[3])
+                        d['month'] = d['month'] + lib.parseFloat(data[4])
+                        d['accumulated'] = d['accumulated'] + lib.parseFloat(data[5])
+                        d['AMT_KY_TRUOC'] = d['AMT_KY_TRUOC'] + lib.parseFloat(data[8])
 
+                for ids in dd:
+                    datas.append(dd[ids])
+                    
             cur.close()
             con.close()
             return self.response_success(datas, status_code=status.HTTP_200_OK)
