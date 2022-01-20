@@ -114,7 +114,7 @@ The `Screen` has values:
                     print(data)
                     #('0-0-A-05.09',        'Nợ xấu',       54685588,   109371176,  54685588,   54685588,   'Nợ xấu[Khối DN]',  None,       109371176)
                     #('C_02_01_DWH_0007',   'Khách hàng ',  0,          0,          0,          0,          'Khách hàng ',      'khách hàng', 0)
-                    ids = lib.create_key(data[1])
+                    ids = lib.create_key(data[6])
                     if ids not in dd:
                         dd[ids] = {
                             'id': ids,
@@ -360,7 +360,7 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             if 'sum' in params.keys():
                 sum = params['sum']
 
-            sql = "Select obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{}{} ) FROM DUAL".format(screen, key, vung, kv, dv, fdate, tdate, division)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{}{} ) FROM DUAL".format(screen, key, vung, kv, dv, fdate, tdate, division)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -674,7 +674,7 @@ Param `page_size` default = 20
                 page_size = int(params['page_size'])
 
             sql = """
-                select obi.CRM_DWH_PKG.FUN_GET_DATA_CUST_VIP(
+                SELECT obi.CRM_DWH_PKG.FUN_GET_DATA_CUST_VIP(
                     P_MAN_HINH  => '{}',
                     P_VUNG      => 'ALL',
                     P_DV        => 'ALL',
