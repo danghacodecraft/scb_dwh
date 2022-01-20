@@ -114,17 +114,17 @@ The `Screen` has values:
                     print(data)
                     #('0-0-A-05.09',        'Nợ xấu',       54685588,   109371176,  54685588,   54685588,   'Nợ xấu[Khối DN]',  None,       109371176)
                     #('C_02_01_DWH_0007',   'Khách hàng ',  0,          0,          0,          0,          'Khách hàng ',      'khách hàng', 0)
-                    ids = lib.create_key(data[6])
+                    ids = lib.create_key(data[1])
                     if ids not in dd:
                         dd[ids] = {
                             'id': ids,
                             "title": lib.parseString(data[6]),
+                            'unit': lib.parseString(data[7]),
                             'day': lib.parseFloat(data[2]),
                             'week': lib.parseFloat(data[3]),
                             'month': lib.parseFloat(data[4]),
                             'accumulated': lib.parseFloat(data[5]),
-                            'unit': lib.parseString(data[7]),
-                            'AMT_KY_TRUOC': lib.parseFloat(data[8])
+                            'AMT_KY_TRUOC': lib.parseFloat(data[8]),
                         }
                     else:
                         d = dd[ids]
@@ -136,7 +136,7 @@ The `Screen` has values:
 
                 for ids in dd:
                     datas.append(dd[ids])
-                    
+
             cur.close()
             con.close()
             return self.response_success(datas, status_code=status.HTTP_200_OK)
@@ -372,23 +372,24 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                 if sum == "1":
                     dicdatas = {}
                     for data in data_cursor:
-                        # print(data)
+                        print(data)
                         key = lib.create_key(data[1])
                         if key not in dicdatas:
                             dicdatas[key] = {
                                 'key': key,
                                 'label': lib.parseString(data[1]),
-                                'val': lib.parseFloat(data[2]),
                                 'unit': lib.parseString(data[4]),
                                 'description': lib.parseString(data[5]),
                                 'type': lib.parseString(data[6]),
                                 'AMT_KY_TRUOC': lib.parseString(data[8]),
-                                'LK_NAM': lib.parseFloat(data[9])
+
+                                'val': lib.parseFloat(data[2]),
+                                'LK_NAM': lib.parseFloat(data[10]),
                             }
                         else:
                             d = dicdatas[key]
                             d['val'] = d['val'] + lib.parseFloat(data[2])
-                            d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[2])
+                            d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10])
 
                     for k in dicdatas:
                         datas.append(dicdatas[k])
