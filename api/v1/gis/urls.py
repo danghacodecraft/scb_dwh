@@ -6,6 +6,7 @@ urlpatterns = [
     path('region/', GisView.as_view({'get': 'region'})),
     path('area/', GisView.as_view({'get': 'area'})),
     path('branch/', GisView.as_view({'get': 'branch'})),
+    path('branchgeojson/', GisView.as_view({'get': 'branchgeojson'})),
 
     # path('search/', GisView.as_view({'get': 'search'})),
     # path('area_branch/', GisView.as_view({'get': 'area_branch'})),
