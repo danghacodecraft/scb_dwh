@@ -10,7 +10,7 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.employee.serializers import EmployeeResponseSerializer, EmployeeDecisionResponseSerializer, EmployeeKPIResponseSerializer, EmployeeWorkprocessResponseSerializer
+from api.v1.employee.serializers import EmployeeBonusResponseSerializer, EmployeeDisciplineResponseSerializer, EmployeeTrainingResponseSerializer, EmployeeResponseSerializer, EmployeeDecisionResponseSerializer, EmployeeKPIResponseSerializer, EmployeeWorkprocessResponseSerializer
 
 class EmployeeView(BaseAPIView):
     @extend_schema(
@@ -378,6 +378,190 @@ Param `emp` example
                         'REASON_COMMEND': lib.parseString(data[4]),
                         'REASON_DISCIPLINE': lib.parseString(data[5]),
                         'DATETIME': lib.parseString(data[6])
+                    }
+                    datas.append(val)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='EMP_DETAIL_BONUS',
+        summary='EMP_DETAIL_BONUS',
+        tags=["EMPLOYEE"],
+        responses={
+            status.HTTP_201_CREATED: EmployeeBonusResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        },
+        description="""
+Param `emp` example       
+- **05645**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="emp", type=OpenApiTypes.STR, description="emp"
+            )
+        ]
+    )
+
+    def emp_detail_bonus(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            emp_id = params['emp']
+
+            # call the function
+            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_INFO(P_EMP=>'{}',P_TYPE=>'KHEN_THUONG',P_DEP_ID=>'ALL',P_ORG_ID=>'ALL') FROM DUAL".format(emp_id)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                data_cursor = res[0]
+                for data in data_cursor:
+                    print(data)
+                    # (datetime.datetime(2018, 3, 13, 0, 0), '971/QĐ-TGĐ.18', 'DHKT_3', 'CKT1', None, None, 'Khen thưởng các Cán bộ nhân viên đạt thành tích xuất sắc năm 2017', 'DHKT_3', 5000000, datetime.datetime(2018, 3, 13, 0, 0), 'VÕ TẤN HOÀNG VĂN')
+                    val = {
+                        'NGAY_HIEU_LUC': lib.parseString(data[0]),
+                        'SO_QUYET_DINH': lib.parseString(data[1]),
+                        'DANH_HIEU': lib.parseString(data[2]),
+                        'CAP_KHEN_THUONG': lib.parseString(data[3]),
+                        'CHUC_DANH': lib.parseString(data[4]),
+                        'DON_VI_PHONG_BAN': lib.parseString(data[5]),
+                        'LY_DO_KHEN_TUONG': lib.parseString(data[6]),
+                        'HINH_THUC_KHEN_THUONG': lib.parseString(data[7]),
+                        'SO_TIEN_THUONG': lib.parseString(data[8]),
+                        'NGAY_KY': lib.parseString(data[9]),
+                        'NGUOI_KY': lib.parseString(data[10])
+                    }
+                    datas.append(val)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='EMP_DETAIL_DISCIPLINE',
+        summary='EMP_DETAIL_DISCIPLINE',
+        tags=["EMPLOYEE"],
+        responses={
+            status.HTTP_201_CREATED: EmployeeDisciplineResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        },
+        description="""
+Param `emp` example       
+- **08675**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="emp", type=OpenApiTypes.STR, description="emp"
+            )
+        ]
+    )
+    def emp_detail_discipline(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            emp_id = params['emp']
+
+            # call the function
+            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_INFO(P_EMP=>'{}',P_TYPE=>'KY_LUAT',P_DEP_ID=>'ALL',P_ORG_ID=>'ALL') FROM DUAL".format(
+                emp_id)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                data_cursor = res[0]
+                for data in data_cursor:
+                    print(data)
+                    # ('04260', 'BÙI THỊ NHƯ QUỲNH', '000', 'MẢNG KẾ TOÁN CHI TIÊU NỘI BỘ TẬP TRUNG', None, '4894-4897/QĐ-TGĐ.16-Vi phạm An toàn kho quỹ', datetime.datetime(2016, 12, 14, 0, 0))
+
+                    val = {
+                        'NGAY_HIEU_LUC': lib.parseString(data[0]),
+                        'NGAY_KET_THUC': lib.parseString(data[1]),
+                        'CHUC_DANH': lib.parseString(data[2]),
+                        'DON_VI_PHONG_BAN': lib.parseString(data[3]),
+                        'LY_DO_KY_LUAT': lib.parseString(data[4]),
+                        'LY_DO_CHI_TIET_KY_LUAT': lib.parseString(data[5]),
+                        'NGAY_PHAT_HIEN': lib.parseString(data[6]),
+                        'NGAY_VI_PHAM': lib.parseString(data[7]),
+                        'TONG_GIA_TRI_THIET_HAI': lib.parseString(data[8]),
+                        'SO_QUYET_DINH': lib.parseString(data[9]),
+                        'NGAY_XOA_KY_LUAT': lib.parseString(data[10]),
+                        'NGUOI_KY': lib.parseString(data[11]),
+                    }
+                    datas.append(val)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='EMP_DETAIL_TRAINING',
+        summary='EMP_DETAIL_TRAINING',
+        tags=["EMPLOYEE"],
+        responses={
+            status.HTTP_201_CREATED: EmployeeTrainingResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        },
+        description="""
+Param `emp` example       
+- **03626**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="emp", type=OpenApiTypes.STR, description="emp"
+            )
+        ]
+    )
+    def emp_detail_training(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            emp_id = params['emp']
+
+            # call the function
+            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_INFO(P_EMP=>'{}',P_TYPE=>'DAO_TAO_NOI_BO',P_DEP_ID=>'ALL',P_ORG_ID=>'ALL') FROM DUAL".format(
+                emp_id)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                data_cursor = res[0]
+                for data in data_cursor:
+                    print(data)
+                    # ('04260', 'BÙI THỊ NHƯ QUỲNH', '000', 'MẢNG KẾ TOÁN CHI TIÊU NỘI BỘ TẬP TRUNG', None, '4894-4897/QĐ-TGĐ.16-Vi phạm An toàn kho quỹ', datetime.datetime(2016, 12, 14, 0, 0))
+
+                    val = {
+                        'CHU_DE': lib.parseString(data[0]),
+                        'MA_KHOA_HOC': lib.parseString(data[1]),
+                        'TEN_KHOA_HOC': lib.parseString(data[2]),
+                        'TU_NGAY': lib.parseString(data[3]),
+                        'DEN_NGAY': lib.parseString(data[4]),
+                        'KET_QUA': lib.parseString(data[5])
                     }
                     datas.append(val)
 

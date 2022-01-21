@@ -37,6 +37,41 @@ class EmployeeDecisionResponseSerializer(InheritedSerializer):
     REASON_DISCIPLINE = serializers.CharField(help_text="`DATE` of data")
     DATETIME = serializers.CharField(help_text="`NOTE` of data")
 
+class EmployeeBonusResponseSerializer(InheritedSerializer):
+    NGAY_HIEU_LUC = serializers.CharField(help_text="`NGAY_HIEU_LUC` of data")
+    SO_QUYET_DINH = serializers.CharField(help_text="`SO_QUYET_DINH` of data")
+    DANH_HIEU = serializers.CharField(help_text="`DANH_HIEU` of data")
+    CAP_KHEN_THUONG = serializers.CharField(help_text="`CAP_KHEN_THUONG` of data")
+    CHUC_DANH = serializers.CharField(help_text="`CHUC_DANH` of data")
+    DON_VI_PHONG_BAN = serializers.CharField(help_text="`DON_VI_PHONG_BAN` of data")
+    LY_DO_KHEN_TUONG = serializers.CharField(help_text="`LY_DO_KHEN_TUONG` of data")
+    HINH_THUC_KHEN_THUONG = serializers.CharField(help_text="`HINH_THUC_KHEN_THUONG` of data")
+    SO_TIEN_THUONG = serializers.CharField(help_text="`SO_TIEN_THUONG` of data")
+    NGAY_KY = serializers.CharField(help_text="`NGAY_KY` of data")
+    NGUOI_KY = serializers.CharField(help_text="`NGUOI_KY` of data")
+
+class EmployeeDisciplineResponseSerializer(InheritedSerializer):
+    NGAY_HIEU_LUC = serializers.CharField(help_text="`NGAY_HIEU_LUC` of data")
+    NGAY_KET_THUC = serializers.CharField(help_text="`NGAY_KET_THUC` of data")
+    CHUC_DANH = serializers.CharField(help_text="`CHUC_DANH` of data")
+    DON_VI_PHONG_BAN = serializers.CharField(help_text="`DON_VI_PHONG_BAN` of data")
+    LY_DO_KY_LUAT = serializers.CharField(help_text="`LY_DO_KY_LUAT` of data")
+    LY_DO_CHI_TIET_KY_LUAT = serializers.CharField(help_text="`LY_DO_CHI_TIET_KY_LUAT` of data")
+    NGAY_PHAT_HIEN = serializers.CharField(help_text="`NGAY_PHAT_HIEN` of data")
+    NGAY_VI_PHAM = serializers.CharField(help_text="`NGAY_VI_PHAM` of data")
+    TONG_GIA_TRI_THIET_HAI = serializers.CharField(help_text="`TONG_GIA_TRI_THIET_HAI` of data")
+    SO_QUYET_DINH = serializers.CharField(help_text="`SO_QUYET_DINH` of data")
+    NGAY_XOA_KY_LUAT = serializers.CharField(help_text="`NGAY_XOA_KY_LUAT` of data")
+    NGUOI_KY = serializers.CharField(help_text="`NGUOI_KY` of data")
+
+class EmployeeTrainingResponseSerializer(InheritedSerializer):
+    CHU_DE = serializers.CharField(help_text="`CHU_DE` of data")
+    MA_KHOA_HOC = serializers.CharField(help_text="`MA_KHOA_HOC` of data")
+    TEN_KHOA_HOC = serializers.CharField(help_text="`TEN_KHOA_HOC` of data")
+    TU_NGAY = serializers.CharField(help_text="`TU_NGAY` of data")
+    DEN_NGAY = serializers.CharField(help_text="`DEN_NGAY` of data")
+    KET_QUA = serializers.CharField(help_text="`KET_QUA` of data")
+
 class EmployeeWorkprocessResponseSerializer(InheritedSerializer):
     EMPLOYEE_CODE = serializers.CharField(help_text="`EMPLOYEE_CODE` of data")
     TU_NGAY = serializers.CharField(help_text="`TU_NGAY` of data")
