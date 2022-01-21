@@ -372,7 +372,7 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                 if sum == "1":
                     dicdatas = {}
                     for data in data_cursor:
-                        print(data)
+                        # print(data)
                         key = lib.create_key(data[1])
                         if key not in dicdatas:
                             dicdatas[key] = {
@@ -392,6 +392,8 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                             d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10])
 
                     for k in dicdatas:
+                        dicdatas[k]['val'] = lib.parseFloat(dicdatas[k]['val'])
+                        dicdatas[k]['LK_NAM'] = lib.parseFloat(dicdatas[k]['LK_NAM'])
                         datas.append(dicdatas[k])
 
                 else:
