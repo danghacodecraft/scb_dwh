@@ -10,6 +10,7 @@ urlpatterns = [
     path('emp_detail_bonus/', EmployeeView.as_view({'get': 'emp_detail_bonus'})),
     path('emp_detail_discipline/', EmployeeView.as_view({'get': 'emp_detail_discipline'})),
     path('emp_detail_training/', EmployeeView.as_view({'get': 'emp_detail_training'})),
+    path('emp_detail_other/', EmployeeView.as_view({'get': 'emp_detail_other'})),
 
     path('emp_detail_work_process/', EmployeeView.as_view({'get': 'emp_detail_work_process'})),
 

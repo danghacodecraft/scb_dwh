@@ -10,7 +10,10 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.employee.serializers import EmployeeBonusResponseSerializer, EmployeeDisciplineResponseSerializer, EmployeeTrainingResponseSerializer, EmployeeResponseSerializer, EmployeeDecisionResponseSerializer, EmployeeKPIResponseSerializer, EmployeeWorkprocessResponseSerializer
+from api.v1.employee.serializers import EmployeeBonusResponseSerializer, EmployeeDisciplineResponseSerializer, \
+    EmployeeTrainingResponseSerializer, EmployeeOtherResponseSerializer, \
+    EmployeeResponseSerializer, EmployeeDecisionResponseSerializer, \
+    EmployeeKPIResponseSerializer, EmployeeWorkprocessResponseSerializer
 
 class EmployeeView(BaseAPIView):
     @extend_schema(
@@ -562,6 +565,67 @@ Param `emp` example
                         'TU_NGAY': lib.parseString(data[3]),
                         'DEN_NGAY': lib.parseString(data[4]),
                         'KET_QUA': lib.parseString(data[5])
+                    }
+                    datas.append(val)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='EMP_DETAIL_OTHER',
+        summary='EMP_DETAIL_OTHER',
+        tags=["EMPLOYEE"],
+        responses={
+            status.HTTP_201_CREATED: EmployeeOtherResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        },
+        description="""
+Param `emp` example       
+- **03626**.
+""",
+        parameters=[
+            OpenApiParameter(
+                name="emp", type=OpenApiTypes.STR, description="emp"
+            )
+        ]
+    )
+    def emp_detail_other(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            emp_id = params['emp']
+
+            # call the function
+            sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_INFO(P_EMP=>'{}',P_TYPE=>'OTHER_INFO',P_DEP_ID=>'ALL',P_ORG_ID=>'ALL') FROM DUAL".format(
+                emp_id)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                data_cursor = res[0]
+                for data in data_cursor:
+                    print(data)
+                    # (3626, 'TD - 123456', 'Bổ sung nhân sự đầu năm', 'Trần Thanh Sang', 3622, None, 'Nhân viên lâu năm', '6', '12')
+                    # EMPLOYEE_ID	MA_TUYEN_DUNG	LY_DO_TUYEN_DUNG	NGUOI_GIOI_THIEU	NV_THAY_THE	NOTE	THONG_TIN_KHAC	THAM_NIEN_THEM	PHEP_NAM_UU_DAI
+                    val = {
+                        'EMPLOYEE_ID': lib.parseString(data[0]),
+                        'MA_TUYEN_DUNG': lib.parseString(data[1]),
+                        'LY_DO_TUYEN_DUNG': lib.parseString(data[2]),
+                        'NGUOI_GIOI_THIEU': lib.parseString(data[3]),
+                        'NV_THAY_THE': lib.parseString(data[4]),
+                        'NOTE': lib.parseString(data[5]),
+                        'THONG_TIN_KHAC': lib.parseString(data[6]),
+                        'THAM_NIEN_THEM': lib.parseFloat(data[7]),
+                        'PHEP_NAM_UU_DAI': lib.parseFloat(data[8])
                     }
                     datas.append(val)
 
