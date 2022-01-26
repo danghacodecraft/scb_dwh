@@ -306,6 +306,8 @@ class GisView(BaseAPIView):
                         top = top if top > latitude else latitude
                         bottom = bottom if bottom < latitude else latitude
 
+                area_id = area['area_id']
+                area_name = area['area_name']
                 if area_id == 'ALL':
                     left = 100
                     right = 120
@@ -313,8 +315,8 @@ class GisView(BaseAPIView):
                     bottom = 10
 
                 datas.append({
-                    'ID': area['area_id'],
-                    'NAME': area['area_name'],
+                    'ID': area_id,
+                    'NAME': area_name,
                     'branches': branches,
                     'left': left,
                     'right': right,
