@@ -232,7 +232,7 @@ class GisView(BaseAPIView):
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
+                    # print(data)
                     area_id = data[2].strip()
                     area_name = data[3].strip()
                     branch_id = data[6].strip()
@@ -261,8 +261,8 @@ class GisView(BaseAPIView):
                         }
 
                     area = gis[area_id]
-                    if area_name not in area['branches']:
-                        area['branches'][area_name] = {
+                    if branch_name not in area['branches']:
+                        area['branches'][branch_name] = {
                             'branch_id': branch_id,
                             'branch_name': branch_name,
                             'longitude': longitude,
@@ -270,7 +270,7 @@ class GisView(BaseAPIView):
                             'type': branchtype
                         }
 
-                        gis['ALL']['branches'][area_name] = {
+                        gis['ALL']['branches'][branch_name] = {
                             'branch_id': branch_id,
                             'branch_name': branch_name,
                             'longitude': longitude,
@@ -313,6 +313,9 @@ class GisView(BaseAPIView):
                     right = 120
                     top = 20
                     bottom = 10
+
+                str = "{}:{}: {}, {}, {}, {}".format(area_id, area_name, left, right, top, bottom)
+                print(str)
 
                 datas.append({
                     'ID': area_id,
