@@ -371,12 +371,36 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
 
                 if sum == "1":
                     dicdatas = {}
+
+                    if key == "quan_ly_khach_hang":
+                        dicdatas['khach_hang_doanh_nghiep_khoi_dn'] = {
+                            'key': 'khach_hang_doanh_nghiep_khoi_dn',
+                            'label': "Khách hàng doanh nghiệp khối DN",
+                            'unit': "khách hàng",
+                            'description': "khách hàng",
+                            'type': "khách hàng",
+                            'AMT_KY_TRUOC': "",
+                            'val': 0,
+                            'LK_NAM': 0,
+                        }
+                        dicdatas['khach_hang_ca_nhan_khoi_pfs'] = {
+                            'key': 'khach_hang_ca_nhan_khoi_pfs',
+                            'label': "Khách hàng cá nhân khối PFS",
+                            'unit': "khách hàng",
+                            'description': "khách hàng",
+                            'type': "khách hàng",
+                            'AMT_KY_TRUOC': "",
+                            'val': 0,
+                            'LK_NAM': 0,
+                        }
+
                     for data in data_cursor:
-                        # print(data)
-                        key = lib.create_key(data[1])
-                        if key not in dicdatas:
-                            dicdatas[key] = {
-                                'key': key,
+                        print(data)
+                        keydata = lib.create_key(data[1])
+                        loaikh = lib.parseString(data[13]) if len(data) > 13 else ""
+                        if keydata not in dicdatas:
+                            dicdatas[keydata] = {
+                                'key': keydata,
                                 'label': lib.parseString(data[1]),
                                 'unit': lib.parseString(data[4]),
                                 'description': lib.parseString(data[5]),
@@ -387,9 +411,19 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                                 'LK_NAM': lib.parseFloat(data[10]),
                             }
                         else:
-                            d = dicdatas[key]
+                            d = dicdatas[keydata]
                             d['val'] = d['val'] + lib.parseFloat(data[2])
                             d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10])
+
+                        if key == "quan_ly_khach_hang":
+                            if loaikh == 'A':
+                                d = dicdatas['khach_hang_ca_nhan_khoi_pfs']
+                                d['val'] = d['val'] + lib.parseFloat(data[2])
+                                d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10])
+                            elif loaikh == 'B':
+                                d = dicdatas['khach_hang_doanh_nghiep_khoi_dn']
+                                d['val'] = d['val'] + lib.parseFloat(data[2])
+                                d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10])
 
                     for k in dicdatas:
                         dicdatas[k]['val'] = lib.parseFloat(dicdatas[k]['val'])
