@@ -636,6 +636,11 @@ Screen `C_03_08` program `VUD`
 Param `screen`         
 - **C_02_02**.
 
+Param `cust_type`         
+- **C** TỔ CHỨC.
+- **I** CÁ NHÂN.
+- **ALL** ALL KH HÉN.
+
 Param `key`         
 - **danh_sach_kh_vip**.
 
@@ -673,6 +678,15 @@ Param `page_size` default = 20
                 name="level", type=OpenApiTypes.STR, description="level"
             ),
             OpenApiParameter(
+                name="vung", type=OpenApiTypes.STR, description="vung"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            ),
+            OpenApiParameter(
+                name="cust_type", type=OpenApiTypes.STR, description="cust_type"
+            ),
+            OpenApiParameter(
                 name="page_number", type=OpenApiTypes.STR, description="page_number"
             ),
             OpenApiParameter(
@@ -701,6 +715,18 @@ Param `page_size` default = 20
             key = params['key']
             level = params['level']
 
+            vung = "ALL"
+            if 'vung' in params.keys():
+                vung = params['vung']
+
+            dv = "ALL"
+            if 'dv' in params.keys():
+                dv = params['dv']
+
+            cust_type = ""
+            if 'cust_type' in params.keys():
+                cust_type = params['cust_type']
+
             page_number = 1
             if 'page_number' in params.keys():
                 page_number = int(params['page_number'])
@@ -712,15 +738,17 @@ Param `page_size` default = 20
             sql = """
                 SELECT obi.CRM_DWH_PKG.FUN_GET_DATA_CUST_VIP(
                     P_MAN_HINH  => '{}',
-                    P_VUNG      => 'ALL',
-                    P_DV        => 'ALL',
+                    P_VUNG      => '{}',
+                    P_DV        => '{}',
                     P_CCY       => 'VND',
                     P_MODULE    => '{}',
+                    P_CUST_TYPE => '{}',
                     P_HANG_VIP  => '{}',
                     P_PAGE_NUM  => {},
                     P_PAGE_SIZE => {}
                 ) FROM DUAL
-            """.format(screen, key, level, page_number, page_size)
+            """.format(screen, vung, dv, key, cust_type, level, page_number, page_size)
+            # sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA_CUST_VIP( P_MAN_HINH=>'C_02_02',P_HANG_VIP=>'GOLD',P_CUST_TYPE=>'C',P_VUNG => 'V01') FROM DUAL"
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
