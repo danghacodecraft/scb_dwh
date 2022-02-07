@@ -117,6 +117,7 @@ The `Screen` has values:
                     ids = lib.create_key(data[6])
                     if ids not in dd:
                         dd[ids] = {
+                            'code': data[0],
                             'id': ids,
                             "title": lib.parseString(data[6]),
                             'unit': lib.parseString(data[7]),
