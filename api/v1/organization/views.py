@@ -234,10 +234,6 @@ Param `type` example
             if 'type' in params.keys():
                 type = ", P_TYPE=>'{}'".format(params['type'])
 
-            userid = ", P_USER_ID=>'THANGHD'"
-            if 'userid' in params.keys():
-                userid = ", P_USER_ID=>'{}'".format(params['userid'])
-
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_REGION=>'{}'{}) FROM DUAL".format(name, type)
             print(sql)
@@ -254,7 +250,7 @@ Param `type` example
 
 
                 for data in data_cursor:
-                    print(data)
+                    # print(data)
                     # 'V02', 'Vùng 02', '015', 'SCB Quận 10', 'BAN GIAM DOC', None, None, '11986', 'Phòng Dịch vụ Khách hàng', None, None, '03')
                     region_id = lib.parseString(data[6])
                     region_name = lib.parseString(data[7])
@@ -328,7 +324,7 @@ Param `type` example
 
             userid = "P_USER_ID=>'THANGHD'"
             if 'userid' in params.keys():
-                userid = "P_USER_ID=>'{}'".format(params['userid'])
+                userid = "P_USER_ID=>'{}'".format(params['userid'].upper())
 
             sql = 'SELECT obi.CRM_DWH_PKG.FUN_GET_REGION({}) FROM DUAL'.format(userid)
             print(sql)
@@ -402,9 +398,6 @@ Param `type` example
             if 'type' in params.keys():
                 type = ", P_TYPE=>'{}'".format(params['type'])
 
-            # userid = ", P_USER_ID=>'THANGHD'"
-            # if 'userid' in params.keys():
-            #     userid = ", P_USER_ID=>'{}'".format(params['userid'])
 
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_BRANCH=>'{}'{}) FROM DUAL".format(name, type)
@@ -494,7 +487,7 @@ Param `type` example
 
             userid = ", P_USER_ID=>'THANGHD'"
             if 'userid' in params.keys():
-                userid = ", P_USER_ID=>'{}'".format(params['userid'])
+                userid = ", P_USER_ID=>'{}'".format(params['userid'].upper())
 
             type = ", P_TYPE=>'CAP_DVKD'"
             if 'type' in params.keys():
