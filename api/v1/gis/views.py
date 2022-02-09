@@ -53,7 +53,7 @@ class GisView(BaseAPIView):
 
             userid = "P_USER_ID=>'THANGHD'"
             if 'userid' in params.keys():
-                userid = "P_USER_ID=>'{}'".format(params['userid'])
+                userid = "P_USER_ID=>'{}'".format(params['userid'].upper())
 
             # ======================================================================
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
@@ -206,7 +206,7 @@ class GisView(BaseAPIView):
 
             userid = "P_USER_ID=>'THANGHD'"
             if 'userid' in params.keys():
-                userid = "P_USER_ID=>'{}'".format(params['userid'])
+                userid = "P_USER_ID=>'{}'".format(params['userid'].upper())
 
             # ======================================================================
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
@@ -361,7 +361,7 @@ class GisView(BaseAPIView):
 
             userid = "P_USER_ID=>'THANGHD'"
             if 'userid' in params.keys():
-                userid = "P_USER_ID=>'{}'".format(params['userid'])
+                userid = "P_USER_ID=>'{}'".format(params['userid'].upper())
 
             region = ""
             if 'region' in params.keys():
@@ -435,7 +435,7 @@ class GisView(BaseAPIView):
 
             userid = "P_USER_ID=>'THANGHD'"
             if 'userid' in params.keys():
-                userid = "P_USER_ID=>'{}'".format(params['userid'])
+                userid = "P_USER_ID=>'{}'".format(params['userid'].upper())
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
             print(sql)

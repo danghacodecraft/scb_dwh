@@ -96,7 +96,7 @@ The `division` example:
                 dicdatas = {}
                 for data in data_cursor:
                     #ID, NAME, AMT_DAY, AMT_WEEK, AMT_MONTH, AMT_YEAR, TIEU_DE, UNIT, AMT_KY_TRUOC
-                    print(data)
+                    # print(data)
                     if kv != "" and kv != data[9]:
                         continue
 
@@ -107,6 +107,7 @@ The `division` example:
 
                     if key not in dicdatas:
                         dicdatas[key] = {
+                            'code': data[0],
                             'id': lib.create_key(data[6]),
                             "title": lib.parseString(data[6]),
                             'day': lib.parseFloat(data[2], precision),

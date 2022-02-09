@@ -98,7 +98,7 @@ class TokenAuthentication(BaseAuthentication):
 
         con, cur = lib.connect()
 
-        sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(user_id.upper())
+        sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(user_id)
         cur.execute(sql)
         res = cur.fetchone()
 
@@ -185,7 +185,7 @@ class BasicAuthentication(BaseAuthentication):
         user = None
 
         try:
-            sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(username.upper())
+            sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(username)
             cur.execute(sql)
             res = cur.fetchone()
 
