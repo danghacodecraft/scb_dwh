@@ -446,8 +446,10 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
 
                 else:
                     for data in data_cursor:
-                        # print(data)
+                        print(data)
                         key = lib.create_key(data[1])
+                        value = lib.parseFloat(data[2], 2, False)
+                        LK_NAM = lib.parseFloat(data[10], 2, False)
                         #('0-0-B-10.10', 'Thu nhập từ hoạt động KDNH', 0, 'Thu nhập từ hoạt động KDNH', None, None, 'Toàn hàng', None, 0, 0)
                         val = {
                             'key': key,
@@ -457,8 +459,8 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                             'type': lib.parseString(data[6]),
                             'AMT_KY_TRUOC': lib.parseString(data[8]),
 
-                            'val': lib.parseFloat(data[2]),
-                            'LK_NAM': lib.parseFloat(data[10]),
+                            'val': value,
+                            'LK_NAM': LK_NAM,
 
                             'LOAI_KH': lib.parseString(data[13]) if len(data) > 13 else "",
                             'BRANCH': lib.parseString(data[14]) if len(data) > 14 else "",
