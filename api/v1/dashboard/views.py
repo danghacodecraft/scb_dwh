@@ -130,10 +130,10 @@ The `division` example:
                     elif ids == "tang_giam_tong_so_khach_hang_moi":
                         division = data[11]
                         if division == "KHDN":
-                            title = "Tăng giảm tổng số khách hàng khối dn"
+                            title = "Tăng giảm tổng số khách hàng mới khối dn"
                             ids = lib.create_key(title)
                         elif division == "KHCN":
-                            title = "Tăng giảm tổng số khách hàng khối pfs"
+                            title = "Tăng giảm tổng số khách hàng mới khối pfs"
                             ids = lib.create_key(title)
                         elif division == "KHAC":
                             title = "Tăng giảm tổng số Khách hàng tín dụng"
