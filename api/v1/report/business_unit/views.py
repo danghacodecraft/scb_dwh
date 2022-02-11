@@ -421,27 +421,27 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                                 'type': lib.parseString(data[6]),
                                 'AMT_KY_TRUOC': lib.parseString(data[8]),
 
-                                'val': lib.parseFloat(data[2]),
-                                'LK_NAM': lib.parseFloat(data[10]),
+                                'val': lib.parseFloat(data[2], 4, False),
+                                'LK_NAM': lib.parseFloat(data[10], 4, False),
                             }
                         else:
                             d = dicdatas[keydata]
-                            d['val'] = d['val'] + lib.parseFloat(data[2])
-                            d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10])
+                            d['val'] = d['val'] + lib.parseFloat(data[2], 4, False)
+                            d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10], 4, False)
 
                         if key == "quan_ly_khach_hang":
                             if loaikh == 'A':
                                 d = dicdatas['khach_hang_ca_nhan_khoi_pfs']
-                                d['val'] = d['val'] + lib.parseFloat(data[2])
-                                d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10])
+                                d['val'] = d['val'] + lib.parseFloat(data[2], 4, False)
+                                d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10], 4, False)
                             elif loaikh == 'B':
                                 d = dicdatas['khach_hang_doanh_nghiep_khoi_dn']
-                                d['val'] = d['val'] + lib.parseFloat(data[2])
-                                d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10])
+                                d['val'] = d['val'] + lib.parseFloat(data[2], 4, False)
+                                d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10], 4, False)
 
                     for k in dicdatas:
-                        dicdatas[k]['val'] = lib.parseFloat(dicdatas[k]['val'])
-                        dicdatas[k]['LK_NAM'] = lib.parseFloat(dicdatas[k]['LK_NAM'])
+                        dicdatas[k]['val'] = lib.parseFloat(dicdatas[k]['val'], 2, False)
+                        dicdatas[k]['LK_NAM'] = lib.parseFloat(dicdatas[k]['LK_NAM'], 2, False)
                         datas.append(dicdatas[k])
 
                 else:

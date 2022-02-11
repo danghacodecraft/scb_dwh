@@ -50,13 +50,15 @@ def parseUser(data):
     data = data.replace("@SCB.COM.VN", "")
     return data
 
-def parseFloat(data, precision=2):
+def parseFloat(data, precision=2, r=True):
     if data is None:
         return 0
 
     t = type(data)
     if t == float:
-        return round(data, precision)
+        if r:
+            return round(data, precision)
+        return data
     elif t == int:
         return data
 
@@ -64,7 +66,9 @@ def parseFloat(data, precision=2):
 
     val = 0
     try:
-        val = round(float(data), precision)
+        val = float(data)
+        if r:
+            val = round(data, precision)
     except:
         val = 0
     return val
