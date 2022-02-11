@@ -96,36 +96,60 @@ The `division` example:
                 dicdatas = {}
                 for data in data_cursor:
                     #ID, NAME, AMT_DAY, AMT_WEEK, AMT_MONTH, AMT_YEAR, TIEU_DE, UNIT, AMT_KY_TRUOC
-                    # print(data)
+                    print(data)
                     if kv != "" and kv != data[9]:
                         continue
 
-                    precision = 2
-                    key = lib.create_key(data[6])
+                    title = lib.parseString(data[6])
+                    ids = lib.create_key(title)
+                    if ids == "tong_so_khach_hang_moi":
+                        division = data[11]
+                        if division == "KHDN":
+                            title = "Tổng số khách hàng mới khối dn"
+                            ids = lib.create_key(title)
+                        elif division == "KHCN":
+                            title = "Tổng số khách hàng mới khối pfs"
+                            ids = lib.create_key(title)
+                        elif division == "KHAC":
+                            title = "Tổng số Khách hàng mới tín dụng"
+                            ids = lib.create_key(title)
+
+                    elif ids == "so_luong_khach_hang":
+                        division = data[11]
+                        if division == "KHDN":
+                            title = "Tổng số khách hàng khối dn"
+                            ids = lib.create_key(title)
+                        elif division == "KHCN":
+                            title = "Tổng số khách hàng khối pfs"
+                            ids = lib.create_key(title)
+                        elif division == "KHAC":
+                            title = "Tổng số Khách hàng tín dụng"
+                            ids = lib.create_key(title)
+
                     # if key in ds:
                     #     precision = 0
 
-                    if key not in dicdatas:
-                        dicdatas[key] = {
+                    if ids not in dicdatas:
+                        dicdatas[ids] = {
                             'code': data[0],
-                            'id': lib.create_key(data[6]),
+                            'id': ids,
                             "title": lib.parseString(data[6]),
-                            'day': lib.parseFloat(data[2], precision),
-                            'week': lib.parseFloat(data[3], precision),
-                            'month': lib.parseFloat(data[4], precision),
-                            'accumulated': lib.parseFloat(data[5], precision),
+                            'day': lib.parseFloat(data[2]),
+                            'week': lib.parseFloat(data[3]),
+                            'month': lib.parseFloat(data[4]),
+                            'accumulated': lib.parseFloat(data[5]),
                             'unit': lib.parseString(data[7]),
-                            'amt_year': lib.parseFloat(data[5], precision),
-                            'amt_ky_truoc': lib.parseFloat(data[8], precision)
+                            'amt_year': lib.parseFloat(data[5]),
+                            'amt_ky_truoc': lib.parseFloat(data[8])
                         }
                     else:
-                        d = dicdatas[key]
-                        d['day'] = lib.parseFloat(d['day'] + lib.parseFloat(data[2]), precision)
-                        d['week'] = lib.parseFloat(d['week'] + lib.parseFloat(data[3]), precision)
-                        d['month'] = lib.parseFloat(d['month'] + lib.parseFloat(data[4]), precision)
-                        d['accumulated'] = lib.parseFloat(d['accumulated'] + lib.parseFloat(data[5]), precision)
-                        d['amt_year'] = lib.parseFloat(d['amt_year'] + lib.parseFloat(data[5]), precision)
-                        d['amt_ky_truoc'] = lib.parseFloat(d['amt_ky_truoc'] + lib.parseFloat(data[5]), precision)
+                        d = dicdatas[ids]
+                        d['day'] = lib.parseFloat(d['day'] + lib.parseFloat(data[2]))
+                        d['week'] = lib.parseFloat(d['week'] + lib.parseFloat(data[3]))
+                        d['month'] = lib.parseFloat(d['month'] + lib.parseFloat(data[4]))
+                        d['accumulated'] = lib.parseFloat(d['accumulated'] + lib.parseFloat(data[5]))
+                        d['amt_year'] = lib.parseFloat(d['amt_year'] + lib.parseFloat(data[5]))
+                        d['amt_ky_truoc'] = lib.parseFloat(d['amt_ky_truoc'] + lib.parseFloat(data[5]))
 
                 for k in dicdatas:
                     datas.append(dicdatas[k])
