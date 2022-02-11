@@ -96,7 +96,7 @@ The `division` example:
                 dicdatas = {}
                 for data in data_cursor:
                     #ID, NAME, AMT_DAY, AMT_WEEK, AMT_MONTH, AMT_YEAR, TIEU_DE, UNIT, AMT_KY_TRUOC
-                    # print(data)
+                    print(data)
 
                     if kv != "" and kv != data[9]:
                         continue
@@ -131,6 +131,16 @@ The `division` example:
                             title = "Tăng giảm tổng số khách hàng mới khối pfs"
                         elif division == "KHAC":
                             title = "Tăng giảm tổng số khách hàng mới tín dụng"
+                        ids = lib.create_key(title)
+
+                    elif ids == "no_xau":
+                        division = data[11]
+                        if division == "KHDN":
+                            title = "Nợ xấu DN"
+                        elif division == "KHCN":
+                            title = "Nợ xấu pfs"
+                        elif division == "KHAC":
+                            title = "Nợ xấu tín dụng"
                         ids = lib.create_key(title)
 
                     elif ids == "tang_giam_no_xau":
