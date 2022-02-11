@@ -124,6 +124,9 @@ The `Screen` has values:
                         elif division == "KHCN":
                             title = "Khách hàng cá nhân"
                             ids = lib.create_key(title)
+                        elif division == "KHAC":
+                            title = "Khách hàng WholeSale"
+                            ids = lib.create_key(title)
 
                     if ids not in dd:
                         dd[ids] = {
