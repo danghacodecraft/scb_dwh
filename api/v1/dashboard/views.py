@@ -97,6 +97,7 @@ The `division` example:
                 for data in data_cursor:
                     #ID, NAME, AMT_DAY, AMT_WEEK, AMT_MONTH, AMT_YEAR, TIEU_DE, UNIT, AMT_KY_TRUOC
                     print(data)
+
                     if kv != "" and kv != data[9]:
                         continue
 
@@ -124,6 +125,18 @@ The `division` example:
                             ids = lib.create_key(title)
                         elif division == "KHAC":
                             title = "Tổng số Khách hàng tín dụng"
+                            ids = lib.create_key(title)
+
+                    elif ids == "tang_giam_tong_so_khach_hang_moi":
+                        division = data[11]
+                        if division == "KHDN":
+                            title = "Tăng giảm tổng số khách hàng khối dn"
+                            ids = lib.create_key(title)
+                        elif division == "KHCN":
+                            title = "Tăng giảm tổng số khách hàng khối pfs"
+                            ids = lib.create_key(title)
+                        elif division == "KHAC":
+                            title = "Tăng giảm tổng số Khách hàng tín dụng"
                             ids = lib.create_key(title)
 
                     # if key in ds:
