@@ -115,11 +115,21 @@ The `Screen` has values:
                     #('0-0-A-05.09',        'Nợ xấu',       54685588,   109371176,  54685588,   54685588,   'Nợ xấu[Khối DN]',  None,       109371176)
                     #('C_02_01_DWH_0007',   'Khách hàng ',  0,          0,          0,          0,          'Khách hàng ',      'khách hàng', 0)
                     ids = lib.create_key(data[6])
+                    title = lib.parseString(data[6])
+                    if ids == "so_luong_khach_hang":
+                        division = data[11]
+                        if division == "KHDN":
+                            title = "Khách hàng doanh nghiệp"
+                            ids = lib.create_key(title)
+                        elif division == "KHCN":
+                            title = "Khách hàng cá nhân"
+                            ids = lib.create_key(title)
+
                     if ids not in dd:
                         dd[ids] = {
                             'code': data[0],
                             'id': ids,
-                            "title": lib.parseString(data[6]),
+                            "title": title,
                             'unit': lib.parseString(data[7]),
                             'day': lib.parseFloat(data[2]),
                             'week': lib.parseFloat(data[3]),
