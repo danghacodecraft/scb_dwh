@@ -96,7 +96,7 @@ The `division` example:
                 dicdatas = {}
                 for data in data_cursor:
                     #ID, NAME, AMT_DAY, AMT_WEEK, AMT_MONTH, AMT_YEAR, TIEU_DE, UNIT, AMT_KY_TRUOC
-                    print(data)
+                    # print(data)
 
                     if kv != "" and kv != data[9]:
                         continue
@@ -107,40 +107,41 @@ The `division` example:
                         division = data[11]
                         if division == "KHDN":
                             title = "Tổng số khách hàng mới khối dn"
-                            ids = lib.create_key(title)
                         elif division == "KHCN":
                             title = "Tổng số khách hàng mới khối pfs"
-                            ids = lib.create_key(title)
                         elif division == "KHAC":
                             title = "Tổng số Khách hàng mới tín dụng"
-                            ids = lib.create_key(title)
+                        ids = lib.create_key(title)
 
                     elif ids == "so_luong_khach_hang":
                         division = data[11]
                         if division == "KHDN":
                             title = "Tổng số khách hàng khối dn"
-                            ids = lib.create_key(title)
                         elif division == "KHCN":
                             title = "Tổng số khách hàng khối pfs"
-                            ids = lib.create_key(title)
                         elif division == "KHAC":
                             title = "Tổng số Khách hàng tín dụng"
-                            ids = lib.create_key(title)
+                        ids = lib.create_key(title)
 
                     elif ids == "tang_giam_tong_so_khach_hang_moi":
                         division = data[11]
                         if division == "KHDN":
                             title = "Tăng giảm tổng số khách hàng mới khối dn"
-                            ids = lib.create_key(title)
                         elif division == "KHCN":
                             title = "Tăng giảm tổng số khách hàng mới khối pfs"
-                            ids = lib.create_key(title)
                         elif division == "KHAC":
-                            title = "Tăng giảm tổng số Khách hàng tín dụng"
-                            ids = lib.create_key(title)
+                            title = "Tăng giảm tổng số khách hàng mới tín dụng"
+                        ids = lib.create_key(title)
 
-                    # if key in ds:
-                    #     precision = 0
+                    elif ids == "tang_giam_no_xau":
+                        division = data[11]
+                        if division == "KHDN":
+                            title = "Số lượng nợ xấu DN"
+                        elif division == "KHCN":
+                            title = "Số lượng nợ xấu pfs"
+                        elif division == "KHAC":
+                            title = "Số lượng nợ xấu tín dụng"
+                        ids = lib.create_key(title)
 
                     if ids not in dicdatas:
                         dicdatas[ids] = {
