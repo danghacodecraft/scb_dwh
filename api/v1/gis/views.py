@@ -448,7 +448,8 @@ class GisView(BaseAPIView):
                 "Siêu CN Cấp 1": "SCNC1",
                 "Siêu CN Cấp 2": "SCNC2",
                 "CN Đa năng": "CNDN",
-                "CN Chuẩn": "CNC"
+                "CN Chuẩn": "CNC",
+                "KXD": "CNDN"
             }
             features = []
             if len(res) > 0:

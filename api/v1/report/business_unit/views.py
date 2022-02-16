@@ -112,8 +112,7 @@ The `Screen` has values:
                 dd = {}
                 for data in data_cursor:
                     print(data)
-                    #('0-0-A-05.09',        'Nợ xấu',       54685588,   109371176,  54685588,   54685588,   'Nợ xấu[Khối DN]',  None,       109371176)
-                    #('C_02_01_DWH_0007',   'Khách hàng ',  0,          0,          0,          0,          'Khách hàng ',      'khách hàng', 0)
+                    # ('0-0-A-11.3', 'Huy động vốn', 576838903156, 2288694126853, 576838903156, 576838903156, 'Huy động vốn bình quân', 'BQ', 2288694126853, 'K01', 'KV HCM1', 'KHCN')
                     title = lib.parseString(data[6])
                     ids = lib.create_key(title)
                     if ids == "so_luong_khach_hang":
