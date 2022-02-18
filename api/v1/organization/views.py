@@ -250,7 +250,7 @@ Param `type` example
 
 
                 for data in data_cursor:
-                    # print(data)
+                    print(data)
                     # 'V02', 'Vùng 02', '015', 'SCB Quận 10', 'BAN GIAM DOC', None, None, '11986', 'Phòng Dịch vụ Khách hàng', None, None, '03')
                     region_id = lib.parseString(data[6])
                     region_name = lib.parseString(data[7])
@@ -265,6 +265,9 @@ Param `type` example
                     branch_childs = ret[region_id]['child']
                     branch_id = lib.parseString(data[8])
                     branch_name = lib.parseString(data[9])
+                    if branch_name is None or branch_name == "":
+                        continue
+
                     if branch_id not in branch_childs:
                         branch_childs[branch_id] = {
                             'id': branch_id,
@@ -284,10 +287,28 @@ Param `type` example
                     department_id = lib.parseString(data[13])
                     department_name = lib.parseString(data[14])
                     code = data[17]
-                    if department_id not in department_childs and department_name is not None and department_name != "":
+                    if department_name is None or department_name == "":
+                        continue
+
+                    if department_id not in department_childs:
                         department_childs[department_id] = {
                             'id': department_id,
                             'fullname': department_name,
+                            'level': 4,
+                            'child': {},
+                            'code': code
+                        }
+
+                    department_childs = department_childs[department_id]['child']
+                    team_id = lib.parseString(data[15])
+                    team_name = lib.parseString(data[16])
+                    if team_name is None or team_name == "":
+                        continue
+
+                    if team_id not in department_childs:
+                        department_childs[team_id] = {
+                            'id': team_id,
+                            'fullname': team_name,
                             'level': 4,
                             'child': {},
                             'code': code
@@ -418,6 +439,9 @@ Param `type` example
                     # (None, None, None, None, None, None, None, None, '001', 'SCB Cống Quỳnh', 'BAN GIAM DOC', '11838', 'Phòng Khách hàng Wholesale')
                     branch_id = lib.parseString(data[8])
                     branch_name = lib.parseString(data[9])
+                    if branch_name is None and branch_name == "":
+                        continue
+
                     if branch_id not in ret:
                         ret[branch_id] = {
                             'id': branch_id,
@@ -437,11 +461,29 @@ Param `type` example
                     department_id = lib.parseString(data[13])
                     department_name = lib.parseString(data[14])
                     code = data[17]
-                    if department_id not in department_childs and department_name is not None and department_name != "":
+                    if department_name is None and department_name == "":
+                        continue
+
+                    if department_id not in department_childs :
                         department_childs[department_id] = {
                             'id': department_id,
                             'fullname': department_name,
                             'level': 3,
+                            'child': {},
+                            'code': code
+                        }
+
+                    department_childs = department_childs[department_id]['child']
+                    team_id = lib.parseString(data[15])
+                    team_name = lib.parseString(data[16])
+                    if team_name is None or team_name == "":
+                        continue
+
+                    if team_id not in department_childs:
+                        department_childs[team_id] = {
+                            'id': team_id,
+                            'fullname': team_name,
+                            'level': 4,
                             'child': {},
                             'code': code
                         }
