@@ -16,6 +16,9 @@ from api.v1.organization.serializers import DataResponseSerializer, BranchRespon
 def myRegion(e):
     return e['region_id']
 
+def sortfullname(e):
+    return e['fullname']
+
 class OrganizationView(BaseAPIView):
     @extend_schema(
         operation_id='Data',
@@ -248,7 +251,6 @@ Param `type` example
                     print("Loi data ")
                     data_cursor = None
 
-
                 for data in data_cursor:
                     print(data)
                     # 'V02', 'Vùng 02', '015', 'SCB Quận 10', 'BAN GIAM DOC', None, None, '11986', 'Phòng Dịch vụ Khách hàng', None, None, '03')
@@ -313,6 +315,8 @@ Param `type` example
                             'child': {},
                             'code': code
                         }
+
+
 
             cur.close()
             con.close()
@@ -571,6 +575,10 @@ Param `type` example
                         'id': sid,
                         'fullname': fullname
                     })
+
+                for level in ret:
+                    branchs = ret[level]
+                    branchs.sort(key=sortfullname)
 
             cur.close()
             con.close()
