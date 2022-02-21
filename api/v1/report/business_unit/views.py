@@ -820,6 +820,7 @@ Param `screen`
 
 Param `region`         
 - **VÙNG 02**.
+
 """,
         parameters=[
             OpenApiParameter(
@@ -846,11 +847,15 @@ Param `region`
             if 'screen' in params.keys():
                 screen = params['screen']
 
-            region = "VÙNG 02"
+            region = ""
             if 'region' in params.keys():
-                region = params['region']
+                region = ", P_VUNG=>'{}'".format(params['region'])
 
-            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO(P_MAN_HINH=>'{}', P_VUNG=>'{}', P_DV=>'ALL', P_CCY=>'ALL', P_MODULE=>'ALL' ) FROM DUAL".format(screen, region)
+            # area = ""
+            # if 'area' in params.keys():
+            #     area = ", P_KV=>'{}'".format(params['area'])
+
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO(P_MAN_HINH=>'{}'{}, P_DV=>'ALL', P_CCY=>'ALL', P_MODULE=>'ALL' ) FROM DUAL".format(screen, region)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
