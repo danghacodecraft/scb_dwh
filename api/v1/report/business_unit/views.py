@@ -133,22 +133,29 @@ The `Screen` has values:
                             'id': ids,
                             "title": title,
                             'unit': lib.parseString(data[7]),
-                            'day': lib.parseFloat(data[2]),
-                            'week': lib.parseFloat(data[3]),
-                            'month': lib.parseFloat(data[4]),
-                            'accumulated': lib.parseFloat(data[5]),
-                            'AMT_KY_TRUOC': lib.parseFloat(data[8]),
+
+                            'day': lib.parseFloat(data[2], 2, False),
+                            'week': lib.parseFloat(data[3], 2, False),
+                            'month': lib.parseFloat(data[4], 2, False),
+                            'accumulated': lib.parseFloat(data[5], 2, False),
+                            'AMT_KY_TRUOC': lib.parseFloat(data[8], 2, False),
                         }
                     else:
                         d = dd[ids]
-                        d['day'] = d['day'] + lib.parseFloat(data[2])
-                        d['week'] = d['week'] + lib.parseFloat(data[3])
-                        d['month'] = d['month'] + lib.parseFloat(data[4])
-                        d['accumulated'] = d['accumulated'] + lib.parseFloat(data[5])
-                        d['AMT_KY_TRUOC'] = d['AMT_KY_TRUOC'] + lib.parseFloat(data[8])
+                        d['day'] = d['day'] + lib.parseFloat(data[2], 2, False)
+                        d['week'] = d['week'] + lib.parseFloat(data[3], 2, False)
+                        d['month'] = d['month'] + lib.parseFloat(data[4], 2, False)
+                        d['accumulated'] = d['accumulated'] + lib.parseFloat(data[5], 2, False)
+                        d['AMT_KY_TRUOC'] = d['AMT_KY_TRUOC'] + lib.parseFloat(data[8], 2, False)
 
                 for ids in dd:
-                    datas.append(dd[ids])
+                    d = dd[ids]
+                    d['day'] = lib.parseFloat(d['day'], 2, True)
+                    d['week'] = lib.parseFloat(d['week'], 2, True)
+                    d['month'] = lib.parseFloat(d['month'], 2, True)
+                    d['accumulated'] = lib.parseFloat(d['accumulated'], 2, True)
+                    d['AMT_KY_TRUOC'] = lib.parseFloat(d['AMT_KY_TRUOC'], 2, True)
+                    datas.append(d)
 
             cur.close()
             con.close()
