@@ -53,7 +53,7 @@ Screen `C_04`
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
-            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'dinh_bien_nhan_su'{}{} ) FROM DUAL".format(screen, kv, dv)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'dinh_bien_nhan_su'{}{} ) FROM DUAL".format(screen, kv, dv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -147,7 +147,7 @@ Screen `C_04`
             if 'ccy' in params.keys():
                 ccy = ", P_CCY=>'{}'".format(params['ccy'])
 
-            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}'{}{}{}{} ) FROM DUAL".format(screen, key, kv, dv, ccy)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}'{}{}{}{} ) FROM DUAL".format(screen, key, kv, dv, ccy)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -240,8 +240,7 @@ Screen `C_04`
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
-            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{} ) FROM DUAL".format(screen, key, kv, dv)
-
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{} ) FROM DUAL".format(screen, key, kv, dv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
@@ -321,7 +320,7 @@ Screen `C_04`
             if 'dv' in params.keys():
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
-            sql = "Select obi.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'chi_tieu_kinh_doanh'{}{} ) FROM DUAL".format(screen, kv, dv)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'chi_tieu_kinh_doanh'{}{} ) FROM DUAL".format(screen, kv, dv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
