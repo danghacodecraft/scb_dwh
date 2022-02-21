@@ -22,6 +22,9 @@ class DashboardView(BaseAPIView):
 The `vung` example: 
 - **V02**.
 
+The `kv` example: 
+- **K01**.
+
 The `dv` example: 
 - **001**.
 
@@ -60,15 +63,15 @@ The `division` example:
             params = request.query_params.dict()
             vung = ""
             if 'vung' in params.keys():
-                vung = ", p_vung=>'{}'".format(params['vung'])
+                vung = ", P_VUNG=>'{}'".format(params['vung'])
 
             kv = ""
             if 'kv' in params.keys():
-                kv = params['kv']
+                kv = ", P_KV=>'{}'".format(params['kv'])
 
             dv = ""
             if 'dv' in params.keys():
-                dv = ", p_dv=>'{}'".format(params['dv'])
+                dv = ", P_DV=>'{}'".format(params['dv'])
 
             division = ""
             if 'division' in params.keys():
@@ -200,6 +203,9 @@ The `module` has values:
 The `vung` example: 
 - **V02**.
 
+The `kv` example: 
+- **K01**.
+
 The `dv` example: 
 - **001**.
 
@@ -214,6 +220,9 @@ The `division` example:
             ),
             OpenApiParameter(
                 name="vung", type=OpenApiTypes.STR, description="vung"
+            ),
+            OpenApiParameter(
+                name="kv", type=OpenApiTypes.STR, description="kv"
             ),
             OpenApiParameter(
                 name="dv", type=OpenApiTypes.STR, description="dv"
@@ -239,11 +248,15 @@ The `division` example:
 
             vung = ""
             if 'vung' in params.keys():
-                vung = ", p_vung=>'{}'".format(params['vung'])
+                vung = ", P_VUNG=>'{}'".format(params['vung'])
+
+            kv = ""
+            if 'kv' in params.keys():
+                kv = ", P_KV=>'{}'".format(params['kv'])
 
             dv = ""
             if 'dv' in params.keys():
-                dv = ", p_dv=>'{}'".format(params['dv'])
+                dv = ", P_DV=>'{}'".format(params['dv'])
 
             division = ""
             if 'division' in params.keys():
@@ -253,7 +266,7 @@ The `division` example:
             # if 'page_number' in params.keys():
             #     page_number = int(params['page_number'])
             # call the function
-            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'TRANG_CHU'{}{}{}{} ) FROM DUAL".format(module, vung, dv, division)
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'TRANG_CHU'{}{}{}{}{} ) FROM DUAL".format(module, vung, kv, dv, division)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
