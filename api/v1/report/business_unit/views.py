@@ -139,6 +139,9 @@ The `Screen` has values:
                             'month': lib.parseFloat(data[4], 2, False),
                             'accumulated': lib.parseFloat(data[5], 2, False),
                             'AMT_KY_TRUOC': lib.parseFloat(data[8], 2, False),
+
+                            'divisor_bal_lcl': lib.parseFloat(data[12], 2, False) if len(data) > 11 else 0,
+                            'divider_bal_lcl': lib.parseFloat(data[13], 2, False) if len(data) > 11 else 0,
                         }
                     else:
                         d = dd[ids]
@@ -147,6 +150,8 @@ The `Screen` has values:
                         d['month'] = d['month'] + lib.parseFloat(data[4], 2, False)
                         d['accumulated'] = d['accumulated'] + lib.parseFloat(data[5], 2, False)
                         d['AMT_KY_TRUOC'] = d['AMT_KY_TRUOC'] + lib.parseFloat(data[8], 2, False)
+                        d['divisor_bal_lcl'] = d['divisor_bal_lcl'] + lib.parseFloat(data[12], 2, False)
+                        d['divider_bal_lcl'] = d['divider_bal_lcl'] + lib.parseFloat(data[13], 2, False)
 
                 for ids in dd:
                     d = dd[ids]
@@ -155,6 +160,8 @@ The `Screen` has values:
                     d['month'] = lib.parseFloat(d['month'], 2, True)
                     d['accumulated'] = lib.parseFloat(d['accumulated'], 2, True)
                     d['AMT_KY_TRUOC'] = lib.parseFloat(d['AMT_KY_TRUOC'], 2, True)
+                    d['divisor_bal_lcl'] = lib.parseFloat(d['divisor_bal_lcl'], 2, True)
+                    d['divider_bal_lcl'] = lib.parseFloat(d['divider_bal_lcl'], 2, True)
                     datas.append(d)
 
             cur.close()
