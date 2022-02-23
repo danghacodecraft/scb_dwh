@@ -161,26 +161,39 @@ The `division` example:
                             'code': data[0],
                             'id': ids,
                             "title": lib.parseString(data[6]),
-                            'day': lib.parseFloat(data[2]),
-                            'week': lib.parseFloat(data[3]),
-                            'month': lib.parseFloat(data[4]),
-                            'accumulated': lib.parseFloat(data[5]),
                             'unit': lib.parseString(data[7]),
-                            'amt_year': lib.parseFloat(data[5]),
-                            'amt_ky_truoc': lib.parseFloat(data[8])
+
+                            'day': lib.parseFloat(data[2], 2, False),
+                            'week': lib.parseFloat(data[3], 2, False),
+                            'month': lib.parseFloat(data[4], 2, False),
+                            'accumulated': lib.parseFloat(data[5], 2, False),
+                            'amt_year': lib.parseFloat(data[5], 2, False),
+                            'amt_ky_truoc': lib.parseFloat(data[8], 2, False),
+                            'divisor_bal_lcl': lib.parseFloat(data[12], 2, False),
+                            'divider_bal_lcl': lib.parseFloat(data[13], 2, False)
                         }
                     else:
                         d = dicdatas[ids]
-                        d['day'] = lib.parseFloat(d['day'] + lib.parseFloat(data[2]))
-                        d['week'] = lib.parseFloat(d['week'] + lib.parseFloat(data[3]))
-                        d['month'] = lib.parseFloat(d['month'] + lib.parseFloat(data[4]))
-                        d['accumulated'] = lib.parseFloat(d['accumulated'] + lib.parseFloat(data[5]))
-                        d['amt_year'] = lib.parseFloat(d['amt_year'] + lib.parseFloat(data[5]))
-                        d['amt_ky_truoc'] = lib.parseFloat(d['amt_ky_truoc'] + lib.parseFloat(data[5]))
+                        d['day'] = lib.parseFloat(d['day'] + lib.parseFloat(data[2], 2, False))
+                        d['week'] = lib.parseFloat(d['week'] + lib.parseFloat(data[3], 2, False))
+                        d['month'] = lib.parseFloat(d['month'] + lib.parseFloat(data[4], 2, False))
+                        d['accumulated'] = lib.parseFloat(d['accumulated'] + lib.parseFloat(data[5], 2, False))
+                        d['amt_year'] = lib.parseFloat(d['amt_year'] + lib.parseFloat(data[5], 2, False))
+                        d['amt_ky_truoc'] = lib.parseFloat(d['amt_ky_truoc'] + lib.parseFloat(data[8], 2, False))
+                        d['divisor_bal_lcl'] = d['divisor_bal_lcl'] + lib.parseFloat(data[12], 2, False)
+                        d['divider_bal_lcl'] = d['divider_bal_lcl'] + lib.parseFloat(data[13], 2, False)
 
-                for k in dicdatas:
-                    datas.append(dicdatas[k])
-                    # datas.append(val)
+                for ids in dicdatas:
+                    d = dicdatas[ids]
+                    d['day'] = lib.parseFloat(d['day'], 2, True)
+                    d['week'] = lib.parseFloat(d['week'], 2, True)
+                    d['month'] = lib.parseFloat(d['month'], 2, True)
+                    d['accumulated'] = lib.parseFloat(d['accumulated'], 2, True)
+                    d['amt_year'] = lib.parseFloat(d['amt_year'], 2, True)
+                    d['amt_ky_truoc'] = lib.parseFloat(d['amt_ky_truoc'], 2, True)
+                    d['divisor_bal_lcl'] = lib.parseFloat(d['divisor_bal_lcl'], 2, True)
+                    d['divider_bal_lcl'] = lib.parseFloat(d['divider_bal_lcl'], 2, True)
+                    datas.append(d)
 
             cur.close()
             con.close()
