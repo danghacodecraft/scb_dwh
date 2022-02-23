@@ -63,7 +63,7 @@ Screen `C_06`
             if 'screen' in params.keys():
                 screen = format(params['screen'])
 
-            key = ",P_MODULE=>'ket_qua_chi_tieu_ke_hoach'"
+            key = "" #,P_MODULE=>'ket_qua_chi_tieu_ke_hoach'"
             if 'key' in params.keys():
                 key = ",P_MODULE=>'{}'".format(params['key'])
 
