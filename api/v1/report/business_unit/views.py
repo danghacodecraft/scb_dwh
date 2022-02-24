@@ -420,6 +420,16 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                             'val': 0,
                             'LK_NAM': 0,
                         }
+                        dicdatas['khach_hang_to_chuc_tin_dung'] = {
+                            'key': 'khach_hang_to_chuc_tin_dung',
+                            'label': "Khách hàng tổ chức tín dụng",
+                            'unit': "khách hàng",
+                            'description': "khách hàng",
+                            'type': "khách hàng",
+                            'AMT_KY_TRUOC': "",
+                            'val': 0,
+                            'LK_NAM': 0,
+                        }
 
                     for data in data_cursor:
                         # print(data)
@@ -449,6 +459,11 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                                 d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10], 2, False)
                             elif loaikh == 'B':
                                 d = dicdatas['khach_hang_doanh_nghiep_khoi_dn']
+                                d['val'] = d['val'] + lib.parseFloat(data[2], 2, False)
+                                d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10], 2, False)
+                            else:
+                                print(loaikh)
+                                d = dicdatas['khach_hang_to_chuc_tin_dung']
                                 d['val'] = d['val'] + lib.parseFloat(data[2], 2, False)
                                 d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10], 2, False)
 
