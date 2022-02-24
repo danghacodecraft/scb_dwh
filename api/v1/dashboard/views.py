@@ -146,7 +146,7 @@ The `division` example:
                             title = "Nợ xấu tín dụng"
                         ids = lib.create_key(title)
 
-                    elif ids == "tang_giam_no_xau":
+                    elif ids == "tang_giam_no_xau" or ids == "so_luong_no_xau_pfs":
                         division = data[11]
                         if division == "KHDN":
                             title = "Số lượng nợ xấu DN"
