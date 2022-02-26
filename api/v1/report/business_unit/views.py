@@ -420,21 +420,21 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                             'val': 0,
                             'LK_NAM': 0,
                         }
-                        dicdatas['khach_hang_to_chuc_tin_dung'] = {
-                            'key': 'khach_hang_to_chuc_tin_dung',
-                            'label': "Khách hàng tổ chức tín dụng",
-                            'unit': "khách hàng",
-                            'description': "khách hàng",
-                            'type': "khách hàng",
-                            'AMT_KY_TRUOC': "",
-                            'val': 0,
-                            'LK_NAM': 0,
-                        }
+                        # dicdatas['khach_hang_to_chuc_tin_dung'] = {
+                        #     'key': 'khach_hang_to_chuc_tin_dung',
+                        #     'label': "Khách hàng tổ chức tín dụng",
+                        #     'unit': "khách hàng",
+                        #     'description': "khách hàng",
+                        #     'type': "khách hàng",
+                        #     'AMT_KY_TRUOC': "",
+                        #     'val': 0,
+                        #     'LK_NAM': 0,
+                        # }
 
                     for data in data_cursor:
                         # print(data)
                         keydata = lib.create_key(data[1])
-                        loaikh = lib.parseString(data[13]) if len(data) > 13 else ""
+                        loaikh = lib.parseString([13]) if len(data) > 13 else ""
                         if keydata not in dicdatas:
                             dicdatas[keydata] = {
                                 'key': keydata,
@@ -461,11 +461,11 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                                 d = dicdatas['khach_hang_doanh_nghiep_khoi_dn']
                                 d['val'] = d['val'] + lib.parseFloat(data[2], 2, False)
                                 d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10], 2, False)
-                            else:
-                                print(loaikh)
-                                d = dicdatas['khach_hang_to_chuc_tin_dung']
-                                d['val'] = d['val'] + lib.parseFloat(data[2], 2, False)
-                                d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10], 2, False)
+                            # else:
+                            #     # print(loaikh)
+                            #     d = dicdatas['khach_hang_to_chuc_tin_dung']
+                            #     d['val'] = d['val'] + lib.parseFloat(data[2], 2, False)
+                            #     d['LK_NAM'] = d['LK_NAM'] + lib.parseFloat(data[10], 2, False)
 
                     for k in dicdatas:
                         dicdatas[k]['val'] = lib.parseFloat(dicdatas[k]['val'], 2, True)

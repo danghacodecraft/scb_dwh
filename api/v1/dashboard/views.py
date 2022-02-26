@@ -101,8 +101,8 @@ The `division` example:
                     #ID, NAME, AMT_DAY, AMT_WEEK, AMT_MONTH, AMT_YEAR, TIEU_DE, UNIT, AMT_KY_TRUOC
                     print(data)
 
-                    if kv != "" and kv != data[9]:
-                        continue
+                    # if kv != "" and kv != data[9]:
+                    #     continue
 
                     title = lib.parseString(data[6])
                     ids = lib.create_key(title)
