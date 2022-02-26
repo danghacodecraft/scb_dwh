@@ -122,14 +122,7 @@ Screen `C_06`
                         'AMOUNT_CHART': lib.parseFloat(data[15])
                     }
                     datas.append(val)
-            #         if "Tỷ lệ" in chitieu:
-            #             ratios.append(val)
-            #         else:
-            #             datas.append(val)
-            # data = {
-            #     "data": datas,
-            #     'ratios': ratios
-            # }
+
             cur.close()
             con.close()
             return self.response_success(datas, status_code=status.HTTP_200_OK)
