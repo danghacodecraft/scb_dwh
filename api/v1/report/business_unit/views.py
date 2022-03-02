@@ -399,37 +399,37 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                 if sum == "1":
                     dicdatas = {}
 
-                    if key == "quan_ly_khach_hang":
-                        dicdatas['khach_hang_doanh_nghiep_khoi_dn'] = {
-                            'key': 'khach_hang_doanh_nghiep_khoi_dn',
-                            'label': "Khách hàng doanh nghiệp khối DN",
-                            'unit': "khách hàng",
-                            'description': "khách hàng",
-                            'type': "khách hàng",
-                            'AMT_KY_TRUOC': "",
-                            'val': 0,
-                            'LK_NAM': 0,
-                        }
-                        dicdatas['khach_hang_ca_nhan_khoi_pfs'] = {
-                            'key': 'khach_hang_ca_nhan_khoi_pfs',
-                            'label': "Khách hàng cá nhân khối PFS",
-                            'unit': "khách hàng",
-                            'description': "khách hàng",
-                            'type': "khách hàng",
-                            'AMT_KY_TRUOC': "",
-                            'val': 0,
-                            'LK_NAM': 0,
-                        }
-                        # dicdatas['khach_hang_to_chuc_tin_dung'] = {
-                        #     'key': 'khach_hang_to_chuc_tin_dung',
-                        #     'label': "Khách hàng tổ chức tín dụng",
-                        #     'unit': "khách hàng",
-                        #     'description': "khách hàng",
-                        #     'type': "khách hàng",
-                        #     'AMT_KY_TRUOC': "",
-                        #     'val': 0,
-                        #     'LK_NAM': 0,
-                        # }
+                    # if key == "quan_ly_khach_hang":
+                    #     dicdatas['khach_hang_doanh_nghiep_khoi_dn'] = {
+                    #         'key': 'khach_hang_doanh_nghiep_khoi_dn',
+                    #         'label': "Khách hàng doanh nghiệp khối DN",
+                    #         'unit': "khách hàng",
+                    #         'description': "khách hàng",
+                    #         'type': "khách hàng",
+                    #         'AMT_KY_TRUOC': "",
+                    #         'val': 0,
+                    #         'LK_NAM': 0,
+                    #     }
+                    #     dicdatas['khach_hang_ca_nhan_khoi_pfs'] = {
+                    #         'key': 'khach_hang_ca_nhan_khoi_pfs',
+                    #         'label': "Khách hàng cá nhân khối PFS",
+                    #         'unit': "khách hàng",
+                    #         'description': "khách hàng",
+                    #         'type': "khách hàng",
+                    #         'AMT_KY_TRUOC': "",
+                    #         'val': 0,
+                    #         'LK_NAM': 0,
+                    #     }
+                    #     dicdatas['khach_hang_to_chuc_tin_dung'] = {
+                    #         'key': 'khach_hang_to_chuc_tin_dung',
+                    #         'label': "Khách hàng tổ chức tín dụng",
+                    #         'unit': "khách hàng",
+                    #         'description': "khách hàng",
+                    #         'type': "khách hàng",
+                    #         'AMT_KY_TRUOC': "",
+                    #         'val': 0,
+                    #         'LK_NAM': 0,
+                    #     }
 
                     for data in data_cursor:
                         # print(data)
