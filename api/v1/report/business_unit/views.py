@@ -12,6 +12,7 @@ from api.base.serializers import ExceptionResponseSerializer
 from api.v1.report.business_unit.serializers import ChartFResponseSerializer, ChartResponseSerializer, DataResponseSerializer, \
     CustomerResponseSerializer, RegionInfoResponseSerializer, BranchInfoResponseSerializer
 
+
 class BusinessUnitView(BaseAPIView):
     @extend_schema(
         operation_id='Data',
@@ -767,7 +768,7 @@ Param `page_size` default = 20
             if 'dv' in params.keys():
                 dv = params['dv']
 
-            cust_type = ""
+            cust_type = "ALL"
             if 'cust_type' in params.keys():
                 cust_type = params['cust_type']
 
