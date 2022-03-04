@@ -380,6 +380,10 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             if 'tdate' in params.keys():
                 dv = ",P_TDATE=>'{}'".format(params['tdate'])
 
+            classification = ""
+            if 'classification' in params.keys():
+                dv = ",P_CLASSIFICATION=>'{}'".format(params['classification'])
+
             division = ""
             if 'division' in params.keys():
                 division = ",P_DIVISION=>'{}'".format(params['division'])
@@ -388,7 +392,9 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             if 'sum' in params.keys():
                 sum = params['sum']
 
-            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{}{} ) FROM DUAL".format(screen, key, vung, kv, dv, fdate, tdate, division)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{}{}{} ) FROM DUAL".format(
+                screen, key, vung, kv, dv, fdate, tdate, division, classification
+            )
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
