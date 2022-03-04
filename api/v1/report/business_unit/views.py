@@ -378,11 +378,11 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
 
             tdate = ""
             if 'tdate' in params.keys():
-                dv = ",P_TDATE=>'{}'".format(params['tdate'])
+                tdate = ",P_TDATE=>'{}'".format(params['tdate'])
 
             classification = ""
             if 'classification' in params.keys():
-                dv = ",P_CLASSIFICATION=>'{}'".format(params['classification'])
+                classification = ",P_CLASSIFICATION=>'{}'".format(params['classification'])
 
             division = ""
             if 'division' in params.keys():
