@@ -19,6 +19,7 @@ class ChartResponseSerializer(InheritedSerializer):
     DIEM_CHI_TIEU_KH_NAM = serializers.CharField(help_text="`DIEM_CHI_TIEU_KH_NAM` of data")
     DIEM_KH_NAM = serializers.CharField(help_text="`DIEM_KH_NAM` of data")
     AMOUNT_CHART = serializers.FloatField(help_text="`AMOUNT_CHART` of data")
+    BRANCH_ID = serializers.CharField(help_text="`BRANCH_ID` of data")
 
 class PFSChartResponseSerializer(InheritedSerializer):
     REGION_ID = serializers.IntegerField(help_text="`REGION_ID` of data")

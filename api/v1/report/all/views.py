@@ -83,15 +83,12 @@ Screen `C_06`
                 if params['dv'] != 'ALL':
                     dv = ",P_DV=>'{}'".format(params['dv'])
 
-            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH =>'{}'{}{}{}{}{}) FROM DUAL".format(screen, key,
-                                                                                                       division, kv,
-                                                                                                       vung, dv)
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}{}{}) FROM DUAL".format(screen, key, division, kv, vung, dv)
             print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
             datas = []
-            ratios = []
             if len(res) > 0:
                 try:
                     data_cursor = res[0]
@@ -99,29 +96,65 @@ Screen `C_06`
                     print("Loi data ")
                     data_cursor = None
 
+                dicdatas = {}
                 for data in data_cursor:
                     print(data)
 
-                    chitieu = lib.parseString(data[1])
-                    val = {
-                        'PROCESS_DATE':  lib.parseString(data[0]),
-                        'CHITIEU': chitieu,
-                        'SODU_DS_LK_KYT': lib.parseFloat(data[2]),
-                        'THUC_HIEN_KY_T': lib.parseFloat(data[3]),
-                        'KE_HOACH_KY_T': lib.parseFloat(data[4]),
-                        'TYLE_KY_T': lib.parseFloat(data[5]),
-                        'THUC_HIEN_LK': lib.parseFloat(data[6]),
-                        'KE_HOACH_LK': lib.parseFloat(data[7]),
-                        'TY_LY_LK': lib.parseFloat(data[8]),
-                        'DIEM_CHI_TIEU_LK': lib.parseFloat(data[9]),
-                        'DIEM_KH_LK': lib.parseFloat(data[10]),
-                        'KH_NAM': lib.parseFloat(data[11]),
-                        'TY_LE_NAM': lib.parseFloat(data[12]),
-                        'DIEM_CHI_TIEU_KH_NAM': lib.parseFloat(data[13]),
-                        'DIEM_KH_NAM': lib.parseFloat(data[14]),
-                        'AMOUNT_CHART': lib.parseFloat(data[15])
-                    }
-                    datas.append(val)
+                    branchid = lib.parseString(data[16])
+                    if branchid not in dicdatas:
+                        dicdatas[branchid] = {
+                            'PROCESS_DATE':  lib.parseString(data[0]),
+                            'CHITIEU': lib.parseString(data[1]),
+
+                            'SODU_DS_LK_KYT': lib.parseFloat(data[2]),
+                            'THUC_HIEN_KY_T': lib.parseFloat(data[3]),
+                            'KE_HOACH_KY_T': lib.parseFloat(data[4]),
+                            'TYLE_KY_T': lib.parseFloat(data[5]),
+                            'THUC_HIEN_LK': lib.parseFloat(data[6]),
+                            'KE_HOACH_LK': lib.parseFloat(data[7]),
+                            'TY_LY_LK': lib.parseFloat(data[8]),
+                            'DIEM_CHI_TIEU_LK': lib.parseFloat(data[9]),
+                            'DIEM_KH_LK': lib.parseFloat(data[10]),
+                            'KH_NAM': lib.parseFloat(data[11]),
+                            'TY_LE_NAM': lib.parseFloat(data[12]),
+                            'DIEM_CHI_TIEU_KH_NAM': lib.parseFloat(data[13]),
+                            'DIEM_KH_NAM': lib.parseFloat(data[14]),
+                            'AMOUNT_CHART': lib.parseFloat(data[15]),
+                            'BRANCH_ID': branchid
+                        }
+                    else:
+                        d = dicdatas[branchid]
+                        d['SODU_DS_LK_KYT'] = d['SODU_DS_LK_KYT'] + lib.parseFloat(data[2], 2, False)
+                        d['THUC_HIEN_KY_T'] = d['THUC_HIEN_KY_T'] + lib.parseFloat(data[3], 2, False)
+                        d['KE_HOACH_KY_T'] = d['KE_HOACH_KY_T'] + lib.parseFloat(data[4], 2, False)
+                        d['TYLE_KY_T'] = d['TYLE_KY_T'] + lib.parseFloat(data[5], 2, False)
+                        d['THUC_HIEN_LK'] = d['THUC_HIEN_LK'] + lib.parseFloat(data[6], 2, False)
+                        d['KE_HOACH_LK'] = d['KE_HOACH_LK'] + lib.parseFloat(data[7], 2, False)
+                        d['TY_LY_LK'] = d['TY_LY_LK'] + lib.parseFloat(data[8], 2, False)
+                        d['DIEM_CHI_TIEU_LK'] = d['DIEM_CHI_TIEU_LK'] + lib.parseFloat(data[9], 2, False)
+                        d['DIEM_KH_LK'] = d['DIEM_KH_LK'] + lib.parseFloat(data[10], 2, False)
+                        d['KH_NAM'] = d['KH_NAM'] + lib.parseFloat(data[11], 2, False)
+                        d['TY_LE_NAM'] = d['TY_LE_NAM'] + lib.parseFloat(data[12], 2, False)
+                        d['DIEM_CHI_TIEU_KH_NAM'] = d['DIEM_CHI_TIEU_KH_NAM'] + lib.parseFloat(data[13], 2, False)
+                        d['DIEM_KH_NAM'] = d['DIEM_KH_NAM'] + lib.parseFloat(data[14], 2, False)
+                        d['AMOUNT_CHART'] = d['AMOUNT_CHART'] + lib.parseFloat(data[15], 2, False)
+
+                for k in dicdatas:
+                    dicdatas[k]['SODU_DS_LK_KYT'] = lib.parseFloat(dicdatas[k]['SODU_DS_LK_KYT'], 2, True)
+                    dicdatas[k]['THUC_HIEN_KY_T'] = lib.parseFloat(dicdatas[k]['THUC_HIEN_KY_T'], 2, True)
+                    dicdatas[k]['KE_HOACH_KY_T'] = lib.parseFloat(dicdatas[k]['KE_HOACH_KY_T'], 2, True)
+                    dicdatas[k]['TYLE_KY_T'] = lib.parseFloat(dicdatas[k]['TYLE_KY_T'], 2, True)
+                    dicdatas[k]['THUC_HIEN_LK'] = lib.parseFloat(dicdatas[k]['THUC_HIEN_LK'], 2, True)
+                    dicdatas[k]['KE_HOACH_LK'] = lib.parseFloat(dicdatas[k]['KE_HOACH_LK'], 2, True)
+                    dicdatas[k]['TY_LY_LK'] = lib.parseFloat(dicdatas[k]['TY_LY_LK'], 2, True)
+                    dicdatas[k]['DIEM_CHI_TIEU_LK'] = lib.parseFloat(dicdatas[k]['DIEM_CHI_TIEU_LK'], 2, True)
+                    dicdatas[k]['DIEM_KH_LK'] = lib.parseFloat(dicdatas[k]['DIEM_KH_LK'], 2, True)
+                    dicdatas[k]['KH_NAM'] = lib.parseFloat(dicdatas[k]['KH_NAM'], 2, True)
+                    dicdatas[k]['TY_LE_NAM'] = lib.parseFloat(dicdatas[k]['TY_LE_NAM'], 2, True)
+                    dicdatas[k]['DIEM_CHI_TIEU_KH_NAM'] = lib.parseFloat(dicdatas[k]['DIEM_CHI_TIEU_KH_NAM'], 2, True)
+                    dicdatas[k]['DIEM_KH_NAM'] = lib.parseFloat(dicdatas[k]['DIEM_KH_NAM'], 2, True)
+                    dicdatas[k]['AMOUNT_CHART'] = lib.parseFloat(dicdatas[k]['AMOUNT_CHART'], 2, True)
+                    datas.append(dicdatas[k])
 
             cur.close()
             con.close()
