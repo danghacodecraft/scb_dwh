@@ -316,13 +316,13 @@ Param `emp` example
                     print(data)
                     # ('14856', 'Nguyễn Thị Xuân Nguyên', 480, '77.42%', 'Không đạt KPIs', '10/2021', None)
                     val = {
-                        'ID': data[0],
-                        'FULLNAME': data[1],
-                        'KPI': data[2],
-                        'PER': data[3],
-                        'RES': data[4],
-                        'DATE': data[5],
-                        'NOTE': data[6]
+                        'ID': lib.parseString(data[0]),
+                        'FULLNAME': lib.parseString(data[1]),
+                        'KPI': lib.parseString(data[2]),
+                        'PER': lib.parseString(data[3]),
+                        'RES': lib.parseString(data[4]),
+                        'DATE': lib.parseString(data[5]),
+                        'NOTE': lib.parseString(data[6])
                     }
                     kpis.append(val)
 
