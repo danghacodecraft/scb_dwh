@@ -11,6 +11,33 @@ from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
 from api.v1.report.all.serializers import ChartResponseSerializer, PFSChartResponseSerializer, EnterpriseChartResponseSerializer
 
+# Tăng trưởng Huy động CKH.
+# Tăng trưởng Huy động KKH.
+# Tăng trưởng Cho vay.
+# Thu nhập thuần từ dịch vụ.
+# Lợi nhuận trước thuế.
+# Chỉ tiêu giám sát.
+# Lợi nhuận từ hoạt động cấp Tín dụng/Tài sản tính theo rủi ro tín dụng.
+# Tỷ lệ nợ nhóm 2 phát sinh trong năm.
+# Tỷ lệ nợ xấu phát sính trong năm.
+# Chỉ tiêu khác.
+# Số lượng khách hàng hoạt động phát triển mới.
+# TOI phí dịch vụ/ 01 khách hàng CN.
+# TOI phí dịch vụ khách hàng cá nhân.
+# Số lượng khách hàng cá nhân bình quân.
+# Tỷ lệ nợ nhóm 2.
+# Tỷ lệ nợ xấu.
+# KHỐI DVNH&TCCN.
+# Chỉ tiêu tài chính.
+# Doanh số bảo hiểm nhân thọ.
+# Số lượng thẻ TDQT phát hành mới.
+# Số dư trái phiếu bình quân.
+# Phát triển khách hàng mới.
+# Chỉ tiêu Chất lượng dịch vụ.
+# Chỉ tiêu Quản lý rủi ro (Xếp hạng tuân thủ).
+# Chỉ tiêu Quản lý và phát triển con người (Tỷ lệ CBNV nghỉ việc).
+# Chỉ tiêu Quản lý và phát triển con người (Tỷ lệ hoàn thành tháp đào tạo).
+# Tỷ lệ nợ xấu phát sinh trong năm.
 class AllView(BaseAPIView):
     @extend_schema(
         operation_id='Chart',
@@ -26,6 +53,7 @@ Screen `C_06`
 - **B**: KHỐI DOANH NGHIỆP
 - **C**: KHỐI KDTT
 - **H**: KHỐI XLN&KTTS
+
 
 """,
         parameters=[
@@ -89,6 +117,12 @@ Screen `C_06`
             res = cur.fetchone()
 
             datas = []
+            lstsum = [
+                "Doanh số bảo hiểm nhân thọ",
+                "Số lượng thẻ TDQT phát hành mới",
+                "Số dư trái phiếu bình quân",
+                "Phát triển khách hàng mới"
+            ]
             if len(res) > 0:
                 try:
                     data_cursor = res[0]
@@ -97,31 +131,37 @@ Screen `C_06`
                     data_cursor = None
 
                 dicdatas = {}
+
                 for data in data_cursor:
-                    print(data)
-
+                    chitieu = lib.parseString(data[1])
                     branchid = lib.parseString(data[16])
-                    if branchid not in dicdatas:
-                        dicdatas[branchid] = {
-                            'PROCESS_DATE':  lib.parseString(data[0]),
-                            'CHITIEU': lib.parseString(data[1]),
+                    val = {
+                        'PROCESS_DATE': lib.parseString(data[0]),
+                        'CHITIEU': chitieu,
 
-                            'SODU_DS_LK_KYT': lib.parseFloat(data[2]),
-                            'THUC_HIEN_KY_T': lib.parseFloat(data[3]),
-                            'KE_HOACH_KY_T': lib.parseFloat(data[4]),
-                            'TYLE_KY_T': lib.parseFloat(data[5]),
-                            'THUC_HIEN_LK': lib.parseFloat(data[6]),
-                            'KE_HOACH_LK': lib.parseFloat(data[7]),
-                            'TY_LY_LK': lib.parseFloat(data[8]),
-                            'DIEM_CHI_TIEU_LK': lib.parseFloat(data[9]),
-                            'DIEM_KH_LK': lib.parseFloat(data[10]),
-                            'KH_NAM': lib.parseFloat(data[11]),
-                            'TY_LE_NAM': lib.parseFloat(data[12]),
-                            'DIEM_CHI_TIEU_KH_NAM': lib.parseFloat(data[13]),
-                            'DIEM_KH_NAM': lib.parseFloat(data[14]),
-                            'AMOUNT_CHART': lib.parseFloat(data[15]),
-                            'BRANCH_ID': branchid
-                        }
+                        'SODU_DS_LK_KYT': lib.parseFloat(data[2]),
+                        'THUC_HIEN_KY_T': lib.parseFloat(data[3]),
+                        'KE_HOACH_KY_T': lib.parseFloat(data[4]),
+                        'TYLE_KY_T': lib.parseFloat(data[5]),
+                        'THUC_HIEN_LK': lib.parseFloat(data[6]),
+                        'KE_HOACH_LK': lib.parseFloat(data[7]),
+                        'TY_LY_LK': lib.parseFloat(data[8]),
+                        'DIEM_CHI_TIEU_LK': lib.parseFloat(data[9]),
+                        'DIEM_KH_LK': lib.parseFloat(data[10]),
+                        'KH_NAM': lib.parseFloat(data[11]),
+                        'TY_LE_NAM': lib.parseFloat(data[12]),
+                        'DIEM_CHI_TIEU_KH_NAM': lib.parseFloat(data[13]),
+                        'DIEM_KH_NAM': lib.parseFloat(data[14]),
+                        'AMOUNT_CHART': lib.parseFloat(data[15]),
+                        'BRANCH_ID': branchid
+                    }
+
+                    if chitieu not in lstsum:
+                        datas.append(val)
+                        continue
+
+                    if branchid not in dicdatas:
+                        dicdatas[branchid] = val
                     else:
                         d = dicdatas[branchid]
                         d['SODU_DS_LK_KYT'] = d['SODU_DS_LK_KYT'] + lib.parseFloat(data[2], 2, False)
