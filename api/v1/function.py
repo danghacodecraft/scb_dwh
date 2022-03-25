@@ -2,9 +2,6 @@ import re
 import cx_Oracle
 import config.database as db
 
-lib_dir = '/Volumes/DATA/Dropbox/Project/PYTHON/APPS/oracle_scb/instantclient_19_8/'
-cx_Oracle.init_oracle_client(lib_dir=lib_dir)
-
 def connect():
     # create a connection to the Oracle Database
     con = cx_Oracle.connect(db.DATABASE['USER'], db.DATABASE['PASSWORD'], db.DATABASE['NAME'])
