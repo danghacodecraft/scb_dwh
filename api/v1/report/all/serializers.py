@@ -106,6 +106,22 @@ class EnterpriseChartResponseSerializer(InheritedSerializer):
     STATUS = serializers.CharField(help_text="`STATUS` of data")
     PROCESS_DATE = serializers.CharField(help_text="`PROCESS_DATE` of data")
 
-
+class ChartBonusResponseSerializer(InheritedSerializer):
+    CHITIEU = serializers.CharField(help_text="`CHITIEU` of data")
+    SODU_DS_LK_KYT = serializers.FloatField(help_text="`SODU_DS_LK_KYT` of data")
+    THUC_HIEN_KY_T = serializers.FloatField(help_text="`THUC_HIEN_KY_T` of data")
+    KE_HOACH_KY_T = serializers.FloatField(help_text="`KE_HOACH_KY_T` of data")
+    TYLE_KY_T = serializers.FloatField(help_text="`TYLE_KY_T` of data")
+    THUC_HIEN_LK = serializers.FloatField(help_text="`THUC_HIEN_LK` of data")
+    KE_HOACH_LK = serializers.FloatField(help_text="`KE_HOACH_LK` of data")
+    TY_LY_LK = serializers.FloatField(help_text="`TY_LY_LK` of data")
+    DIEM_CHI_TIEU_LK = serializers.FloatField(help_text="`DIEM_CHI_TIEU_LK` of data")
+    DIEM_KH_LK = serializers.FloatField(help_text="`DIEM_KH_LK` of data")
+    KH_NAM = serializers.FloatField(help_text="`KH_NAM` of data")
+    TY_LE_NAM = serializers.FloatField(help_text="`TY_LE_NAM` of data")
+    DIEM_CHI_TIEU_KH_NAM = serializers.CharField(help_text="`DIEM_CHI_TIEU_KH_NAM` of data")
+    DIEM_KH_NAM = serializers.CharField(help_text="`DIEM_KH_NAM` of data")
+    AMOUNT_CHART = serializers.FloatField(help_text="`AMOUNT_CHART` of data")
+    BRANCH_ID = serializers.CharField(help_text="`BRANCH_ID` of data")
 
 

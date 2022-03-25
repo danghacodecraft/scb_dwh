@@ -6,5 +6,7 @@ urlpatterns = [
     #SCREEN C_06
     path('chart/', AllView.as_view({'get': 'chart'})),
     path('chart_pfs/', AllView.as_view({'get': 'chart_pfs'})),
-    path('chart_enterprise/', AllView.as_view({'get': 'chart_enterprise'}))
+    path('chart_enterprise/', AllView.as_view({'get': 'chart_enterprise'})),
+    path('chart_bonus/', AllView.as_view({'get': 'chart_bonus'})),
+
 ]

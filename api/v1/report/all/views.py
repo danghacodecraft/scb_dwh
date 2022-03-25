@@ -9,7 +9,7 @@ from rest_framework import status
 from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.report.all.serializers import ChartResponseSerializer, PFSChartResponseSerializer, EnterpriseChartResponseSerializer
+from api.v1.report.all.serializers import ChartResponseSerializer, PFSChartResponseSerializer, EnterpriseChartResponseSerializer, ChartBonusResponseSerializer
 
 # Tăng trưởng Huy động CKH.
 # Tăng trưởng Huy động KKH.
@@ -448,6 +448,177 @@ Screen `C_06_03_02_03`
                     datas.append(val)
 
                 # datas.sort(key=myBranch)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Chart Bonus',
+        summary='List',
+        tags=["ALL"],
+        description="""
+Screen `C_06`
+- **ket_qua_chi_tieu_ke_hoach**.
+
+`division`
+- **TH0**: TOÀN HÀNG 
+- **A**: KHỐI DVNH&TCCN
+- **B**: KHỐI DOANH NGHIỆP
+- **C**: KHỐI KDTT
+- **H**: KHỐI XLN&KTTS
+""",
+        parameters=[
+            OpenApiParameter(
+                name="screen", type=OpenApiTypes.STR, description="screen"
+            ),
+            OpenApiParameter(
+                name="key", type=OpenApiTypes.STR, description="key"
+            ),
+            OpenApiParameter(
+                name="division", type=OpenApiTypes.STR, description="division"
+            ),
+            OpenApiParameter(
+                name="kv", type=OpenApiTypes.STR, description="kv"
+            ),
+            OpenApiParameter(
+                name="vung", type=OpenApiTypes.STR, description="vung"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            ),
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: ChartBonusResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def chart_bonus(self, request):
+        try:
+            con, cur = lib.connect()
+            params = request.query_params.dict()
+            screen = "C_06"
+            if 'screen' in params.keys():
+                screen = format(params['screen'])
+
+            key = ""  # ,P_MODULE=>'ket_qua_chi_tieu_ke_hoach'"
+            if 'key' in params.keys():
+                key = ",P_MODULE=>'{}'".format(params['key'])
+
+            division = ""
+            if 'division' in params.keys():
+                division = ",P_DIVISION=>'{}'".format(params['division'])
+
+            vung = ""
+            kv = ""
+            if 'vung' in params.keys() and params['vung'] != 'ALL':
+                vung = ",P_VUNG=>'{}'".format(params['vung'])
+            elif 'kv' in params.keys() and params['kv'] != 'ALL':
+                kv = ",P_VUNG=>'{}'".format(params['kv'])
+
+            dv = ""
+            if 'dv' in params.keys():
+                if params['dv'] != 'ALL':
+                    dv = ",P_DV=>'{}'".format(params['dv'])
+
+            sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}{}{}) FROM DUAL".format(screen, key,
+                                                                                                      division, kv,
+                                                                                                      vung, dv)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            # lstsum = [
+            #     "Doanh số bảo hiểm nhân thọ",
+            #     "Số lượng thẻ TDQT phát hành mới",
+            #     "Số dư trái phiếu bình quân",
+            #     "Phát triển khách hàng mới"
+            # ]
+            if len(res) > 0:
+                try:
+                    data_cursor = res[0]
+                except:
+                    print("Loi data ")
+                    data_cursor = None
+
+                chi_tieus = {}
+
+                for data in data_cursor:
+                    key_chi_tieu = lib.parseString(data[1])
+                    key_process_date = str(data[0])
+                    if key_chi_tieu not in chi_tieus:
+                        chi_tieus[key_chi_tieu] = {
+                            # 'PROCESS_DATE': lib.parseString(data[0]),
+                        }
+
+                    chi_tieu = chi_tieus[key_chi_tieu]
+                    if key_process_date not in chi_tieu:
+                        chi_tieu[key_process_date] = {
+                            'CHITIEU': key_chi_tieu,
+                            'PROCESS_DATE': key_process_date,
+                            'SODU_DS_LK_KYT': 0,
+                            'THUC_HIEN_KY_T': 0,
+                            'KE_HOACH_KY_T': 0,
+                            'TYLE_KY_T': 0,
+                            'THUC_HIEN_LK': 0,
+                            'KE_HOACH_LK': 0,
+                            'TY_LY_LK': 0,
+                            'DIEM_CHI_TIEU_LK': 0,
+                            'DIEM_KH_LK': 0,
+                            'KH_NAM': 0,
+                            'TY_LE_NAM': 0,
+                            'DIEM_CHI_TIEU_KH_NAM': 0,
+                            'DIEM_KH_NAM': 0,
+                            'AMOUNT_CHART': 0,
+                            # 'BRANCH_ID': branchid
+                        }
+
+                    d = chi_tieu[key_process_date]
+                    d['SODU_DS_LK_KYT'] = d['SODU_DS_LK_KYT'] + lib.parseFloat(data[2], 2, False)
+                    d['THUC_HIEN_KY_T'] = d['THUC_HIEN_KY_T'] + lib.parseFloat(data[3], 2, False)
+                    d['KE_HOACH_KY_T'] = d['KE_HOACH_KY_T'] + lib.parseFloat(data[4], 2, False)
+                    d['TYLE_KY_T'] = d['TYLE_KY_T'] + lib.parseFloat(data[5], 2, False)
+                    d['THUC_HIEN_LK'] = d['THUC_HIEN_LK'] + lib.parseFloat(data[6], 2, False)
+                    d['KE_HOACH_LK'] = d['KE_HOACH_LK'] + lib.parseFloat(data[7], 2, False)
+                    d['TY_LY_LK'] = d['TY_LY_LK'] + lib.parseFloat(data[8], 2, False)
+                    d['DIEM_CHI_TIEU_LK'] = d['DIEM_CHI_TIEU_LK'] + lib.parseFloat(data[9], 2, False)
+                    d['DIEM_KH_LK'] = d['DIEM_KH_LK'] + lib.parseFloat(data[10], 2, False)
+                    d['KH_NAM'] = d['KH_NAM'] + lib.parseFloat(data[11], 2, False)
+                    d['TY_LE_NAM'] = d['TY_LE_NAM'] + lib.parseFloat(data[12], 2, False)
+                    d['DIEM_CHI_TIEU_KH_NAM'] = d['DIEM_CHI_TIEU_KH_NAM'] + lib.parseFloat(data[13], 2, False)
+                    d['DIEM_KH_NAM'] = d['DIEM_KH_NAM'] + lib.parseFloat(data[14], 2, False)
+                    d['AMOUNT_CHART'] = d['AMOUNT_CHART'] + lib.parseFloat(data[15], 2, False)
+
+                for key_chi_tieu in chi_tieus:
+                    chi_tieu = chi_tieus[key_chi_tieu]
+                    print("======================== chi_tieu ========================")
+                    print(chi_tieu)
+                    for key_process_date in chi_tieu:
+                        d = chi_tieu[key_process_date]
+                        print("----- chi_tieu -----")
+                        print(d)
+                        d['SODU_DS_LK_KYT'] = lib.parseFloat(d['SODU_DS_LK_KYT'], 2, True)
+                        d['THUC_HIEN_KY_T'] = lib.parseFloat(d['THUC_HIEN_KY_T'], 2, True)
+                        d['KE_HOACH_KY_T'] = lib.parseFloat(d['KE_HOACH_KY_T'], 2, True)
+                        d['TYLE_KY_T'] = lib.parseFloat(d['TYLE_KY_T'], 2, True)
+                        d['THUC_HIEN_LK'] = lib.parseFloat(d['THUC_HIEN_LK'], 2, True)
+                        d['KE_HOACH_LK'] = lib.parseFloat(d['KE_HOACH_LK'], 2, True)
+                        d['TY_LY_LK'] = lib.parseFloat(d['TY_LY_LK'], 2, True)
+                        d['DIEM_CHI_TIEU_LK'] = lib.parseFloat(d['DIEM_CHI_TIEU_LK'], 2, True)
+                        d['DIEM_KH_LK'] = lib.parseFloat(d['DIEM_KH_LK'], 2, True)
+                        d['KH_NAM'] = lib.parseFloat(d['KH_NAM'], 2, True)
+                        d['TY_LE_NAM'] = lib.parseFloat(d['TY_LE_NAM'], 2, True)
+                        d['DIEM_CHI_TIEU_KH_NAM'] = lib.parseFloat(d['DIEM_CHI_TIEU_KH_NAM'], 2, True)
+                        d['DIEM_KH_NAM'] = lib.parseFloat(d['DIEM_KH_NAM'], 2, True)
+                        d['AMOUNT_CHART'] = lib.parseFloat(d['AMOUNT_CHART'], 2, True)
+                        datas.append(d)
 
             cur.close()
             con.close()
