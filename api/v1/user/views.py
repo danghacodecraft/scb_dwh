@@ -173,7 +173,9 @@ class UserView(BaseAPIView):
             'position': user.position,
             'department': user.department,
             'jobtitle': user.jobtitle,
-            'branch_code': user.branch_code
+            'branch_code': user.branch_code,
+            'employee_id': user.employee_id,
+            'email': user.email
         }, status_code=status.HTTP_200_OK)
 
 
@@ -219,7 +221,9 @@ class LoginView(BaseAPIView):
                 'position': request.user.position,
                 'department': request.user.department,
                 'jobtitle': request.user.jobtitle,
-                'branch_code': request.user.branch_code
+                'branch_code': request.user.branch_code,
+                'employee_id': request.user.employee_id,
+                'email': request.user.email
             }, status_code=status.HTTP_200_OK)
         else:
             return self.response_success({"error": "Sai thông tin"},
