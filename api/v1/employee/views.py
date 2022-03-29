@@ -149,6 +149,9 @@ Param `emp` example
                     #[('03627', 'HỒ ĐỨC THẮNG', 'GIÁM ĐỐC PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
                     # '84', 'PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
                     # datetime.datetime(2010, 9, 6, 0, 0), 'THANGHD@SCB.COM.VN', '+84 907138520', '/var/www/EmployeeImage/03627.jpeg')]
+                    # for i in range(len(data)):
+                    #     print("{}: {}".format(i, data[i]))
+
                     data = {
                         'emp_id': data[0],
                         'emp_name': data[1],
@@ -200,7 +203,7 @@ Param `emp` example
                                 'gender': data[61],
                                 'native': data[62],
                                 'religion': data[63],
-                                'nationality': data[64],
+                                'nationality': data[52],
                                 'marital': data[65],
                                 'passport': {
                                     'id': data[66],
