@@ -175,14 +175,16 @@ Screen `C_04`
                             'branch_name': lib.parseString(data[0]),
                             'REGION_NAME': lib.parseString(data[1]),
                             'SLNS_DANH_GIA': lib.parseFloat(data[2]),
-                            'SLNS_HOAN_THANH': lib.parseFloat(data[3]),
-                            'TY_LE_HOAN_THANH': lib.parseFloat(data[4])
+                            'TY_LE_HOAN_THANH': lib.parseString(data[3]),
+                            'KET_QUA_HOAN_THANH': lib.parseFloat(data[4]),
+                            'KY_DANH_GIA': lib.parseString(data[5])
                         }
 
                         if len(data) > 5:
                             val['KY_DANH_GIA'] = data[5]
 
                     datas.append(val)
+                print(datas)
                 # datas.sort(key=myBranch)
 
             cur.close()
