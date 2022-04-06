@@ -9,7 +9,7 @@ from rest_framework import status
 
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
-from api.v1.report.business_unit.serializers import ChartFResponseSerializer, ChartResponseSerializer, DataResponseSerializer, \
+from api.v1.report.business_unit.serializers import ChartFResponseSerializer, ChartOnlineResponseSerializer, ChartResponseSerializer, DataResponseSerializer, \
     CustomerResponseSerializer, RegionInfoResponseSerializer, BranchInfoResponseSerializer
 
 
@@ -667,6 +667,117 @@ Screen `C_03_08` program `VUD`
                         'PROGRAM_ID': lib.parseString(data[11]),
                         'USING_DETAIL': lib.parseString(data[12]),
                         'LK_NAM': lib.parseString(data[13]) if len(data) > 13 else None
+                    }
+                    datas.append(val)
+                # datas.sort(key=myBranch)
+
+            cur.close()
+            con.close()
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
+        except cx_Oracle.Error as error:
+            cur.close()
+            con.close()
+            return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @extend_schema(
+        operation_id='Chart Online',
+        summary='List',
+        tags=["BUSINESS"],
+        description="""
+Screen `C_02_01` 
+- **huy_dong_vay_cam_co_stk**.
+
+The `division` example: 
+- **ALL**. Tất cả
+- **A**. khối PFS
+- **B**. khối DOANH NGHIỆP
+""",
+        parameters=[
+            OpenApiParameter(
+                name="screen", type=OpenApiTypes.STR, description="screen"
+            ),
+            OpenApiParameter(
+                name="key", type=OpenApiTypes.STR, description="key"
+            ),
+            OpenApiParameter(
+                name="program", type=OpenApiTypes.STR, description="program"
+            ),
+            OpenApiParameter(
+                name="vung", type=OpenApiTypes.STR, description="vung"
+            ),
+            OpenApiParameter(
+                name="kv", type=OpenApiTypes.STR, description="kv"
+            ),
+            OpenApiParameter(
+                name="dv", type=OpenApiTypes.STR, description="dv"
+            ),
+            OpenApiParameter(
+                name="division", type=OpenApiTypes.STR, description="division"
+            ),
+        ],
+        # request=ChartFRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: ChartOnlineResponseSerializer(many=True),
+            status.HTTP_401_UNAUTHORIZED: ExceptionResponseSerializer,
+            status.HTTP_400_BAD_REQUEST: ExceptionResponseSerializer,
+        }
+    )
+    def chart_online(self, request):
+        try:
+            con, cur = lib.connect()
+
+            params = request.query_params.dict()
+            screen = params['screen']
+            key = params['key']
+
+            vung = ""
+            if 'vung' in params.keys():
+                vung = ",P_VUNG=>'{}'".format(params['vung'])
+
+            kv = ""
+            if 'kv' in params.keys():
+                kv = ",P_KV=>'{}'".format(params['kv'])
+
+            dv = ""
+            if 'dv' in params.keys():
+                dv = ",P_DV=>'{}'".format(params['dv'])
+
+            division = ", P_DIVISION=>'ALL'"
+            if 'division' in params.keys():
+                division = ", P_DIVISION=>'{}'".format(params['division'])
+
+            sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_ONLINE_CHART(P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{},P_CCY=>'ALL',P_CLASSIFICATION=>'ALL') FROM DUAL".format(
+                screen, key, vung, kv, dv, division)
+            print(sql)
+            cur.execute(sql)
+            res = cur.fetchone()
+
+            datas = []
+            if len(res) > 0:
+                data_cursor = res[0]
+                for data in data_cursor:
+                    print(data)
+                    # y = data[13] if len(data) > 13 else None
+                    # if py != 'ALL_YEAR' and y is not None and y != py:
+                    #     continue
+
+                    val = {
+                        'MA_CT': lib.parseString(data[0]),
+                        'CHI_TIEU': lib.parseString(data[1]),
+                        'VND': lib.parseFloat(data[2]),
+                        'USD': lib.parseFloat(data[3]),
+                        'AUD': lib.parseFloat(data[4]),
+                        'EUR': lib.parseFloat(data[5]),
+                        'GBP': lib.parseFloat(data[6]),
+                        'CAD': lib.parseFloat(data[7]),
+                        'QD_VND': lib.parseFloat(data[8]),
+                        'VANG': lib.parseFloat(data[9]),
+                        'QD_USD': lib.parseFloat(data[10]),
+                        'QD_AUD': lib.parseFloat(data[11]),
+                        'QD_EUR': lib.parseFloat(data[12]),
+                        'QD_GBP': lib.parseFloat(data[13]),
+                        'QD_CAD': lib.parseFloat(data[14]),
+                        'QD_VANG': lib.parseFloat(data[15])
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)

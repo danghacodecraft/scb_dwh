@@ -20,6 +20,24 @@ class ChartFResponseSerializer(InheritedSerializer):
     AMT_KY_TRUOC = serializers.CharField(help_text="`AMT_KY_TRUOC` of data")
     LK_NAM = serializers.CharField(help_text="`LK_NAM` of data")
 
+class ChartOnlineResponseSerializer(InheritedSerializer):
+    MA_CT = serializers.CharField(help_text="`MA_CT` of data")
+    CHI_TIEU = serializers.CharField(help_text="`CHI_TIEU` of data")
+    VND = serializers.FloatField(help_text="`VND` of data")
+    USD = serializers.FloatField(help_text="`USD` of data")
+    AUD = serializers.FloatField(help_text="`AUD` of data")
+    EUR = serializers.FloatField(help_text="`EUR` of data")
+    GBP = serializers.FloatField(help_text="`GBP` of data")
+    CAD = serializers.FloatField(help_text="`CAD` of data")
+    VANG = serializers.FloatField(help_text="`VANG` of data")
+    QD_VND = serializers.FloatField(help_text="`QD_VND` of data")
+    QD_USD = serializers.FloatField(help_text="`QD_USD` of data")
+    QD_AUD = serializers.FloatField(help_text="`QD_AUD` of data")
+    QD_EUR = serializers.FloatField(help_text="`QD_EUR` of data")
+    QD_GBP = serializers.FloatField(help_text="`QD_GBP` of data")
+    QD_CAD = serializers.FloatField(help_text="`QD_CAD` of data")
+    QD_VANG = serializers.FloatField(help_text="`QD_VANG` of data")
+
 class ChartResponseSerializer(InheritedSerializer):
     key = serializers.CharField(help_text="`key` of data")
     label = serializers.CharField(help_text="`label` of data")
