@@ -386,7 +386,7 @@ Screen `C_06_03_02_03`
                         'DIEM_CHI_TIEU_KH_NAM': lib.parseFloat(data[13]),
                         'DIEM_KH_NAM': lib.parseFloat(data[14]),
                         'AMOUNT_CHART': lib.parseFloat(data[15]),
-                        'BRANCH_ID': lib.parseFloat(data[16])
+                        'BRANCH_ID': lib.parseString(data[16])
                         }
                         datas.append(val)
                     else: 
