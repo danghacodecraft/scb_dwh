@@ -439,7 +439,7 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                     #     }
 
                     for data in data_cursor:
-                        # print(data)
+                        print(data)
                         keydata = lib.create_key(data[1])
                         loaikh = lib.parseString([13]) if len(data) > 13 else ""
                         if keydata not in dicdatas:
@@ -661,9 +661,9 @@ Screen `C_03_08` program `VUD`
                         'DU_NO': lib.parseFloat(data[5], 6, True),
                         'DU_NO_XAU': lib.parseFloat(data[6], 6, True),
                         'DU_NO_QUA_HAN': lib.parseFloat(data[7], 6, True),
-                        'TY_LE_DU_NO_XAU': lib.parseFloat(data[8]),
-                        'TY_LE_DU_NO_QUA_HAN': lib.parseFloat(data[9]),
-                        'TY_LE_DU_NO': lib.parseFloat(data[10]),
+                        'TY_LE_DU_NO_XAU': lib.parseFloat(data[8], 14, True),
+                        'TY_LE_DU_NO_QUA_HAN': lib.parseFloat(data[9], 14, True),
+                        'TY_LE_DU_NO': lib.parseFloat(data[10], 14, True),
                         'PROGRAM_ID': lib.parseString(data[11]),
                         'USING_DETAIL': lib.parseString(data[12]),
                         'LK_NAM': lib.parseString(data[13]) if len(data) > 13 else None
