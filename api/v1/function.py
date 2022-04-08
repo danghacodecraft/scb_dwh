@@ -61,6 +61,9 @@ def parseFloat(data, precision=2, r=True):
         return data
     elif t == int:
         return data
+    elif t == str:
+        data = data.replace("  ", " ").strip()
+        return float(data)
 
     data = data.replace(",", "").replace("%", "").strip()
 
