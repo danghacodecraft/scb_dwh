@@ -160,6 +160,7 @@ Param `emp` example
                         'dep_name': data[4],
                         'time': str(data[5]),
                         'email': data[6],
+                        'username': lib.parseUser(data[6]),
                         'mobile': data[7],
                         'avatar': data[8],
                         'block_id': data[9],
