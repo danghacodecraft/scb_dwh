@@ -241,8 +241,9 @@ class GisView(BaseAPIView):
                     longitude = data[9] if data[9] is not None else LONGITUDE_DEFAULT
                     branchtype = data[10]
 
-                    if filterName(area_name.lower()):
-                        continue
+                    # if filterName(area_name.lower()):
+                    #     print(area_name)
+                    #     continue
 
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
                     if area_id not in gis:
