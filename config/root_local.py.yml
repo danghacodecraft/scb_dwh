@@ -26,3 +26,7 @@ SERVICE_FILE_CDN = 'http://192.168.73.135:9002/cdn'
 # -----------------------------------------------------------------------------
 SWAGGER_SUB_ENDPOINT = 'docs/'
 REDOC_SUB_ENDPOINT = 'redoc/'
+
+# LDAP 
+LOCAL_LDAP_SERVER = 'ldaps://192.168.73.57:636'
+LOCAL_LDAP_DOMAIN = '@scbuat.local'
