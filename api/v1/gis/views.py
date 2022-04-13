@@ -136,7 +136,7 @@ class GisView(BaseAPIView):
                 left = 120
                 right = 100
                 top = 10
-                bottom = 20
+                bottom = 30
 
                 for branch_name in sorted(region['branches'].keys()):
                     print(branch_name)
@@ -162,7 +162,7 @@ class GisView(BaseAPIView):
                 if region_id == 'ALL':
                     left = 100
                     right = 120
-                    top = 20
+                    top = 30
                     bottom = 10
 
                 datas.append({
@@ -286,7 +286,7 @@ class GisView(BaseAPIView):
                 left = 120
                 right = 100
                 top = 10
-                bottom = 20
+                bottom = 30
 
                 for branch_name in sorted(area['branches']):
                     branch = area['branches'][branch_name]
@@ -312,7 +312,7 @@ class GisView(BaseAPIView):
                 if area_id == 'ALL':
                     left = 100
                     right = 120
-                    top = 20
+                    top = 30
                     bottom = 10
 
                 str = "{}:{}: {}, {}, {}, {}".format(area_id, area_name, left, right, top, bottom)
