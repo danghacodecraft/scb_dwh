@@ -7,10 +7,10 @@ class BaseAPIView(CustomAPIView):
     def initial(self, request, *args, **kwargs):
         super().initial(request, *args, **kwargs)
 
-        self.user = request.user
+        # self.user = request.user
 
-        # Đối với ServerAuthentication thì gán thêm called_from_c_system_type để biết call từ bên nào
-        self.called_from_c_system_type = request.auth
+        # # Đối với ServerAuthentication thì gán thêm called_from_c_system_type để biết call từ bên nào
+        # self.called_from_c_system_type = request.auth
 
 
 class BaseAPIAnonymousView(CustomAPIView):
