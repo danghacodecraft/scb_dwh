@@ -106,6 +106,7 @@ The `Screen` has values:
             res = cur.fetchone()
 
             datas = []
+            val = []
             if len(res) > 0:
                 try:
                     data_cursor = res[0]
@@ -115,10 +116,20 @@ The `Screen` has values:
 
                 dd = {}
                 for data in data_cursor:
-                    print(data)
+                    # print(data)
                     # ('0-0-A-11.3', 'Huy động vốn', 576838903156, 2288694126853, 576838903156, 576838903156, 'Huy động vốn bình quân', 'BQ', 2288694126853, 'K01', 'KV HCM1', 'KHCN')
+                    code = data[0]
                     title = lib.parseString(data[6])
                     ids = lib.create_key(title)
+                    unit = lib.parseString(data[7])
+                    day =  lib.parseFloat(data[2], 2, False)
+                    week =  lib.parseFloat(data[3], 2, False)
+                    month =  lib.parseFloat(data[4], 2, False)
+                    accumulated =  lib.parseFloat(data[5], 2, False)
+                    AMT_KY_TRUOC =  lib.parseFloat(data[8], 2, False)
+                    divisor_bal_lcl =  lib.parseFloat(data[12], 2, False)
+                    divider_bal_lcl =  lib.parseFloat(data[13], 2, False)
+
                     if ids == "so_luong_khach_hang":
                         division = data[11]
                         if division == "KHDN":
@@ -130,22 +141,35 @@ The `Screen` has values:
                         elif division == "KHAC":
                             title = "Khách hàng tổ chức tín dụng"
                             ids = lib.create_key(title)
+                    if code == 'C_02_01_DWH_000200':
+                        val = {
+                            'code': code,
+                            'id': ids,
+                            "title": title,
+                            'unit': unit,
+                            'day': day,
+                            'week': week,
+                            'month': month,
+                            'accumulated': accumulated,
+                            'AMT_KY_TRUOC': AMT_KY_TRUOC,
+                            'divisor_bal_lcl': divisor_bal_lcl if len(data) > 11 else 0,
+                            'divider_bal_lcl': divider_bal_lcl if len(data) > 11 else 0,
+                        }
+                        datas.append(val)
 
                     if ids not in dd:
                         dd[ids] = {
-                            'code': data[0],
+                            'code': code,
                             'id': ids,
                             "title": title,
-                            'unit': lib.parseString(data[7]),
-
-                            'day': lib.parseFloat(data[2], 2, False),
-                            'week': lib.parseFloat(data[3], 2, False),
-                            'month': lib.parseFloat(data[4], 2, False),
-                            'accumulated': lib.parseFloat(data[5], 2, False),
-                            'AMT_KY_TRUOC': lib.parseFloat(data[8], 2, False),
-
-                            'divisor_bal_lcl': lib.parseFloat(data[12], 2, False) if len(data) > 11 else 0,
-                            'divider_bal_lcl': lib.parseFloat(data[13], 2, False) if len(data) > 11 else 0,
+                            'unit': unit,
+                            'day': day,
+                            'week': week,
+                            'month': month,
+                            'accumulated': accumulated,
+                            'AMT_KY_TRUOC': AMT_KY_TRUOC,
+                            'divisor_bal_lcl': divisor_bal_lcl if len(data) > 11 else 0,
+                            'divider_bal_lcl': divider_bal_lcl if len(data) > 11 else 0,
                         }
                     else:
                         d = dd[ids]
