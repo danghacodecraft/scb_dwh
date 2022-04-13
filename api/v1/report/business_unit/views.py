@@ -12,6 +12,9 @@ from api.base.serializers import ExceptionResponseSerializer
 from api.v1.report.business_unit.serializers import ChartFResponseSerializer, ChartOnlineResponseSerializer, ChartResponseSerializer, DataResponseSerializer, \
     CustomerResponseSerializer, RegionInfoResponseSerializer, BranchInfoResponseSerializer
 
+def formatTime(data):
+    return data.strftime("%d/%m/%Y %I:%M:%S %p")
+
 
 class BusinessUnitView(BaseAPIView):
     @extend_schema(
@@ -779,7 +782,7 @@ The `division` example:
                         'QD_CAD': lib.parseFloat(data[14]),
                         'QD_VANG': lib.parseFloat(data[15]),
                         'TANG_GIAM': lib.parseString(data[16]),
-                        'THOI_GIAN_CAP_NHAT': lib.parseString(data[17]),
+                        'THOI_GIAN_CAP_NHAT': lib.formatTime(data[17]),
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
