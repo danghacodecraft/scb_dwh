@@ -50,6 +50,30 @@ def parseUser(data):
     data = data.replace("@SCB.COM.VN", "")
     return data
 
+
+def parseCoordinate(data, default=0):
+    if data is None:
+        return default
+
+    t = type(data)
+    if t == float:
+        return data
+    elif t == int:
+        return data
+    elif t == str:
+        data = data.replace("  ", " ").strip()
+        return float(data)
+
+    data = data.replace(",", "").replace("%", "").strip()
+
+    val = default
+    try:
+        val = float(data)
+    except:
+        val = default
+    return val
+
+
 def parseFloat(data, precision=2, r=True):
     if data is None:
         return 0

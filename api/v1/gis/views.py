@@ -25,9 +25,14 @@ def filterName(name_lower):
         return True
     return False
 
-LATITUDE_DEFAULT = 10.771912559303502
-LONGITUDE_DEFAULT = 106.70564814326777
 TYPE_DEFAULT = "CN Đa năng"
+LONGITUDE_DEFAULT = 106.70564814326777
+LONGITUDE_MIN = 100
+LONGITUDE_MAX = 120
+
+LATITUDE_DEFAULT = 10.771912559303502
+LATITUDE_MIN = 10
+LATITUDE_MAX = 30
 
 class GisView(BaseAPIView):
     @extend_schema(
@@ -80,13 +85,13 @@ class GisView(BaseAPIView):
                 data_cursor = res[0]
                 for data in data_cursor:
                     print(data)
-                    region_id = data[0].strip()
-                    region_name = data[1].strip()
-                    branch_id = data[6].strip()
-                    branch_name = data[7].strip()
-                    latitude = data[8] if data[8] is not None else LATITUDE_DEFAULT
-                    longitude = data[9] if data[9] is not None else LONGITUDE_DEFAULT
-                    branchtype = data[10]
+                    region_id = lib.parseString(data[0])
+                    region_name = lib.parseString(data[1])
+                    branch_id = lib.parseString(data[6])
+                    branch_name = lib.parseString(data[7])
+                    latitude = lib.parseCoordinate(data[8], LATITUDE_DEFAULT)
+                    longitude = lib.parseCoordinate(data[9], LONGITUDE_DEFAULT)
+                    branchtype = lib.parseString(data[10])
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
 
                     if filterName(region_name.lower()):
@@ -133,10 +138,10 @@ class GisView(BaseAPIView):
                 print("-----------------------------")
                 region = gis[region_name]
                 branches = []
-                left = 120
-                right = 100
-                top = 10
-                bottom = 30
+                left = LONGITUDE_MAX
+                right = LONGITUDE_MIN
+                top = LATITUDE_MIN
+                bottom = LATITUDE_MAX
 
                 for branch_name in sorted(region['branches'].keys()):
                     print(branch_name)
@@ -160,10 +165,10 @@ class GisView(BaseAPIView):
                         bottom = bottom if bottom < latitude else latitude
 
                 if region_id == 'ALL':
-                    left = 100
-                    right = 120
-                    top = 30
-                    bottom = 10
+                    left = LONGITUDE_MIN
+                    right = LONGITUDE_MAX
+                    top = LATITUDE_MAX
+                    bottom = LATITUDE_MIN
 
                 datas.append({
                     'region_id': region['region_id'],
@@ -233,13 +238,13 @@ class GisView(BaseAPIView):
                 data_cursor = res[0]
                 for data in data_cursor:
                     # print(data)
-                    area_id = data[2].strip()
-                    area_name = data[3].strip()
-                    branch_id = data[6].strip()
-                    branch_name = data[7].strip()
-                    latitude = data[8] if data[8] is not None else LATITUDE_DEFAULT
-                    longitude = data[9] if data[9] is not None else LONGITUDE_DEFAULT
-                    branchtype = data[10]
+                    area_id = lib.parseString(data[2])
+                    area_name = lib.parseString(data[3])
+                    branch_id = lib.parseString(data[6])
+                    branch_name = lib.parseString(data[7])
+                    latitude = lib.parseCoordinate(data[8], LATITUDE_DEFAULT)
+                    longitude = lib.parseCoordinate(data[9], LONGITUDE_DEFAULT)
+                    branchtype = lib.parseString(data[10])
 
                     # if filterName(area_name.lower()):
                     #     print(area_name)
@@ -283,10 +288,10 @@ class GisView(BaseAPIView):
             for area_name in sorted(gis):
                 area = gis[area_name]
                 branches = []
-                left = 120
-                right = 100
-                top = 10
-                bottom = 30
+                left = LONGITUDE_MAX
+                right = LONGITUDE_MIN
+                top = LATITUDE_MIN
+                bottom = LATITUDE_MAX
 
                 for branch_name in sorted(area['branches']):
                     branch = area['branches'][branch_name]
@@ -310,10 +315,10 @@ class GisView(BaseAPIView):
                 area_id = area['area_id']
                 area_name = area['area_name']
                 if area_id == 'ALL':
-                    left = 100
-                    right = 120
-                    top = 30
-                    bottom = 10
+                    left = LONGITUDE_MIN
+                    right = LONGITUDE_MAX
+                    top = LATITUDE_MAX
+                    bottom = LATITUDE_MIN
 
                 str = "{}:{}: {}, {}, {}, {}".format(area_id, area_name, left, right, top, bottom)
                 print(str)
@@ -380,19 +385,19 @@ class GisView(BaseAPIView):
                 for data in data_cursor:
                     print(data)
                     #('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
-                    branch_id = data[6].strip()
+                    branch_id = lib.parseString(data[6])
                     if branch_id not in gis.keys() and data[8] != None and data[9] != None:
                         gis[branch_id] = data
                         val = {
-                            'region_id': data[0].strip(),
-                            'region_name': data[1].strip(),
-                            'area_id': data[2].strip(),
-                            'area_name': data[3].strip(),
+                            'region_id': lib.parseString(data[0]),
+                            'region_name': lib.parseString(data[1]),
+                            'area_id': lib.parseString(data[2]),
+                            'area_name': lib.parseString(data[3]),
                             'branch_id': branch_id,
-                            'branch_name': data[7].strip(),
-                            'latitude': data[8],
-                            'longitude': data[9],
-                            'type': data[10].strip()
+                            'branch_name': lib.parseString(data[7]),
+                            'latitude': lib.parseCoordinate(data[8], LATITUDE_DEFAULT),
+                            'longitude': lib.parseCoordinate(data[9], LONGITUDE_DEFAULT),
+                            'type': lib.parseString(data[10])
                         }
                         datas.append(val)
 
@@ -459,7 +464,7 @@ class GisView(BaseAPIView):
                 for data in data_cursor:
                     print(data)
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
-                    branch_id = data[6].strip()
+                    branch_id = lib.parseString(data[6])
                     if branch_id not in gis.keys() and data[8] != None and data[9] != None:
                         gis[branch_id] = data
 
@@ -468,18 +473,18 @@ class GisView(BaseAPIView):
                             "type": "Feature",
                             "properties": {
                                 "id": branch_id,
-                                "name": data[7].strip(),
+                                "name": lib.parseString(data[7]),
                                 "code": branch_id,
                                 "address": "",
-                                "zone_id": data[0].strip(),
-                                "zone_name": data[1].strip(),
-                                "area_id": data[2].strip(),
-                                "area_name": data[3].strip(),
-                                "type": TYPES[data[10].strip()]
+                                "zone_id": lib.parseString(data[0]),
+                                "zone_name": lib.parseString(data[1]),
+                                "area_id": lib.parseString(data[2]),
+                                "area_name": lib.parseString(data[3]),
+                                "type": TYPES[lib.parseString(data[10])]
                             },
                             "geometry": {
                                 "type": "Point",
-                                "coordinates": [data[9], data[8], 0.0]
+                                "coordinates": [ lib.parseCoordinate(data[9], LONGITUDE_DEFAULT), lib.parseCoordinate(data[8], LATITUDE_DEFAULT), 0.0]
                             }
                         }
 
