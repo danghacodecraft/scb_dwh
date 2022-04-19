@@ -190,7 +190,7 @@ Param `emp` example
                                 'resident_status': data[77],
                             },
                             'contract': {
-                                'type': data[32][(data[32].find('-')+1):],
+                                'type': data[32] if data[32] == None else data[32][(data[32].find('-')+1):],
                                 'name': data[33],
                                 'start_date': data[34],
                                 'end_date': data[35],
