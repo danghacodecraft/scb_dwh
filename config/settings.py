@@ -47,6 +47,7 @@ DJANGO_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.staticfiles",
+    "django.contrib.sessions",
 ]
 THIRD_PARTY_APPS = [
     "rest_framework",
@@ -67,7 +68,15 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
 ]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+    }
+}
 
 # if DEBUG:
 #     INSTALLED_APPS += ['debug_toolbar', ]  # DEBUG Tool Bar
@@ -237,3 +246,7 @@ SPECTACULAR_SETTINGS = {
 
 LDAP_SERVER = LOCAL_LDAP_SERVER
 LDAP_DOMAIN = LOCAL_LDAP_DOMAIN
+
+# SESSION
+# SESSION_COOKIE_AGE = 1200    # 20 minutes
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'

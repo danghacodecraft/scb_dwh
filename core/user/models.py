@@ -89,7 +89,9 @@ class DWHUser:
         self.username = username
         self.password = password
         self.name = fullname
-        self.token = base64.b64encode(username.encode()).decode('utf-8')
+
+        self.token = None
+
         if avatar:
             avatar = avatar.replace('/var/www/EmployeeImage/', '')
             self.avatar = '/cdn/{}'.format(avatar)
@@ -102,5 +104,8 @@ class DWHUser:
 
         self.employee_id = employee_id
         self.email = email
+
+    def set_token(self, token):
+        self.token = token
 
 

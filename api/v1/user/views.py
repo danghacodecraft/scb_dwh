@@ -213,6 +213,7 @@ class LoginView(BaseAPIView):
     )
     def login(self, request):
         if request.user:
+
             return self.response_success({
                 'user_id': request.user.id,
                 'full_name': request.user.name,
@@ -226,5 +227,9 @@ class LoginView(BaseAPIView):
                 'email': request.user.email
             }, status_code=status.HTTP_200_OK)
         else:
-            return self.response_success({"error": "Sai thông tin"},
-                                         status_code=status.HTTP_401_UNAUTHORIZED)
+            message = request.user_error
+
+            return self.response_success({
+                "error_code": "PROFILE_ERROR",
+                "description": message
+            }, status_code=status.HTTP_401_UNAUTHORIZED)

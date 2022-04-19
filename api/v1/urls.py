@@ -1,5 +1,8 @@
 from django.urls import include, path
 
+from config.settings import DEBUG
+from .views import get_otp_server
+
 urlpatterns = [
     path('users/', include('api.v1.user.urls')),
     path('dashboard/', include('api.v1.dashboard.urls')),
@@ -8,3 +11,8 @@ urlpatterns = [
     path('gis/', include('api.v1.gis.urls')),
     path('report/', include('api.v1.report.urls')),
 ]
+
+if DEBUG:
+    urlpatterns += [
+        path('get-otp/', get_otp_server),
+    ]
