@@ -1,6 +1,8 @@
-from rest_framework import HTTP_HEADER_ENCODING
+from rest_framework import HTTP_HEADER_ENCODING, exceptions
 
 from api.base.api_view import CustomAPIView
+from config.root_local import SERVER_AUTH_TOKEN
+from library.constant.error_codes import SERVER_AUTH_NOT_FOUND
 
 
 class BaseAPIView(CustomAPIView):
@@ -23,6 +25,13 @@ class BaseAPIAnonymousView(CustomAPIView):
 
     @staticmethod
     def get_authorization_header(request):
+        server_auth = request.META.get('HTTP_SERVER_AUTH')
+        if not (server_auth and server_auth == SERVER_AUTH_TOKEN):
+            raise exceptions.AuthenticationFailed({
+                'error_code': SERVER_AUTH_NOT_FOUND,
+                'description': SERVER_AUTH_NOT_FOUND
+            })
+
         content = request.META.get('HTTP_AUTHORIZATION', b'')
         try:
             content = content.encode(HTTP_HEADER_ENCODING)
