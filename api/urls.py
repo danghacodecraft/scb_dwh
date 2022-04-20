@@ -9,6 +9,7 @@ from config.settings import DEBUG
 
 urlpatterns = [
     path('v1/', include('api.v1.urls')),
+    path('v1/', include('api.sv.employee.urls')),
 ]
 
 if DEBUG:
