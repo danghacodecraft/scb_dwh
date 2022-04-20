@@ -107,8 +107,6 @@ class TokenAuthentication(BaseAuthentication):
         cur.execute(sql)
         res = cur.fetchone()
 
-        print(request.session.get('scb'))
-
         if res:
             data_cursor = res[0]
 
@@ -201,7 +199,7 @@ class BasicAuthentication(BaseAuthentication):
             session_id = int(n_pct.getvalue())
 
             # TODO: Debug for Dev
-            if username in ('dev01', 'dev02',  'dev03',  'dev04',  'dev05',  'dev06',  'dev07',   'dev08',   'dev09',   'dev10', ):
+            if username in ('dev01', 'dev02', 'dev03', 'dev04', 'dev05', 'dev06', 'dev07', 'dev08', 'dev09', 'dev10',):
                 sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'THANGHD') FROM DUAL"""
             else:
                 sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(username)
@@ -233,12 +231,12 @@ class BasicAuthentication(BaseAuthentication):
 
                 user.set_token(token)
 
+                request.session['scb'] = user.token
+
             if not user:
                 setattr(request, 'user_error', 'Thông tin người dùng không tồn tại !')
 
             cache.set('SSN_' + username, int(session_id))
-
-            request.session['scb'] = user.token
 
         except cx_Oracle.Error as e:
             pass
@@ -299,3 +297,10 @@ class BasicAuthenticationScheme(OpenApiAuthenticationExtension):
             "type": "http",
             "scheme": "basic"
         }
+
+
+class ServerBasicAuthentication(BasicAuthentication):
+    def authenticate(self, request):
+        auth = get_authorization_header(request).split()
+
+        return
