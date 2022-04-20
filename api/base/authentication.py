@@ -6,6 +6,8 @@ import ldap
 
 import api.v1.function as lib
 
+from django.core.cache import cache
+
 from drf_spectacular.extensions import OpenApiAuthenticationExtension
 from rest_framework import HTTP_HEADER_ENCODING, exceptions, status
 from rest_framework.authentication import (
@@ -17,12 +19,13 @@ from core.user.models import User, DWHUser
 from library.constant.error_codes import (
     BASIC_AUTH_NOT_FOUND, BASIC_AUTH_NOT_VALID, BEARER_TOKEN_NOT_FOUND,
     BEARER_TOKEN_NOT_VALID, ERROR_CODE_MESSAGE, INVALID_LOGIN,
-    INVALID_PASSWORD, INVALID_USERNAME
+    INVALID_PASSWORD, INVALID_USERNAME, SESSION_TIMEOUT
 )
-from library.functions import now
-
 
 # check token authorize
+from library.otp import AESCipher
+
+
 class TokenAuthentication(BaseAuthentication):
     """
     Simple token based authentication.
@@ -51,56 +54,60 @@ class TokenAuthentication(BaseAuthentication):
 
         receive_token = auth[1]
 
-        user_id = self.parse_token(receive_token)
+        user_id, session_id = self.parse_token(receive_token)
+
         if not user_id:
             raise exceptions.AuthenticationFailed({
                 'error_code': BEARER_TOKEN_NOT_VALID,
                 'description': ERROR_CODE_MESSAGE[BEARER_TOKEN_NOT_VALID]
             })
 
-        return self.check_user_and_token(user_id, request)
+        return self.check_user_and_token(user_id, session_id, request)
 
     @staticmethod
     def parse_token(key):
         try:
-            receive_token = base64.b64decode(key)
-            receive_token = receive_token.decode()
+            cipher = AESCipher()
 
-            # _info_list = receive_token.split(':')
-            # if len(_info_list) != 2:
-            #     return None, None
+            receive_token = cipher.decrypt(key)
 
-            user_id = receive_token
-            # token = _info_list[1]
+            _info_list = receive_token.split(':')
+            if len(_info_list) != 2:
+                return None, None
 
-            return user_id
+            user_id = _info_list[0]
+            session_id = _info_list[1]
+
+            return user_id, session_id
         except ValueError:
-            return None
+            return None, None
 
     def authenticate_header(self, request):
         return self.keyword
 
     @staticmethod
-    def check_user_and_token(user_id, request=None):
-        # try:
-        #     user = User.objects.get(id=user_id)
-        # except User.DoesNotExist:
-        #     raise exceptions.AuthenticationFailed({
-        #         'error_code': BEARER_TOKEN_NOT_VALID,
-        #         'description': ERROR_CODE_MESSAGE[BEARER_TOKEN_NOT_VALID]
-        #     })
-        #
-        # if token != user.token:
-        #     raise exceptions.AuthenticationFailed({
-        #         'error_code': BEARER_TOKEN_NOT_VALID,
-        #         'description': ERROR_CODE_MESSAGE[BEARER_TOKEN_NOT_VALID]
-        #     })
+    def check_user_and_token(user_id, session_id, request=None):
+
+        key = 'SSN_' + user_id
+
+        if not session_id or not cache.get(key) or int(cache.get(key)) != int(session_id):
+            raise exceptions.AuthenticationFailed({
+                'error_code': SESSION_TIMEOUT,
+                'description': ERROR_CODE_MESSAGE[SESSION_TIMEOUT]
+            })
 
         con, cur = lib.connect()
 
-        sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(user_id)
+        # TODO: Debug for Dev
+        if user_id in ('dev01', 'dev02', 'dev03', 'dev04', 'dev05', 'dev06', 'dev07', 'dev08', 'dev09', 'dev10',):
+            sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'THANGHD') FROM DUAL"""
+        else:
+            sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(user_id)
+
         cur.execute(sql)
         res = cur.fetchone()
+
+        print(request.session.get('scb'))
 
         if res:
             data_cursor = res[0]
@@ -187,7 +194,18 @@ class BasicAuthentication(BaseAuthentication):
         user = None
 
         try:
-            sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(username)
+            n_pct = cur.var(cx_Oracle.NUMBER)
+
+            cur.callfunc('obi.crm_dwh_pkg.FUN_INIT_SESSION', n_pct, [username])
+
+            session_id = int(n_pct.getvalue())
+
+            # TODO: Debug for Dev
+            if username in ('dev01', 'dev02',  'dev03',  'dev04',  'dev05',  'dev06',  'dev07',   'dev08',   'dev09',   'dev10', ):
+                sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'THANGHD') FROM DUAL"""
+            else:
+                sql = """select obi.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL""".format(username)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -206,6 +224,21 @@ class BasicAuthentication(BaseAuthentication):
                     employee_id=data[0],
                     email=data[6]
                 )
+
+                cipher = AESCipher()
+
+                token = '{}:{}'.format(user.id, session_id)
+
+                token = cipher.encrypt(token.encode())
+
+                user.set_token(token)
+
+            if not user:
+                setattr(request, 'user_error', 'Thông tin người dùng không tồn tại !')
+
+            cache.set('SSN_' + username, int(session_id))
+
+            request.session['scb'] = user.token
 
         except cx_Oracle.Error as e:
             pass
