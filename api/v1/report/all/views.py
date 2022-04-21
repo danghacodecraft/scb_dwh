@@ -112,7 +112,7 @@ Screen `C_06`
                     dv = ",P_DV=>'{}'".format(params['dv'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}{}{}) FROM DUAL".format(screen, key, division, kv, vung, dv)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -127,7 +127,6 @@ Screen `C_06`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 dicdatas = {}
@@ -253,7 +252,7 @@ Screen `C_06_02_02_02`
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}) FROM DUAL".format(screen, kv, vung, dv)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -262,11 +261,9 @@ Screen `C_06_02_02_02`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     val = {
                         'REGION_ID': lib.parseString(data[0]),
                         'REGION_NAME': lib.parseString(data[1]),
@@ -361,7 +358,7 @@ Screen `C_06_03_02_03`
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}) FROM DUAL".format(screen, kv, vung, dv)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -370,11 +367,10 @@ Screen `C_06_03_02_03`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
+
                 for data in data_cursor:
                     if len(data) == 17:
-                        print(data)
                         val = {
                         'PROCESS_DATE': lib.parseString(data[0]),
                         'CHITIEU': lib.parseString(data[1]),
@@ -395,8 +391,7 @@ Screen `C_06_03_02_03`
                         'BRANCH_ID': lib.parseString(data[16])
                         }
                         datas.append(val)
-                    else: 
-                        print(data)
+                    else:
                         val = {
                             'STT' : lib.parseString(data[0]),
                             'MONTH_ID' : lib.parseString(data[1]),
@@ -561,7 +556,7 @@ Screen `C_06`
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}{}{}) FROM DUAL".format(screen, key,
                                                                                                       division, kv,
                                                                                                       vung, dv)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -576,7 +571,6 @@ Screen `C_06`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 chi_tieus = {}
@@ -631,12 +625,10 @@ Screen `C_06`
 
                 for key_chi_tieu in chi_tieus:
                     chi_tieu = chi_tieus[key_chi_tieu]
-                    print("======================== chi_tieu ========================")
-                    print(chi_tieu)
+
                     for key_process_date in chi_tieu:
                         d = chi_tieu[key_process_date]
-                        print("----- chi_tieu -----")
-                        print(d)
+
                         d['SODU_DS_LK_KYT'] = lib.parseFloat(d['SODU_DS_LK_KYT'], 2, True)
                         d['THUC_HIEN_KY_T'] = lib.parseFloat(d['THUC_HIEN_KY_T'], 2, True)
                         d['KE_HOACH_KY_T'] = lib.parseFloat(d['KE_HOACH_KY_T'], 2, True)

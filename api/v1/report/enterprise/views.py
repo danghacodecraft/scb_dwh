@@ -54,7 +54,7 @@ Screen `C_04`
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'dinh_bien_nhan_su'{}{} ) FROM DUAL".format(screen, kv, dv)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -63,11 +63,9 @@ Screen `C_04`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     val = {
                         'AREA_NAME': lib.parseString(data[0]),
                         'SLNS_DINH_BIEN': lib.parseFloat(data[1]),
@@ -148,7 +146,7 @@ Screen `C_04`
                 ccy = ", P_CCY=>'{}'".format(params['ccy'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}'{}{}{}{} ) FROM DUAL".format(screen, key, kv, dv, ccy)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -157,11 +155,9 @@ Screen `C_04`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     if key == ", P_MODULE=>'kpi_chart_khu_vuc'":
                         val = {
                             'branch_name': lib.parseString(data[0]),
@@ -184,7 +180,7 @@ Screen `C_04`
                             val['KY_DANH_GIA'] = data[5]
 
                     datas.append(val)
-                print(datas)
+
                 # datas.sort(key=myBranch)
 
             cur.close()
@@ -243,7 +239,7 @@ Screen `C_04`
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{} ) FROM DUAL".format(screen, key, kv, dv)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -252,11 +248,9 @@ Screen `C_04`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     val = {
                         'BR': lib.parseString(data[0]),
                         'TIEU_DE': lib.parseString(data[1]),
@@ -323,7 +317,7 @@ Screen `C_04`
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C04_CHART( P_MAN_HINH=>'{}',P_MODULE=>'chi_tieu_kinh_doanh'{}{} ) FROM DUAL".format(screen, kv, dv)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -332,11 +326,9 @@ Screen `C_04`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     val = {
                         'NAME': lib.parseString(data[0]),
                         'THANG': lib.parseFloat(data[1]),

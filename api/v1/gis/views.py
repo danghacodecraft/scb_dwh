@@ -62,7 +62,7 @@ class GisView(BaseAPIView):
 
             # ======================================================================
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -84,7 +84,6 @@ class GisView(BaseAPIView):
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
                     region_id = lib.parseString(data[0])
                     region_name = lib.parseString(data[1])
                     branch_id = lib.parseString(data[6])
@@ -130,12 +129,8 @@ class GisView(BaseAPIView):
                             'type': branchtype
                         }
 
-            print("||||||||||||||||||||||||||||||||||")
             datas = []
             for region_name in sorted(gis.keys()):
-                print("======================================")
-                print(region_name)
-                print("-----------------------------")
                 region = gis[region_name]
                 branches = []
                 left = LONGITUDE_MAX
@@ -144,7 +139,6 @@ class GisView(BaseAPIView):
                 bottom = LATITUDE_MAX
 
                 for branch_name in sorted(region['branches'].keys()):
-                    print(branch_name)
                     branch = region['branches'][branch_name]
                     branch_id = branch['branch_id']
                     branch_name = branch['branch_name']
@@ -215,7 +209,7 @@ class GisView(BaseAPIView):
 
             # ======================================================================
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -237,7 +231,6 @@ class GisView(BaseAPIView):
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    # print(data)
                     area_id = lib.parseString(data[2])
                     area_name = lib.parseString(data[3])
                     branch_id = lib.parseString(data[6])
@@ -245,10 +238,6 @@ class GisView(BaseAPIView):
                     latitude = lib.parseCoordinate(data[8], LATITUDE_DEFAULT)
                     longitude = lib.parseCoordinate(data[9], LONGITUDE_DEFAULT)
                     branchtype = lib.parseString(data[10])
-
-                    # if filterName(area_name.lower()):
-                    #     print(area_name)
-                    #     continue
 
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
                     if area_id not in gis:
@@ -321,7 +310,6 @@ class GisView(BaseAPIView):
                     bottom = LATITUDE_MIN
 
                 str = "{}:{}: {}, {}, {}, {}".format(area_id, area_name, left, right, top, bottom)
-                print(str)
 
                 datas.append({
                     'ID': area_id,
@@ -374,7 +362,7 @@ class GisView(BaseAPIView):
                 region = ", P_VUNG=>'{}'".format(params['region'])
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}{}) FROM DUAL".format(userid, region)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -383,7 +371,6 @@ class GisView(BaseAPIView):
                 data_cursor = res[0]
                 gis = {}
                 for data in data_cursor:
-                    print(data)
                     #('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
                     branch_id = lib.parseString(data[6])
                     if branch_id not in gis.keys() and data[8] != None and data[9] != None:
