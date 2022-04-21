@@ -37,7 +37,7 @@ class OrganizationView(BaseAPIView):
 
             # call the function
             sql = "SELECT * FROM OBI.dwhf_hr_organization ORDER BY NVL(PARENT_ID,ID), ORDER_BY"
-            print(sql)
+
             cur.execute(sql)
             datas = cur.fetchall()
 
@@ -57,7 +57,6 @@ class OrganizationView(BaseAPIView):
                 code = data[16]
                 depid = str(data[17])
 
-                print(data)
                 key1 = lib.parseString(data[0])
                 name1 = lib.parseString(data[1])
                 if key1 is not None and name1 is not None and name1 != "":
@@ -239,7 +238,7 @@ Param `type` example
 
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_REGION=>'{}'{}) FROM DUAL".format(name, type)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -248,11 +247,9 @@ Param `type` example
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     # 'V02', 'Vùng 02', '015', 'SCB Quận 10', 'BAN GIAM DOC', None, None, '11986', 'Phòng Dịch vụ Khách hàng', None, None, '03')
                     region_id = lib.parseString(data[6])
                     region_name = lib.parseString(data[7])
@@ -352,7 +349,7 @@ Param `type` example
                 userid = "P_USER_ID=>'{}'".format(params['userid'].upper())
 
             sql = 'SELECT obi.CRM_DWH_PKG.FUN_GET_REGION({}) FROM DUAL'.format(userid)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -361,11 +358,9 @@ Param `type` example
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     val = {
                         'region_id': data[0].strip(),
                         'region_name': data[1].strip()
@@ -426,7 +421,7 @@ Param `type` example
 
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_ORGANIZATION(P_BRANCH=>'{}'{}) FROM DUAL".format(name, type)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -435,11 +430,9 @@ Param `type` example
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     # (None, None, None, None, None, None, None, None, '001', 'SCB Cống Quỳnh', 'BAN GIAM DOC', '11838', 'Phòng Khách hàng Wholesale')
                     branch_id = lib.parseString(data[8])
                     branch_name = lib.parseString(data[9])
@@ -545,19 +538,17 @@ Param `type` example
 
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_BRANCH(P_VUNG=>'ALL'{}{}) FROM DUAL".format(userid, type)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
             if len(res) > 0:
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 ret = {}
                 for data in data_cursor:
-                    print(data)
                     sid = data[0]
                     fullname = data[1]
                     level = data[2]

@@ -101,7 +101,7 @@ The `Screen` has values:
                 division = ",P_DIVISION=>'{}'".format(params['division'])
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}{}{}{}{}) FROM DUAL".format(screen, vung, kv, dv, fdate, tdate, division)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -111,7 +111,6 @@ The `Screen` has values:
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 dd = {}
@@ -422,7 +421,7 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{}{}{} ) FROM DUAL".format(
                 screen, key, vung, kv, dv, fdate, tdate, division, classification
             )
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -466,7 +465,6 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                     #     }
 
                     for data in data_cursor:
-                        print(data)
                         keydata = lib.create_key(data[1])
                         loaikh = lib.parseString([13]) if len(data) > 13 else ""
                         if keydata not in dicdatas:
@@ -508,7 +506,6 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
 
                 else:
                     for data in data_cursor:
-                        print(data)
                         key = lib.create_key(data[1])
                         value = lib.parseFloat(data[2], 2, False)
                         LK_NAM = lib.parseFloat(data[10], 2, False)
@@ -666,7 +663,7 @@ Screen `C_03_08` program `VUD`
                     year = ",P_YEAR=>'{}'".format(py)
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_CHART_loan( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{} ) FROM DUAL".format(screen, key, program, vung, dv, year)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -674,7 +671,6 @@ Screen `C_03_08` program `VUD`
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
                     # y = data[13] if len(data) > 13 else None
                     # if py != 'ALL_YEAR' and y is not None and y != py:
                     #     continue
@@ -775,7 +771,7 @@ The `division` example:
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_ONLINE_CHART(P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{},P_CCY=>'ALL',P_CLASSIFICATION=>'ALL') FROM DUAL".format(
                 screen, key, vung, kv, dv, division)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -783,10 +779,6 @@ The `division` example:
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
-                    # y = data[13] if len(data) > 13 else None
-                    # if py != 'ALL_YEAR' and y is not None and y != py:
-                    #     continue
 
                     val = {
                         'MA_CT': lib.parseString(data[0]),
@@ -940,7 +932,7 @@ Param `page_size` default = 20
                 ) FROM DUAL
             """.format(screen, vung, dv, key, cust_type, level, page_number, page_size)
             # sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA_CUST_VIP( P_MAN_HINH=>'C_02_02',P_HANG_VIP=>'GOLD',P_CUST_TYPE=>'C',P_VUNG => 'V01') FROM DUAL"
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -949,12 +941,9 @@ Param `page_size` default = 20
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
-
                     val = {
                         'MA_KH': lib.parseString(data[0]),
                         'TEN_KH': lib.parseString(data[1]),
@@ -1032,7 +1021,7 @@ Param `region`
             #     area = ", P_KV=>'{}'".format(params['area'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO(P_MAN_HINH=>'{}'{}, P_DV=>'ALL', P_CCY=>'ALL', P_MODULE=>'ALL' ) FROM DUAL".format(screen, region)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -1040,7 +1029,6 @@ Param `region`
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
                     val = {
                         'address': lib.parseString(data[0]),
                         'fullname': lib.parseString(data[1]),
@@ -1102,7 +1090,7 @@ Param `dv`
             dv = params['dv']
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_BRN_MANA_INFO(P_MAN_HINH=>'{}', P_VUNG=>'ALL', P_DV=>'{}', P_CCY=>'ALL', P_MODULE=>'ALL' ) FROM DUAL".format(screen, dv)
-            print(sql)
+
             cur.execute(sql)
             res = cur.fetchone()
 
