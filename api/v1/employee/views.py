@@ -15,6 +15,7 @@ from api.v1.employee.serializers import EmployeeBonusResponseSerializer, Employe
     EmployeeResponseSerializer, EmployeeDecisionResponseSerializer, \
     EmployeeKPIResponseSerializer, EmployeeWorkprocessResponseSerializer
 
+
 class EmployeeView(BaseAPIView):
     @extend_schema(
         operation_id='EMP_LIST',

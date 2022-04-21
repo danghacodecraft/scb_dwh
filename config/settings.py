@@ -251,3 +251,5 @@ LDAP_DOMAIN = LOCAL_LDAP_DOMAIN
 # SESSION
 SESSION_COOKIE_AGE = 3600    # 60 minutes
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+SESSION_COOKIE_HTTPONLY = False
