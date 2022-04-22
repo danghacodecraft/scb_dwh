@@ -63,11 +63,9 @@ Screen `C_04`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     val = {
                         'AREA_NAME': lib.parseString(data[0]),
                         'SLNS_DINH_BIEN': lib.parseFloat(data[1]),
@@ -157,11 +155,9 @@ Screen `C_04`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     if key == ", P_MODULE=>'kpi_chart_khu_vuc'":
                         val = {
                             'branch_name': lib.parseString(data[0]),
@@ -184,7 +180,7 @@ Screen `C_04`
                             val['KY_DANH_GIA'] = data[5]
 
                     datas.append(val)
-                print(datas)
+
                 # datas.sort(key=myBranch)
 
             cur.close()
@@ -252,11 +248,9 @@ Screen `C_04`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     val = {
                         'BR': lib.parseString(data[0]),
                         'TIEU_DE': lib.parseString(data[1]),
@@ -332,11 +326,9 @@ Screen `C_04`
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
                     val = {
                         'NAME': lib.parseString(data[0]),
                         'THANG': lib.parseFloat(data[1]),

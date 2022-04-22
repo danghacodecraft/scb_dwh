@@ -74,7 +74,7 @@ Param `type` example
                 data_cursor = res[0]
                 for data in data_cursor:
                     #('06150', 'VÕ KHANG NINH', 'CHUYÊN VIÊN QUẢN LÝ DỮ LIỆU', '84', 'MẢNG QUẢN LÝ DỮ LIỆU', datetime.datetime(2015, 2, 26, 0, 0), 'NINHVK@SCB.COM.VN', '+84 969627333', '/var/www/EmployeeImage/06150.jpeg')
-                    print(data)
+
                     val = {
                         'emp_id': data[0],
                         'emp_name': data[1],
@@ -146,7 +146,7 @@ Param `emp` example
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
+
                     #[('03627', 'HỒ ĐỨC THẮNG', 'GIÁM ĐỐC PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
                     # '84', 'PHÒNG QUẢN LÝ KHAI THÁC, PHÂN TÍCH DỮ LIỆU',
                     # datetime.datetime(2010, 9, 6, 0, 0), 'THANGHD@SCB.COM.VN', '+84 907138520', '/var/www/EmployeeImage/03627.jpeg')]
@@ -191,7 +191,7 @@ Param `emp` example
                                 'resident_status': data[77],
                             },
                             'contract': {
-                                'type': data[32][(data[32].find('-')+1):],
+                                'type': data[32] if data[32] == None else data[32][(data[32].find('-')+1):],
                                 'name': data[33],
                                 'start_date': data[34],
                                 'end_date': data[35],
@@ -318,7 +318,6 @@ Param `emp` example
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
                     # ('14856', 'Nguyễn Thị Xuân Nguyên', 480, '77.42%', 'Không đạt KPIs', '10/2021', None)
                     val = {
                         'ID': lib.parseString(data[0]),
@@ -375,7 +374,6 @@ Param `emp` example
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
                     #('04260', 'BÙI THỊ NHƯ QUỲNH', '000', 'MẢNG KẾ TOÁN CHI TIÊU NỘI BỘ TẬP TRUNG', None, '4894-4897/QĐ-TGĐ.16-Vi phạm An toàn kho quỹ', datetime.datetime(2016, 12, 14, 0, 0))
 
                     val = {
@@ -434,7 +432,6 @@ Param `emp` example
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
                     # (datetime.datetime(2018, 3, 13, 0, 0), '971/QĐ-TGĐ.18', 'DHKT_3', 'CKT1', None, None, 'Khen thưởng các Cán bộ nhân viên đạt thành tích xuất sắc năm 2017', 'DHKT_3', 5000000, datetime.datetime(2018, 3, 13, 0, 0), 'VÕ TẤN HOÀNG VĂN')
                     val = {
                         'NGAY_HIEU_LUC': lib.parseString(data[0]),
@@ -496,7 +493,6 @@ Param `emp` example
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
                     # ('04260', 'BÙI THỊ NHƯ QUỲNH', '000', 'MẢNG KẾ TOÁN CHI TIÊU NỘI BỘ TẬP TRUNG', None, '4894-4897/QĐ-TGĐ.16-Vi phạm An toàn kho quỹ', datetime.datetime(2016, 12, 14, 0, 0))
 
                     val = {
@@ -560,7 +556,6 @@ Param `emp` example
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
                     # ('04260', 'BÙI THỊ NHƯ QUỲNH', '000', 'MẢNG KẾ TOÁN CHI TIÊU NỘI BỘ TẬP TRUNG', None, '4894-4897/QĐ-TGĐ.16-Vi phạm An toàn kho quỹ', datetime.datetime(2016, 12, 14, 0, 0))
 
                     val = {
@@ -618,7 +613,6 @@ Param `emp` example
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
                     # (3626, 'TD - 123456', 'Bổ sung nhân sự đầu năm', 'Trần Thanh Sang', 3622, None, 'Nhân viên lâu năm', '6', '12')
                     # EMPLOYEE_ID	MA_TUYEN_DUNG	LY_DO_TUYEN_DUNG	NGUOI_GIOI_THIEU	NV_THAY_THE	NOTE	THONG_TIN_KHAC	THAM_NIEN_THEM	PHEP_NAM_UU_DAI
                     val = {
@@ -678,7 +672,6 @@ Param `emp` example
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
                     val = {
                         'EMPLOYEE_CODE': data[0],
                         'TU_NGAY': data[1],

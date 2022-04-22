@@ -275,11 +275,9 @@ class BasicAuthentication(BaseAuthentication):
             return True
 
         except ldap.INVALID_CREDENTIALS as e:
-            # print('Wrong ad info', e)
             mess = 'Wrong LDAP information'
 
         except ldap.SERVER_DOWN:
-            # print('AD server not available')
             mess = 'AD server not available'
 
         raise exceptions.AuthenticationFailed({

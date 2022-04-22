@@ -30,3 +30,6 @@ REDOC_SUB_ENDPOINT = 'redoc/'
 # LDAP 
 LOCAL_LDAP_SERVER = 'ldaps://192.168.73.57:636'
 LOCAL_LDAP_DOMAIN = '@scbuat.local'
+
+# Auth Token
+SERVER_AUTH_TOKEN = ""

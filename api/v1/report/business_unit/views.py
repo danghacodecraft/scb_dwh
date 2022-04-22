@@ -111,7 +111,6 @@ The `Screen` has values:
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 dd = {}
@@ -466,7 +465,6 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
                     #     }
 
                     for data in data_cursor:
-                        print(data)
                         keydata = lib.create_key(data[1])
                         loaikh = lib.parseString([13]) if len(data) > 13 else ""
                         if keydata not in dicdatas:
@@ -508,7 +506,6 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
 
                 else:
                     for data in data_cursor:
-                        print(data)
                         key = lib.create_key(data[1])
                         value = lib.parseFloat(data[2], 2, False)
                         LK_NAM = lib.parseFloat(data[10], 2, False)
@@ -649,7 +646,7 @@ Screen `C_03_08` program `VUD`
 
             program = ""
             if 'program' in params.keys():
-                program = ", p_program=>'{}'".format(params['program'])
+                program = ", P_PROGRAM=>'{}'".format(params['program'])
 
             vung = ""
             if 'vung' in params.keys():
@@ -674,7 +671,6 @@ Screen `C_03_08` program `VUD`
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
                     # y = data[13] if len(data) > 13 else None
                     # if py != 'ALL_YEAR' and y is not None and y != py:
                     #     continue
@@ -783,10 +779,6 @@ The `division` example:
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
-                    # y = data[13] if len(data) > 13 else None
-                    # if py != 'ALL_YEAR' and y is not None and y != py:
-                    #     continue
 
                     val = {
                         'MA_CT': lib.parseString(data[0]),
@@ -949,12 +941,9 @@ Param `page_size` default = 20
                 try:
                     data_cursor = res[0]
                 except:
-                    print("Loi data ")
                     data_cursor = None
 
                 for data in data_cursor:
-                    print(data)
-
                     val = {
                         'MA_KH': lib.parseString(data[0]),
                         'TEN_KH': lib.parseString(data[1]),
@@ -1040,17 +1029,20 @@ Param `region`
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
-                    print(data)
+                    # print(data)
                     val = {
                         'address': lib.parseString(data[0]),
                         'fullname': lib.parseString(data[1]),
+                        'emp_id': data[8],
                         'email': lib.parseString(data[2]),
                         'mobile': lib.parseString(data[3]),
                         "user": lib.parseUser(data[2]),
                         'fullname_op': lib.parseString(data[4]),
+                        'emp_id_op': data[7],
                         'email_op': lib.parseString(data[5]),
                         'mobile_op': lib.parseString(data[6]),
                         "user_op": lib.parseUser(data[5]),
+                        "region_id": lib.parseString(data[9])
                     }
                     datas.append(val)
 
