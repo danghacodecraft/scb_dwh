@@ -112,7 +112,7 @@ Screen `C_06`
                     dv = ",P_DV=>'{}'".format(params['dv'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}{}{}) FROM DUAL".format(screen, key, division, kv, vung, dv)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -252,7 +252,7 @@ Screen `C_06_02_02_02`
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}) FROM DUAL".format(screen, kv, vung, dv)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -358,7 +358,7 @@ Screen `C_06_03_02_03`
                 dv = ",P_DV=>'{}'".format(params['dv'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}) FROM DUAL".format(screen, kv, vung, dv)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -556,7 +556,7 @@ Screen `C_06`
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_C06_CHART(P_MAN_HINH=>'{}'{}{}{}{}{}) FROM DUAL".format(screen, key,
                                                                                                       division, kv,
                                                                                                       vung, dv)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 

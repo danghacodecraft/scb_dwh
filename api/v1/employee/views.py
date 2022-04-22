@@ -65,7 +65,7 @@ Param `type` example
 
             # call the function
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO({}{}) FROM DUAL".format(type, code)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -138,7 +138,7 @@ Param `emp` example
 
             # call the function
             # sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_INFO(P_EMP=>'{}') FROM DUAL".format(emp_id)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -310,7 +310,7 @@ Param `emp` example
 
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_KPI(P_EMP_CODE=>'{}') from dual".format(emp_id)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -366,7 +366,7 @@ Param `emp` example
 
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_DECISION(P_EMP=>'{}') from dual".format(emp_id)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -424,7 +424,7 @@ Param `emp` example
 
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_INFO(P_EMP=>'{}',P_TYPE=>'KHEN_THUONG',P_DEP_ID=>'ALL',P_ORG_ID=>'ALL') FROM DUAL".format(emp_id)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -485,7 +485,7 @@ Param `emp` example
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_INFO(P_EMP=>'{}',P_TYPE=>'KY_LUAT',P_DEP_ID=>'ALL',P_ORG_ID=>'ALL') FROM DUAL".format(
                 emp_id)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -548,7 +548,7 @@ Param `emp` example
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_INFO(P_EMP=>'{}',P_TYPE=>'DAO_TAO_NOI_BO',P_DEP_ID=>'ALL',P_ORG_ID=>'ALL') FROM DUAL".format(
                 emp_id)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -605,7 +605,7 @@ Param `emp` example
             # call the function
             sql = "SELECT obi.crm_dwh_pkg.FUN_GET_EMP_INFO(P_EMP=>'{}',P_TYPE=>'OTHER_INFO',P_DEP_ID=>'ALL',P_ORG_ID=>'ALL') FROM DUAL".format(
                 emp_id)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -665,7 +665,7 @@ Param `emp` example
             work_process = []
             # =============================================
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_EMP_WORKING_PROCESS('{}') FROM DUAL".format(emp_id)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
