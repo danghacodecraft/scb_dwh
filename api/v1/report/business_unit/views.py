@@ -101,7 +101,7 @@ The `Screen` has values:
                 division = ",P_DIVISION=>'{}'".format(params['division'])
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA('{}'{}{}{}{}{}{}) FROM DUAL".format(screen, vung, kv, dv, fdate, tdate, division)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -421,7 +421,7 @@ Screen `C_02_05_08` DVKD - IV. Tong thu nhap thuan - 8. Thu nap thuan tu hoat do
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_CHART( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{}{}{}{} ) FROM DUAL".format(
                 screen, key, vung, kv, dv, fdate, tdate, division, classification
             )
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -646,7 +646,7 @@ Screen `C_03_08` program `VUD`
 
             program = ""
             if 'program' in params.keys():
-                program = ", p_program=>'{}'".format(params['program'])
+                program = ", P_PROGRAM=>'{}'".format(params['program'])
 
             vung = ""
             if 'vung' in params.keys():
@@ -663,7 +663,7 @@ Screen `C_03_08` program `VUD`
                     year = ",P_YEAR=>'{}'".format(py)
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_CHART_loan( P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{} ) FROM DUAL".format(screen, key, program, vung, dv, year)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -771,7 +771,7 @@ The `division` example:
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_ONLINE_CHART(P_MAN_HINH=>'{}',P_MODULE=>'{}'{}{}{}{},P_CCY=>'ALL',P_CLASSIFICATION=>'ALL') FROM DUAL".format(
                 screen, key, vung, kv, dv, division)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -932,7 +932,7 @@ Param `page_size` default = 20
                 ) FROM DUAL
             """.format(screen, vung, dv, key, cust_type, level, page_number, page_size)
             # sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_DATA_CUST_VIP( P_MAN_HINH=>'C_02_02',P_HANG_VIP=>'GOLD',P_CUST_TYPE=>'C',P_VUNG => 'V01') FROM DUAL"
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -1021,7 +1021,7 @@ Param `region`
             #     area = ", P_KV=>'{}'".format(params['area'])
 
             sql = "SELECT OBI.CRM_DWH_PKG.FUN_GET_REGION_MANA_INFO(P_MAN_HINH=>'{}'{}, P_DV=>'ALL', P_CCY=>'ALL', P_MODULE=>'ALL' ) FROM DUAL".format(screen, region)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -1029,16 +1029,20 @@ Param `region`
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
+                    # print(data)
                     val = {
                         'address': lib.parseString(data[0]),
                         'fullname': lib.parseString(data[1]),
+                        'emp_id': data[8],
                         'email': lib.parseString(data[2]),
                         'mobile': lib.parseString(data[3]),
                         "user": lib.parseUser(data[2]),
                         'fullname_op': lib.parseString(data[4]),
+                        'emp_id_op': data[7],
                         'email_op': lib.parseString(data[5]),
                         'mobile_op': lib.parseString(data[6]),
                         "user_op": lib.parseUser(data[5]),
+                        "region_id": lib.parseString(data[9])
                     }
                     datas.append(val)
 
@@ -1090,7 +1094,7 @@ Param `dv`
             dv = params['dv']
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_BRN_MANA_INFO(P_MAN_HINH=>'{}', P_VUNG=>'ALL', P_DV=>'{}', P_CCY=>'ALL', P_MODULE=>'ALL' ) FROM DUAL".format(screen, dv)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 

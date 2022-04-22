@@ -62,7 +62,7 @@ class GisView(BaseAPIView):
 
             # ======================================================================
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -209,7 +209,7 @@ class GisView(BaseAPIView):
 
             # ======================================================================
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}) FROM DUAL".format(userid)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
@@ -362,7 +362,7 @@ class GisView(BaseAPIView):
                 region = ", P_VUNG=>'{}'".format(params['region'])
 
             sql = "SELECT obi.CRM_DWH_PKG.FUN_GET_LOCATION({}{}) FROM DUAL".format(userid, region)
-
+            print(sql)
             cur.execute(sql)
             res = cur.fetchone()
 
