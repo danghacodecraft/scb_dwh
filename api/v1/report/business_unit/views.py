@@ -1029,16 +1029,20 @@ Param `region`
             if len(res) > 0:
                 data_cursor = res[0]
                 for data in data_cursor:
+                    # print(data)
                     val = {
                         'address': lib.parseString(data[0]),
                         'fullname': lib.parseString(data[1]),
+                        'emp_id': data[8],
                         'email': lib.parseString(data[2]),
                         'mobile': lib.parseString(data[3]),
                         "user": lib.parseUser(data[2]),
                         'fullname_op': lib.parseString(data[4]),
+                        'emp_id_op': data[7],
                         'email_op': lib.parseString(data[5]),
                         'mobile_op': lib.parseString(data[6]),
                         "user_op": lib.parseUser(data[5]),
+                        "region_id": lib.parseString(data[9])
                     }
                     datas.append(val)
 
