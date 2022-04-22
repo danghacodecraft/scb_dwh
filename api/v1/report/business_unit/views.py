@@ -646,7 +646,7 @@ Screen `C_03_08` program `VUD`
 
             program = ""
             if 'program' in params.keys():
-                program = ", p_program=>'{}'".format(params['program'])
+                program = ", P_PROGRAM=>'{}'".format(params['program'])
 
             vung = ""
             if 'vung' in params.keys():
