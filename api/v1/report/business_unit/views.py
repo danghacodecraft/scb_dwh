@@ -12,6 +12,7 @@ from api.base.serializers import ExceptionResponseSerializer
 from api.v1.report.business_unit.serializers import ChartFResponseSerializer, ChartOnlineResponseSerializer, ChartResponseSerializer, DataResponseSerializer, \
     CustomerResponseSerializer, RegionInfoResponseSerializer, BranchInfoResponseSerializer
 
+
 def formatTime(data):
     return data.strftime("%d/%m/%Y %I:%M:%S %p")
 
@@ -121,13 +122,13 @@ The `Screen` has values:
                     title = lib.parseString(data[6])
                     ids = lib.create_key(title)
                     unit = lib.parseString(data[7])
-                    day =  lib.parseFloat(data[2], 2, False)
-                    week =  lib.parseFloat(data[3], 2, False)
-                    month =  lib.parseFloat(data[4], 2, False)
-                    accumulated =  lib.parseFloat(data[5], 2, False)
-                    AMT_KY_TRUOC =  lib.parseFloat(data[8], 2, False)
-                    divisor_bal_lcl =  lib.parseFloat(data[12], 2, False)
-                    divider_bal_lcl =  lib.parseFloat(data[13], 2, False)
+                    day = lib.parseFloat(data[2], 2, False)
+                    week = lib.parseFloat(data[3], 2, False)
+                    month = lib.parseFloat(data[4], 2, False)
+                    accumulated = lib.parseFloat(data[5], 2, False)
+                    AMT_KY_TRUOC = lib.parseFloat(data[8], 2, False)
+                    divisor_bal_lcl = lib.parseFloat(data[12], 2, False)
+                    divider_bal_lcl = lib.parseFloat(data[13], 2, False)
 
                     if ids == "so_luong_khach_hang":
                         division = data[11]
@@ -1107,6 +1108,7 @@ Param `dv`
                     val = {
                         'address': data[0],
                         'fullname': data[1],
+                        'emp_id': data[5],
                         'email': data[2],
                         'mobile': data[3],
                         "user": lib.parseUser(data[2]),
