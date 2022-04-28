@@ -24,7 +24,7 @@ def get_health(request):
 
         response = Response()
 
-        response.headers['SRV-Time'] = now()
+        response.headers['SRV-Time'] = now().isoformat(timespec='microseconds')
 
         response.status_code = status.HTTP_200_OK
 
