@@ -38,6 +38,8 @@ from api.v1.report.all.serializers import ChartResponseSerializer, PFSChartRespo
 # Chỉ tiêu Quản lý và phát triển con người (Tỷ lệ CBNV nghỉ việc).
 # Chỉ tiêu Quản lý và phát triển con người (Tỷ lệ hoàn thành tháp đào tạo).
 # Tỷ lệ nợ xấu phát sinh trong năm.
+
+
 class AllView(BaseAPIView):
     @extend_schema(
         operation_id='Chart',
@@ -91,7 +93,7 @@ Screen `C_06`
             if 'screen' in params.keys():
                 screen = format(params['screen'])
 
-            key = "" #,P_MODULE=>'ket_qua_chi_tieu_ke_hoach'"
+            key = ""  # ,P_MODULE=>'ket_qua_chi_tieu_ke_hoach'"
             if 'key' in params.keys():
                 key = ",P_MODULE=>'{}'".format(params['key'])
 
@@ -202,7 +204,6 @@ Screen `C_06`
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
     @extend_schema(
         operation_id='Chart_PFS',
@@ -372,77 +373,79 @@ Screen `C_06_03_02_03`
                 for data in data_cursor:
                     if len(data) == 17:
                         val = {
-                        'PROCESS_DATE': lib.parseString(data[0]),
-                        'CHITIEU': lib.parseString(data[1]),
-                        'SODU_DS_LK_KYT': lib.parseFloat(data[2]),
-                        'THUC_HIEN_KY_T': lib.parseFloat(data[3]),
-                        'KE_HOACH_KY_T': lib.parseFloat(data[4]),
-                        'TYLE_KY_T': lib.parseFloat(data[5]),
-                        'THUC_HIEN_LK': lib.parseFloat(data[6]),
-                        'KE_HOACH_LK': lib.parseFloat(data[7]),
-                        'TY_LY_LK': lib.parseFloat(data[8]),
-                        'DIEM_CHI_TIEU_LK': lib.parseFloat(data[9]),
-                        'DIEM_KH_LK': lib.parseFloat(data[10]),
-                        'KH_NAM': lib.parseFloat(data[11]),
-                        'TY_LE_NAM': lib.parseFloat(data[12]),
-                        'DIEM_CHI_TIEU_KH_NAM': lib.parseFloat(data[13]),
-                        'DIEM_KH_NAM': lib.parseFloat(data[14]),
-                        'AMOUNT_CHART': lib.parseFloat(data[15]),
-                        'BRANCH_ID': lib.parseString(data[16])
+                            'PROCESS_DATE': lib.parseString(data[0]),
+                            'CHITIEU': lib.parseString(data[1]),
+                            'SODU_DS_LK_KYT': lib.parseFloat(data[2]),
+                            'THUC_HIEN_KY_T': lib.parseFloat(data[3]),
+                            'KE_HOACH_KY_T': lib.parseFloat(data[4]),
+                            'TYLE_KY_T': lib.parseFloat(data[5]),
+                            'THUC_HIEN_LK': lib.parseFloat(data[6]),
+                            'KE_HOACH_LK': lib.parseFloat(data[7]),
+                            'TY_LY_LK': lib.parseFloat(data[8]),
+                            'DIEM_CHI_TIEU_LK': lib.parseFloat(data[9]),
+                            'DIEM_KH_LK': lib.parseFloat(data[10]),
+                            'KH_NAM': lib.parseFloat(data[11]),
+                            'TY_LE_NAM': lib.parseFloat(data[12]),
+                            'DIEM_CHI_TIEU_KH_NAM': lib.parseFloat(data[13]),
+                            'DIEM_KH_NAM': lib.parseFloat(data[14]),
+                            'AMOUNT_CHART': lib.parseFloat(data[15]),
+                            'BRANCH_ID': lib.parseString(data[16])
                         }
                         datas.append(val)
                     else:
                         val = {
-                            'STT' : lib.parseString(data[0]),
-                            'MONTH_ID' : lib.parseString(data[1]),
-                            'BRANCH_ID' : lib.parseString(data[2]),
-                            'BRANCH_NAME' : lib.parseString(data[3]),
-                            'SORT_REGION' : lib.parseString(data[4]),
-                            'HE_SO_DIEM_THEO_MO_HINH_DVKD' : lib.parseString(data[5]),
-                            'HTKH_LK_TANG_TRUONG_HD' : lib.parseString(data[6]),
-                            'DIEM_TANG_TRUONG_HD' : lib.parseString(data[7]),
-                            'HTKH_LK_TANG_TRUONG_HDVON_BQ_KKH' : lib.parseString(data[8]),
-                            'DIEM_TANG_TRUONG_HDVON_BQ_KKH' : lib.parseString(data[9]),
-                            'HTKH_LK_TANG_TRUONG_CHOVAY' : lib.parseString(data[10]),
-                            'DIEM_TANG_TRUONG_CHOVAY' : lib.parseString(data[11]),
-                            'HTKH_LK_TANG_TRUONG_CHOVAY_BQ' : lib.parseString(data[12]),
-                            'DIEM_TANG_TRUONG_CHOVAY_BQ' : lib.parseString(data[13]),
-                            'HTKH_LK_THU_PHI_DICH_VU' : lib.parseString(data[14]),
-                            'DIEM_THU_PHI_DICH_VU' : lib.parseString(data[15]),
-                            'HTKH_LK_THUPHI_DV_BAOGOM_TTQT_LNKDNH' : lib.parseString(data[16]),
-                            'DIEM_THUPHI_DV_BAOGOM_TTQT_LNKDNH' : lib.parseString(data[17]),
-                            'HTKH_LK_THUPHI_TTQT_LNKDNH' : lib.parseString(data[18]),
-                            'DIEM_THUPHI_TTQT_LNKDNH' : lib.parseString(data[19]),
-                            'HTKH_LK_DOANHSO_THANHTOAN_QR' : lib.parseString(data[20]),
-                            'DIEM_DOANHSO_THANHTOAN_QR' : lib.parseString(data[21]),
-                            'HTKH_LK_MERCHANT_QR' : lib.parseString(data[22]),
-                            'DIEM_MERCHANT_QR' : lib.parseString(data[23]),
-                            'HTKH_LK_DOANHSO_THANHTOAN_POS' : lib.parseString(data[24]),
-                            'DIEM_DOANHSO_THANHTOAN_POS' : lib.parseString(data[25]),
-                            'HTKH_LK_LOI_NHUAN_TRUOC_THUE' : lib.parseString(data[26]),
-                            'DIEM_LOI_NHUAN_TRUOC_THUE' : lib.parseString(data[27]),
-                            'HTKH_LK_SLKH_MOI' : lib.parseString(data[28]),
-                            'DIEM_SLKH_MOI' : lib.parseString(data[29]),
-                            'HTKH_LK_SLHD_EBANKING' : lib.parseString(data[30]),
-                            'DIEM_SLHD_EBANKING' : lib.parseString(data[31]),
-                            'HTKH_LK_KHMOI_SPVAYTIEN' : lib.parseString(data[32]),
-                            'DIEM_KHMOI_SPVAYTIEN' : lib.parseString(data[33]),
-                            'HTKH_LK_DOANHSO_BAOLANH' : lib.parseString(data[34]),
-                            'DIEM_DOANHSO_BAOLANH' : lib.parseString(data[35]),
-                            'HTKH_LK_XULY_NOXAU_THONGTHUONG' : lib.parseString(data[41]),
-                            'DIEM_XULY_NOXAU_THONGTHUONG' : lib.parseString(data[42]),
-                            'DIEM_CHITIEU_CHATLUONG_DICHVU' : lib.parseString(data[36]),
-                            'DIEM_CHITIEU_QLRR' : lib.parseString(data[37]),
-                            'DIEM_CBNV_NGHI_VIEC' : lib.parseString(data[38]),
-                            'DIEM_TYLE_NO2_PHATSINH' : lib.parseString(data[39]),
-                            'DIEM_TYLE_NOXAU_PHATSINH' : lib.parseString(data[40]),
-                            'DIEM_KHUYEN_KHICH' : lib.parseString(data[43]),
-                            'TONG_DIEM' : lib.parseString(data[44]),
-                            'DIEU_CHINHG_TONG_DIEM' : lib.parseString(data[45]),
-                            'TONG_DIEM_SAU_DIEU_CHINH' : lib.parseString(data[46]),
-                            'XEP_HANG' : lib.parseString(data[47]),
-                            'XEP_LOAI' : lib.parseString(data[48]),
-                            'PROCESS_DATE' : lib.parseString(data[49]),
+                            'STT': lib.parseString(data[0]),
+                            'MONTH_ID': lib.parseString(data[1]),
+                            'BRANCH_ID': lib.parseString(data[2]),
+                            'BRANCH_NAME': lib.parseString(data[3]),
+                            'SORT_REGION': lib.parseString(data[4]),
+                            'HE_SO_DIEM_THEO_MO_HINH_DVKD': lib.parseString(data[5]),
+                            'HTKH_LK_TANG_TRUONG_HD': lib.parseString(data[6]),
+                            'DIEM_TANG_TRUONG_HD': lib.parseString(data[7]),
+                            'HTKH_LK_TANG_TRUONG_HDVON_BQ_KKH': lib.parseString(data[8]),
+                            'DIEM_TANG_TRUONG_HDVON_BQ_KKH': lib.parseString(data[9]),
+                            'HTKH_LK_TANG_TRUONG_CHOVAY': lib.parseString(data[10]),
+                            'DIEM_TANG_TRUONG_CHOVAY': lib.parseString(data[11]),
+                            'HTKH_LK_TANG_TRUONG_CHOVAY_BQ': lib.parseString(data[12]),
+                            'DIEM_TANG_TRUONG_CHOVAY_BQ': lib.parseString(data[13]),
+                            'HTKH_LK_THU_PHI_DICH_VU': lib.parseString(data[14]),
+                            'DIEM_THU_PHI_DICH_VU': lib.parseString(data[15]),
+                            'HTKH_LK_THUPHI_DV_BAOGOM_TTQT_LNKDNH': lib.parseString(data[16]),
+                            'DIEM_THUPHI_DV_BAOGOM_TTQT_LNKDNH': lib.parseString(data[17]),
+                            'HTKH_LK_THUPHI_TTQT_LNKDNH': lib.parseString(data[18]),
+                            'DIEM_THUPHI_TTQT_LNKDNH': lib.parseString(data[19]),
+                            'HTKH_LK_DOANHSO_THANHTOAN_QR': lib.parseString(data[20]),
+                            'DIEM_DOANHSO_THANHTOAN_QR': lib.parseString(data[21]),
+                            'HTKH_LK_MERCHANT_QR': lib.parseString(data[22]),
+                            'DIEM_MERCHANT_QR': lib.parseString(data[23]),
+                            'HTKH_LK_DOANHSO_THANHTOAN_POS': lib.parseString(data[24]),
+                            'DIEM_DOANHSO_THANHTOAN_POS': lib.parseString(data[25]),
+                            'HTKH_LK_LOI_NHUAN_TRUOC_THUE': lib.parseString(data[26]),
+                            'DIEM_LOI_NHUAN_TRUOC_THUE': lib.parseString(data[27]),
+                            'HTKH_LK_SLKH_MOI': lib.parseString(data[28]),
+                            'DIEM_SLKH_MOI': lib.parseString(data[29]),
+                            'HTKH_LK_SLHD_EBANKING': lib.parseString(data[30]),
+                            'DIEM_SLHD_EBANKING': lib.parseString(data[31]),
+                            'HTKH_LK_KHMOI_SPVAYTIEN': lib.parseString(data[32]),
+                            'DIEM_KHMOI_SPVAYTIEN': lib.parseString(data[33]),
+                            'HTKH_LK_DOANHSO_BAOLANH': lib.parseString(data[34]),
+                            'DIEM_DOANHSO_BAOLANH': lib.parseString(data[35]),
+                            'DIEM_CHITIEU_CHATLUONG_DICHVU': lib.parseString(data[36]),
+                            'DIEM_CHITIEU_QLRR': lib.parseString(data[37]),
+                            'DIEM_CBNV_NGHI_VIEC': lib.parseString(data[38]),
+                            'DIEM_TYLE_HOANTHANH_THAP_DAOTAO': lib.parseString(data[39]),
+                            'DIEM_TYLE_NO2_PHATSINH': lib.parseString(data[40]),
+                            'DIEM_TYLE_NOXAU_PHATSINH': lib.parseString(data[41]),
+                            'HTKH_LK_XULY_NOXAU_THONGTHUONG': lib.parseString(data[42]),
+                            'DIEM_XULY_NOXAU_THONGTHUONG': lib.parseString(data[43]),
+                            'DIEM_KHUYEN_KHICH': lib.parseString(data[44]),
+                            'TONG_DIEM': lib.parseString(data[45]),
+                            'DIEU_CHINHG_TONG_DIEM': lib.parseString(data[46]),
+                            'TONG_DIEM_SAU_DIEU_CHINH': lib.parseString(data[47]),
+                            'XEP_HANG': lib.parseString(data[48]),
+                            'XEP_LOAI': lib.parseString(data[49]),
+                            'PROCESS_DATE': lib.parseString(data[50]),
+
 
                             # 'Tang_truong_huy_dong_von_binh_quan_kkh_ty_le_htkh_luy_ke': data[8].strip(),
                             # 'Tang_truong_huy_dong_von_binh_quan_kkh_diem': data[9],
