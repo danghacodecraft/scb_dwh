@@ -1,7 +1,7 @@
 from django.urls import include, path
 
 from config.settings import DEBUG
-from .views import get_otp_server
+from .views import get_otp_server, get_health
 
 urlpatterns = [
     path('users/', include('api.v1.user.urls')),
@@ -15,4 +15,5 @@ urlpatterns = [
 if DEBUG:
     urlpatterns += [
         path('get-otp/', get_otp_server),
+        path('check-health/', get_health),
     ]
