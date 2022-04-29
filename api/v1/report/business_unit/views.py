@@ -799,7 +799,8 @@ The `division` example:
                         'QD_CAD': lib.parseFloat(data[14]),
                         'QD_VANG': lib.parseFloat(data[15]),
                         'TANG_GIAM': lib.parseString(data[16]),
-                        'THOI_GIAN_CAP_NHAT': formatTime(data[17]),
+                        # 'THOI_GIAN_CAP_NHAT': formatTime(data[17]),
+                        'THOI_GIAN_CAP_NHAT': data[17],
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
