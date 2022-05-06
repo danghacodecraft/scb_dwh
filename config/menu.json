@@ -1,0 +1,138 @@
+[
+  {
+    "name": "Sidebar.Dashboard",
+    "path": "/"
+  },
+  {
+    "name": "Sidebar.ConfigSystem",
+    "path": "/config-system",
+    "children": [
+      {
+        "name": "Sidebar.MapDatabase",
+        "path": "/map-database"
+      },
+      {
+        "name": "Sidebar.PrivilegeSystem",
+        "path": "/privilege-system"
+      },
+      {
+        "name": "Sidebar.OrganizationSitemap",
+        "path": "/organization-sitemap",
+        "children": [
+          {
+            "name": "Sidebar.HeadOffice",
+            "path": "/head-office"
+          },
+          {
+            "name": "Sidebar.Location",
+            "path": "/location"
+          },
+          {
+            "name": "Sidebar.Branch",
+            "path": "/branch",
+            "children": [
+              {
+                "name": "Sidebar.Branch.Standard",
+                "path": "/standard"
+              },
+              {
+                "name": "Sidebar.Branch.Level1",
+                "path": "/level1"
+              },
+              {
+                "name": "Sidebar.Branch.Level2",
+                "path": "/level2"
+              },
+              {
+                "name": "Sidebar.Branch.Versatile",
+                "path": "/versatile"
+              },
+              {
+                "name": "Sidebar.Branch.SuperLevel1",
+                "path": "/super-level1"
+              },
+              {
+                "name": "Sidebar.Branch.SuperLevel2",
+                "path": "/super-level2"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Sidebar.ReportSystem",
+    "path": "/reporting-system",
+    "children": [
+      {
+        "name": "Sidebar.ReportSystem.All",
+        "path": "/all",
+        "children": [
+          {
+            "name": "Sidebar.ReportSystem.Management",
+            "path": "/management-report"
+          },
+          {
+            "name": "Sidebar.ReportSystem.PlanTagetResult",
+            "path": "/plan-target-result"
+          }
+        ]
+      },
+      {
+        "name": "Sidebar.ReportSystem.Sale",
+        "path": "/sale",
+        "children": [
+          {
+            "name": "Sidebar.ReportSystem.DVNH",
+            "path": "/banking-and-finance",
+            "children": [
+              {
+                "name": "Sidebar.ReportSystem.Management",
+                "path": "/management-report"
+              },
+              {
+                "name": "Sidebar.ReportSystem.PlanTagetResult",
+                "path": "/plan-target-result"
+              }
+            ]
+          },
+          {
+            "name": "Sidebar.ReportSystem.Business.Block",
+            "path": "/business",
+            "children": [
+              {
+                "name": "Sidebar.ReportSystem.Management",
+                "path": "/management-report"
+              },
+              {
+                "name": "Sidebar.ReportSystem.PlanTagetResult",
+                "path": "/plan-taget-result"
+              }
+            ]
+          },
+          {
+            "name": "Sidebar.ReportSystem.PDTDXLN",
+            "path": "/pdtd-xln",
+            "children": [
+              {
+                "name": "Sidebar.ReportSystem.PlanTagetResult",
+                "path": "/plan-taget-result"
+              }
+            ]
+          },
+          {
+            "name": "Sidebar.ReportSystem.KDTT",
+            "path": "/kdtt",
+            "children": [
+              {
+                "name": "Sidebar.ReportSystem.PlanTagetResult",
+                "path": "/plan-taget-result"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
