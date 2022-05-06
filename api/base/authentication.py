@@ -119,7 +119,8 @@ class TokenAuthentication(BaseAuthentication):
                     department=data[4],
                     branch_code=data[12],
                     employee_id=data[0],
-                    email=data[6]
+                    email=data[6],
+                    menu_id=data[91]
                 )
             cur.close()
             con.close()
@@ -220,7 +221,8 @@ class BasicAuthentication(BaseAuthentication):
                     department=data[4],
                     branch_code=data[12],
                     employee_id=data[0],
-                    email=data[6]
+                    email=data[6],
+                    menu_id=data[91]
                 )
 
                 cipher = AESCipher()
@@ -239,7 +241,7 @@ class BasicAuthentication(BaseAuthentication):
             cache.set('SSN_' + username, int(session_id))
 
         except cx_Oracle.Error as e:
-            pass
+            setattr(request, 'user_error', e)
         except IndexError:
             return exceptions.AuthenticationFailed({
                 'error_code': INVALID_USERNAME,
