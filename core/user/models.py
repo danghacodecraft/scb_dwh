@@ -1,6 +1,6 @@
 import binascii
 import os
-import base64
+import json
 
 from django.contrib.auth.hashers import check_password, make_password
 from django.db import models
@@ -9,6 +9,9 @@ from django.utils.translation import ugettext_lazy as _
 from core.models import BaseModel
 from library.constant.gender import GENDER_TYPE_CHOICE, GENDER_TYPE_MALE
 from library.functions import today
+
+
+MENU_FILE = json.load(open('config/menu.json'))
 
 
 class User(BaseModel):
@@ -84,7 +87,7 @@ class User(BaseModel):
 
 
 class DWHUser:
-    def __init__(self, username=None, password=None, fullname=None, jobtitle=None, avatar=None, department=None, branch_code=None, employee_id=None, email=None):
+    def __init__(self, username=None, password=None, fullname=None, jobtitle=None, avatar=None, department=None, branch_code=None, employee_id=None, email=None, menu_id=None):
         self.id = username
         self.username = username
         self.password = password
@@ -104,6 +107,16 @@ class DWHUser:
 
         self.employee_id = employee_id
         self.email = email
+
+        if menu_id:
+
+            self.menu = list()
+
+            for _index in menu_id.split(';'):
+                try:
+                    self.menu.append(MENU_FILE[int(_index)-1])
+                except IndexError:
+                    pass
 
     def set_token(self, token):
         self.token = token

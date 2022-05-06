@@ -175,7 +175,8 @@ class UserView(BaseAPIView):
             'jobtitle': user.jobtitle,
             'branch_code': user.branch_code,
             'employee_id': user.employee_id,
-            'email': user.email
+            'email': user.email,
+            'menu': user.menu
         }, status_code=status.HTTP_200_OK)
 
 
@@ -224,7 +225,8 @@ class LoginView(BaseAPIView):
                 'jobtitle': request.user.jobtitle,
                 'branch_code': request.user.branch_code,
                 'employee_id': request.user.employee_id,
-                'email': request.user.email
+                'email': request.user.email,
+                'menu': request.user.menu
             }, status_code=status.HTTP_200_OK)
         else:
             message = request.user_error
