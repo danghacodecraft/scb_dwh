@@ -107,11 +107,10 @@ class DWHUser:
 
         self.employee_id = employee_id
         self.email = email
+
         self.menu = list()
 
         if menu_id:
-
-            self.menu = list()
 
             for _index in menu_id.split(';'):
                 try:
