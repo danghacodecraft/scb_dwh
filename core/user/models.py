@@ -107,6 +107,7 @@ class DWHUser:
 
         self.employee_id = employee_id
         self.email = email
+        self.menu = list()
 
         if menu_id:
 
@@ -114,11 +115,9 @@ class DWHUser:
 
             for _index in menu_id.split(';'):
                 try:
-                    self.menu.append(MENU_FILE[int(_index)-1])
+                    self.menu.append(MENU_FILE[int(_index) - 1])
                 except IndexError:
                     pass
 
     def set_token(self, token):
         self.token = token
-
-
