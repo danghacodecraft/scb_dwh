@@ -187,7 +187,7 @@ The `division` example:
 
             cur.close()
             con.close()
-            return self.response_success( datas, status_code=status.HTTP_200_OK)
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
         except cx_Oracle.Error as error:
             cur.close()
             con.close()
@@ -462,7 +462,7 @@ The `division` example:
             cur.execute(sql)
             res = cur.fetchone()
 
-            datas = []
+            datas = list()
             if len(res) > 0:
                 data_cursor = res[0]
                 if data_cursor is not None:
@@ -522,7 +522,51 @@ The `division` example:
 
                         if valmax is not None:
                             print(valmax)
-                            valmax['val'] = valmax['val'] + round(tt,2)
+                            valmax['val'] = valmax['val'] + round(tt, 2)
+
+                    elif key == "tang_truong_huy_dong":
+                        data_dict = {}
+                        field_pair = list()
+
+                        for data in data_cursor:
+                            title = lib.parseString(data[3])
+                            region_id = lib.parseString(data[17])
+                            key = "{} - {}".format(title, region_id)
+
+                            if [title, region_id] not in field_pair:
+                                field_pair.append([title, region_id])
+                                data_dict[key] = {
+                                    "ID": lib.parseString(data[0]),
+                                    "NAME": lib.parseString(data[1]),
+                                    "AMT_DAY": lib.parseFloat(data[2]),
+                                    "TIEU_DE": title,
+                                    "UNIT": lib.parseString(data[4]),
+                                    "TH": lib.parseString(data[5]),
+                                    "KH": lib.parseString(data[6]),
+                                    "WEEK": lib.parseFloat(data[7]),
+                                    "MONTH": lib.parseFloat(data[8]),
+                                    "AMT_KY_TRUOC": lib.parseFloat(data[9]),
+                                    "AMT_YEAR": lib.parseFloat(data[10]),
+                                    "ORD": lib.parseFloat(data[11]),
+                                    "BRANCH_ID": lib.parseString(data[12]),
+                                    "DIVISION_ID": lib.parseString(data[13]),
+                                    "BRANCH_NAME": lib.parseString(data[14]),
+                                    "AREA_ID": lib.parseString(data[15]),
+                                    "AREA_NAME": lib.parseString(data[16]),
+                                    "REGION_ID": region_id,
+                                    "REGION_NAME": lib.parseString(data[18]),
+                                    "CLASSIFICATION_ID": lib.parseString(data[19]),
+                                }
+
+                            else:
+                                data_dict[key]["AMT_DAY"] += lib.parseFloat(data[2])
+                                data_dict[key]["WEEK"] += lib.parseFloat(data[7])
+                                data_dict[key]["MONTH"] += lib.parseFloat(data[8])
+                                data_dict[key]["AMT_KY_TRUOC"] += lib.parseFloat(data[9])
+                                data_dict[key]["AMT_YEAR"] += lib.parseFloat(data[10])
+                                data_dict[key]["ORD"] += lib.parseFloat(data[11])
+                            datas.append(data_dict[key])
+
                     else:
                         for data in data_cursor:
                             # print(data)
@@ -541,4 +585,3 @@ The `division` example:
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
