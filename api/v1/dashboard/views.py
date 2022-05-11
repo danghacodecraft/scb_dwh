@@ -525,8 +525,11 @@ The `division` example:
                             valmax['val'] = valmax['val'] + round(tt, 2)
 
                     elif key == "tang_truong_huy_dong":
-                        data_dict = {}
+                        data_dict = dict()
                         field_pair = list()
+                        data_loop = list()
+                        title_list = list()
+                        title_dict = dict()
 
                         for data in data_cursor:
                             title = lib.parseString(data[3])
@@ -541,31 +544,36 @@ The `division` example:
                                     "AMT_DAY": lib.parseFloat(data[2]),
                                     "TIEU_DE": title,
                                     "UNIT": lib.parseString(data[4]),
-                                    "TH": lib.parseString(data[5]),
-                                    "KH": lib.parseString(data[6]),
-                                    "WEEK": lib.parseFloat(data[7]),
-                                    "MONTH": lib.parseFloat(data[8]),
                                     "AMT_KY_TRUOC": lib.parseFloat(data[9]),
                                     "AMT_YEAR": lib.parseFloat(data[10]),
-                                    "ORD": lib.parseFloat(data[11]),
-                                    "BRANCH_ID": lib.parseString(data[12]),
-                                    "DIVISION_ID": lib.parseString(data[13]),
-                                    "BRANCH_NAME": lib.parseString(data[14]),
-                                    "AREA_ID": lib.parseString(data[15]),
-                                    "AREA_NAME": lib.parseString(data[16]),
                                     "REGION_ID": region_id,
-                                    "REGION_NAME": lib.parseString(data[18]),
-                                    "CLASSIFICATION_ID": lib.parseString(data[19]),
                                 }
+                                datas.append(data_dict[key])
+                                data_loop.append(data_dict[key])
 
                             else:
                                 data_dict[key]["AMT_DAY"] += lib.parseFloat(data[2])
-                                data_dict[key]["WEEK"] += lib.parseFloat(data[7])
-                                data_dict[key]["MONTH"] += lib.parseFloat(data[8])
                                 data_dict[key]["AMT_KY_TRUOC"] += lib.parseFloat(data[9])
                                 data_dict[key]["AMT_YEAR"] += lib.parseFloat(data[10])
-                                data_dict[key]["ORD"] += lib.parseFloat(data[11])
-                            datas.append(data_dict[key])
+
+                        for data in data_loop:
+                            if data['TIEU_DE'] not in title_list:
+                                title_list.append(data['TIEU_DE'])
+                                title_dict[data['TIEU_DE']] = {
+                                    "ID": data['ID'],
+                                    "NAME": data['NAME'],
+                                    "AMT_DAY": data['AMT_DAY'],
+                                    "TIEU_DE": data['TIEU_DE'],
+                                    "UNIT": data['UNIT'],
+                                    "AMT_KY_TRUOC": data['AMT_KY_TRUOC'],
+                                    "AMT_YEAR": data['AMT_YEAR'],
+                                    "REGION_ID": "ALL",
+                                }
+                                datas.append(title_dict[data['TIEU_DE']])
+                            else:
+                                title_dict[data['TIEU_DE']]["AMT_DAY"] += data['AMT_DAY']
+                                title_dict[data['TIEU_DE']]["AMT_KY_TRUOC"] += data['AMT_KY_TRUOC']
+                                title_dict[data['TIEU_DE']]["AMT_YEAR"] += data['AMT_YEAR']
 
                     else:
                         for data in data_cursor:
