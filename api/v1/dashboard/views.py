@@ -187,7 +187,7 @@ The `division` example:
 
             cur.close()
             con.close()
-            return self.response_success( datas, status_code=status.HTTP_200_OK)
+            return self.response_success(datas, status_code=status.HTTP_200_OK)
         except cx_Oracle.Error as error:
             cur.close()
             con.close()
@@ -462,7 +462,7 @@ The `division` example:
             cur.execute(sql)
             res = cur.fetchone()
 
-            datas = []
+            datas = list()
             if len(res) > 0:
                 data_cursor = res[0]
                 if data_cursor is not None:
@@ -522,7 +522,59 @@ The `division` example:
 
                         if valmax is not None:
                             print(valmax)
-                            valmax['val'] = valmax['val'] + round(tt,2)
+                            valmax['val'] = valmax['val'] + round(tt, 2)
+
+                    elif key == "tang_truong_huy_dong":
+                        data_dict = dict()
+                        field_pair = list()
+                        data_loop = list()
+                        title_list = list()
+                        title_dict = dict()
+
+                        for data in data_cursor:
+                            title = lib.parseString(data[3])
+                            region_id = lib.parseString(data[17])
+                            key = "{} - {}".format(title, region_id)
+
+                            if [title, region_id] not in field_pair:
+                                field_pair.append([title, region_id])
+                                data_dict[key] = {
+                                    "ID": lib.parseString(data[0]),
+                                    "NAME": lib.parseString(data[1]),
+                                    "AMT_DAY": lib.parseFloat(data[2]),
+                                    "TIEU_DE": title,
+                                    "UNIT": lib.parseString(data[4]),
+                                    "AMT_KY_TRUOC": lib.parseFloat(data[9]),
+                                    "AMT_YEAR": lib.parseFloat(data[10]),
+                                    "REGION_ID": region_id,
+                                }
+                                datas.append(data_dict[key])
+                                data_loop.append(data_dict[key])
+
+                            else:
+                                data_dict[key]["AMT_DAY"] += lib.parseFloat(data[2])
+                                data_dict[key]["AMT_KY_TRUOC"] += lib.parseFloat(data[9])
+                                data_dict[key]["AMT_YEAR"] += lib.parseFloat(data[10])
+
+                        for data in data_loop:
+                            if data['TIEU_DE'] not in title_list:
+                                title_list.append(data['TIEU_DE'])
+                                title_dict[data['TIEU_DE']] = {
+                                    "ID": data['ID'],
+                                    "NAME": data['NAME'],
+                                    "AMT_DAY": data['AMT_DAY'],
+                                    "TIEU_DE": data['TIEU_DE'],
+                                    "UNIT": data['UNIT'],
+                                    "AMT_KY_TRUOC": data['AMT_KY_TRUOC'],
+                                    "AMT_YEAR": data['AMT_YEAR'],
+                                    "REGION_ID": "ALL",
+                                }
+                                datas.append(title_dict[data['TIEU_DE']])
+                            else:
+                                title_dict[data['TIEU_DE']]["AMT_DAY"] += data['AMT_DAY']
+                                title_dict[data['TIEU_DE']]["AMT_KY_TRUOC"] += data['AMT_KY_TRUOC']
+                                title_dict[data['TIEU_DE']]["AMT_YEAR"] += data['AMT_YEAR']
+
                     else:
                         for data in data_cursor:
                             # print(data)
@@ -541,4 +593,3 @@ The `division` example:
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
