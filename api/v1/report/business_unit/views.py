@@ -800,7 +800,7 @@ The `division` example:
                         'QD_VANG': lib.parseFloat(data[15]),
                         'TANG_GIAM': lib.parseString(data[16]),
                         # 'THOI_GIAN_CAP_NHAT': formatTime(data[17]),
-                        'THOI_GIAN_CAP_NHAT': data[17],
+                        'THOI_GIAN_CAP_NHAT': lib.parseString(data[17]),
                     }
                     datas.append(val)
                 # datas.sort(key=myBranch)
@@ -1035,12 +1035,12 @@ Param `region`
                     val = {
                         'address': lib.parseString(data[0]),
                         'fullname': lib.parseString(data[1]),
-                        'emp_id': data[8],
+                        'emp_id': lib.parseString(data[8]),
                         'email': lib.parseString(data[2]),
                         'mobile': lib.parseString(data[3]),
                         "user": lib.parseUser(data[2]),
                         'fullname_op': lib.parseString(data[4]),
-                        'emp_id_op': data[7],
+                        'emp_id_op': lib.parseString(data[7]),
                         'email_op': lib.parseString(data[5]),
                         'mobile_op': lib.parseString(data[6]),
                         "user_op": lib.parseUser(data[5]),
