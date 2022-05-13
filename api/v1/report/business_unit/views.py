@@ -1107,13 +1107,13 @@ Param `dv`
                     print(data)
                     #('7/57D Nguyễn Khắc Nhu,Phường Cô Giang,Quận 1,Long An,Việt Nam', 'TRỊNH BÁ VƯƠNG', 'VUONGTB@SCB.COM.VN', '+84 939292368', '001')
                     val = {
-                        'address': data[0],
-                        'fullname': data[1],
-                        'emp_id': data[5],
-                        'email': data[2],
-                        'mobile': data[3],
+                        'address': lib.parseString(data[0]),
+                        'fullname': lib.parseString(data[1]),
+                        'emp_id': lib.parseString(data[5]),
+                        'email': lib.parseString(data[2]),
+                        'mobile': lib.parseString(data[3]),
                         "user": lib.parseUser(data[2]),
-                        "id": data[4],
+                        "id": lib.parseString(data[4]),
                     }
                     datas.append(val)
 
