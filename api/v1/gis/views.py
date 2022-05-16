@@ -11,19 +11,24 @@ from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
 from api.v1.gis.serializers import BranchResponseSerializer, RegionResponseSerializer, AreaResponseSerializer, BranchAreaResponseSerializer
 
+
 def myRegion(e):
     return e['region_id']
+
 
 def myBranch(e):
     return e['branch_id']
 
+
 def myArea(e):
     return e['NAME']
+
 
 def filterName(name_lower):
     if "kênh" in name_lower or "khác" in name_lower or "hội sở" in name_lower:
         return True
     return False
+
 
 TYPE_DEFAULT = "CN Đa năng"
 LONGITUDE_DEFAULT = 106.70564814326777
@@ -33,6 +38,7 @@ LONGITUDE_MAX = 120
 LATITUDE_DEFAULT = 10.771912559303502
 LATITUDE_MIN = 10
 LATITUDE_MAX = 30
+
 
 class GisView(BaseAPIView):
     @extend_schema(
@@ -371,7 +377,7 @@ class GisView(BaseAPIView):
                 data_cursor = res[0]
                 gis = {}
                 for data in data_cursor:
-                    #('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
+                    # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
                     branch_id = lib.parseString(data[6])
                     if branch_id not in gis.keys() and data[8] != None and data[9] != None:
                         gis[branch_id] = data
@@ -436,25 +442,24 @@ class GisView(BaseAPIView):
             res = cur.fetchone()
 
             TYPES = {
-                "CN Cấp 1": "CNC1",
-                "CN Cấp 2": "CNC2",
-                "Siêu CN Cấp 1": "SCNC1",
-                "Siêu CN Cấp 2": "SCNC2",
-                "CN Đa năng": "CNDN",
-                "CN Chuẩn": "CNC",
-                "KXD": "CNDN"
+                "cn cấp 1": "CNC1",
+                "cn cấp 2": "CNC2",
+                "siêu cn cấp 1": "SCNC1",
+                "siêu cn cấp 2": "SCNC2",
+                "cn đa năng": "CNDN",
+                "cn chuẩn": "CNC",
+                "kxd": "CNDN"
             }
             features = []
             if len(res) > 0:
                 data_cursor = res[0]
                 gis = {}
                 for data in data_cursor:
-                    print(data)
+                    # print(data)
                     # ('V98', 'KÊNH KINH DOANH TRỰC TIẾP MIỀN NAM', 'K99', 'KHÁC', 'C07', 'Cống Quỳnh', '246', 'HUB AUTO - HCM 1', None, None)
                     branch_id = lib.parseString(data[6])
                     if branch_id not in gis.keys() and data[8] != None and data[9] != None:
                         gis[branch_id] = data
-
                         val = {
                             "id": branch_id,
                             "type": "Feature",
@@ -467,11 +472,11 @@ class GisView(BaseAPIView):
                                 "zone_name": lib.parseString(data[1]),
                                 "area_id": lib.parseString(data[2]),
                                 "area_name": lib.parseString(data[3]),
-                                "type": TYPES[lib.parseString(data[10])]
+                                "type": TYPES[(lib.parseString(data[10])).lower()]
                             },
                             "geometry": {
                                 "type": "Point",
-                                "coordinates": [ lib.parseCoordinate(data[9], LONGITUDE_DEFAULT), lib.parseCoordinate(data[8], LATITUDE_DEFAULT), 0.0]
+                                "coordinates": [lib.parseCoordinate(data[9], LONGITUDE_DEFAULT), lib.parseCoordinate(data[8], LATITUDE_DEFAULT), 0.0]
                             }
                         }
 
@@ -501,4 +506,3 @@ class GisView(BaseAPIView):
             cur.close()
             con.close()
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
