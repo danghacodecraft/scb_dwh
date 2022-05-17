@@ -10,6 +10,7 @@ from api.base.authentication import BasicAuthentication
 from api.base.base_views import BaseAPIView
 from api.base.serializers import ExceptionResponseSerializer
 from api.v1.gis.serializers import BranchResponseSerializer, RegionResponseSerializer, AreaResponseSerializer, BranchAreaResponseSerializer
+from library.logs import logger
 
 
 def myRegion(e):
@@ -402,6 +403,7 @@ class GisView(BaseAPIView):
         except cx_Oracle.Error as error:
             cur.close()
             con.close()
+            logger(string=error)
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(

@@ -120,7 +120,7 @@ class TokenAuthentication(BaseAuthentication):
                     branch_code=data[12],
                     employee_id=data[0],
                     email=data[6],
-                    menu_id=data[91]
+                    menu_id=data[98]
                 )
             cur.close()
             con.close()
@@ -222,7 +222,7 @@ class BasicAuthentication(BaseAuthentication):
                     branch_code=data[12],
                     employee_id=data[0],
                     email=data[6],
-                    menu_id=data[91]
+                    menu_id=data[98]
                 )
 
                 cipher = AESCipher()
