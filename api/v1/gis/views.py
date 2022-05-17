@@ -186,6 +186,7 @@ class GisView(BaseAPIView):
         except cx_Oracle.Error as error:
             cur.close()
             con.close()
+            logger(string=error)
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
@@ -507,4 +508,5 @@ class GisView(BaseAPIView):
         except cx_Oracle.Error as error:
             cur.close()
             con.close()
+            logger(string=error)
             return self.response_success(error, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
