@@ -532,17 +532,17 @@ The `division` example:
                         title_dict = dict()
 
                         for data in data_cursor:
-                            title = lib.parseString(data[3])
+                            dwh_id = lib.parseString(data[0])
                             region_id = lib.parseString(data[17])
-                            key = "{} - {}".format(title, region_id)
+                            key = "{} - {}".format(dwh_id, region_id)
 
-                            if [title, region_id] not in field_pair:
-                                field_pair.append([title, region_id])
+                            if [dwh_id, region_id] not in field_pair:
+                                field_pair.append([dwh_id, region_id])
                                 data_dict[key] = {
-                                    "ID": lib.parseString(data[0]),
+                                    "ID": dwh_id,
                                     "NAME": lib.parseString(data[1]),
                                     "AMT_DAY": lib.parseFloat(data[2]),
-                                    "TIEU_DE": title,
+                                    "TIEU_DE": lib.parseString(data[3]),
                                     "UNIT": lib.parseString(data[4]),
                                     "AMT_KY_TRUOC": lib.parseFloat(data[9]),
                                     "AMT_YEAR": lib.parseFloat(data[10]),
@@ -557,9 +557,9 @@ The `division` example:
                                 data_dict[key]["AMT_YEAR"] += lib.parseFloat(data[10])
 
                         for data in data_loop:
-                            if data['TIEU_DE'] not in title_list:
-                                title_list.append(data['TIEU_DE'])
-                                title_dict[data['TIEU_DE']] = {
+                            if data['ID'] not in title_list:
+                                title_list.append(data['ID'])
+                                title_dict[data['ID']] = {
                                     "ID": data['ID'],
                                     "NAME": data['NAME'],
                                     "AMT_DAY": data['AMT_DAY'],
@@ -569,11 +569,11 @@ The `division` example:
                                     "AMT_YEAR": data['AMT_YEAR'],
                                     "REGION_ID": "ALL",
                                 }
-                                datas.append(title_dict[data['TIEU_DE']])
+                                datas.append(title_dict[data['ID']])
                             else:
-                                title_dict[data['TIEU_DE']]["AMT_DAY"] += data['AMT_DAY']
-                                title_dict[data['TIEU_DE']]["AMT_KY_TRUOC"] += data['AMT_KY_TRUOC']
-                                title_dict[data['TIEU_DE']]["AMT_YEAR"] += data['AMT_YEAR']
+                                title_dict[data['ID']]["AMT_DAY"] += data['AMT_DAY']
+                                title_dict[data['ID']]["AMT_KY_TRUOC"] += data['AMT_KY_TRUOC']
+                                title_dict[data['ID']]["AMT_YEAR"] += data['AMT_YEAR']
 
                     else:
                         for data in data_cursor:
