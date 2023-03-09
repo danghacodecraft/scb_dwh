@@ -1,7 +1,6 @@
 <!-- PROJECT LOGO -->
 <div align="center"><br />
 <p align="center" style="width: 100%">
-    <img src="https://minerva.vn/wp-content/uploads/2020/06/logo.png" alt="Logo" style="-webkit-user-select: none;margin: auto;">
 
 <h3 align="center">DWH</h3>
 </p>
